@@ -144,12 +144,12 @@ Create_SAHA_object <- function(query, db,data_type,existing=NULL){
       return(ann)
    }else{
       if (data_type=="Markers") {
-         existing@query$AvgExp = data.frame(temp_ann@query$AvgExp)
-         existing@db$AvgExp = data.frame(temp_ann@db$AvgExp)
-         existing@data_type = "AvgExp & Markers"
-      }else if(data_type=="AvgExp"){
          existing@query$Markers = data.frame(temp_ann@query$Markers)
          existing@db$Markers = data.frame(temp_ann@db$Markers)
+         existing@data_type = "AvgExp & Markers"
+      }else if(data_type=="AvgExp"){
+         existing@query$AvgExp = data.frame(temp_ann@query$AvgExp)
+         existing@db$AvgExp = data.frame(temp_ann@db$AvgExp)
          existing@data_type = "Markers & AvgExp"
       }
       return(existing)
