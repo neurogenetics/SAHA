@@ -59,6 +59,7 @@ Initialize_Markers <- function(ann, p_thresh = 0.05, FC_thresh = 1.5, sens_thres
       print("WARNING: by subsetting your original Markers dataframe with this function, some clusters have dropped out from analysis.")
    }
    #overwrite ann
-   ann@ann1 = list(query=ann_subset,db=db_subset)
+   ann@ann1$query=ann_subset
+   ann@ann1$db=db_subset
    return(ann)
 }
