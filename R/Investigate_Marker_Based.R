@@ -27,7 +27,7 @@ Investigate_Marker_Based <- function(ann, query_cluster, db_cell_type = NULL, pl
    if (plot == "venn") {
 
       # Filter marker_data for cluster_markers and db_cell_markers
-      cluster_markers <- unique(marker_data[marker_data$SYMBOL %in% i, "SYMBOL"])
+      cluster_markers <- unique(query_data[query_data$gene %in% i, "gene"])
       db_cell_markers <- unique(marker_data[marker_data$cluster == db_cell_type, "SYMBOL"])
 
       # Create a list of sets
@@ -54,8 +54,9 @@ Investigate_Marker_Based <- function(ann, query_cluster, db_cell_type = NULL, pl
       # Combine the two sets of data
       combined_data <- t(rbind(
          summary(factor(marker_data$cluster)),
-         summary(factor(marker_data[marker_data$official.gene.symbol %in% i, "cluster"], levels = levels(factor(marker_data$cluster))))
+         summary(factor(marker_data[marker_data$SYMBOL %in% i, "cluster"], levels = levels(factor(marker_data$cluster))))
       ))
+      combined_data[,1]=combined_data[,1]-combined_data[,2]
       # Convert to data frame
       plot_data <- data.frame(
          celltype = factor(rownames(combined_data)),

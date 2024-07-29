@@ -13,7 +13,7 @@
 #   Check Package:             'Cmd + Shift + E'
 #   Test Package:              'Cmd + Shift + T'
 
-MarkerRichness = function(ann, varfeat = NULL){
+Marker_Richness = function(ann, varfeat = NULL){
    if (is.null(varfeat)) {
       ann1=ann@ann1
       df = data.frame(ann1$query[,c("gene","cluster")])

@@ -136,8 +136,6 @@ Create_SAHA_object <- function(query, db,data_type,existing=NULL){
       print(paste("Loaded query dataset contains", length(colnames(temp_ann@query$AvgExp)),"unique clusters."))
    }
 
-
-   ####having trouble copying temp_ann@slot$df to existing@slot$df... could be "shallow copying", setClass messing with the existing one, some sort of overwriting, or something else.
    #the else could use an inherit that confirms that existing is a SAHA object....
    if (is.null(existing)) {
       ann=temp_ann

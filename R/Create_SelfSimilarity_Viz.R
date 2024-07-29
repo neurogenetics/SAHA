@@ -13,7 +13,7 @@
 #   Check Package:             'Cmd + Shift + E'
 #   Test Package:              'Cmd + Shift + T'
 
-Create_SelfSimilarity_Viz <- function(ann, slot) {
+Create_SelfSimilarity_Viz <- function(ann, slot,assay_db="RNA") {
    # Ensure data is numeric
    if(slot=="Markers"){
       df <- as.matrix(ann@ann1$Marker_selfsim_matrix)
@@ -40,14 +40,24 @@ Create_SelfSimilarity_Viz <- function(ann, slot) {
                     left_annotation = NULL,
                     cluster_rows = TRUE,
                     cluster_columns = TRUE)
-      ann@results$self_similarity = list(similiarity_heatmap = p1)
+      ann@results$self_similarity$similiarity_heatmap_markers = p1
       return(ann)
    }else if(slot == "AvgExp"){
       cor_mat=ann@ann1$AvgExp_selfsim_matrix
       cor_mat[is.na(cor_mat)]<-0
-      col <- colorRampPalette(c("blue", "white", "red"))(200)
-      p2 <- corrplot(cor_mat, method = "color", type = "upper", order = "hclust", tl.col = "black",col=col, tl.srt = 45)
-      ann@results$self_similarity = list(similiarity_heatmap = p2)
+      rownames(cor_mat) <- gsub(paste0("^",assay_db,"\\.g"), "", rownames(cor_mat))
+      colnames(cor_mat) <- gsub(paste0("^",assay_db,"\\.g"), "", colnames(cor_mat))
+      col <- colorRampPalette(c("white", "red"))(200)
+      # p2 <- corrplot(cor_mat, method = "color", type = "upper", order = "hclust", tl.col = "black",col=col, tl.srt = 45)
+      p2 <- Heatmap(cor_mat,
+                    name = "Self Similarity Matrix",  # Optional: Set a name for the heatmap
+                    col = col,  # Color palette
+                    cluster_rows = TRUE,  # Hierarchical clustering for rows
+                    cluster_columns = TRUE  # Hierarchical clustering for columns
+                    #show_colorbar = TRUE
+      )  # Display the colorbar
+
+      ann@results$self_similarity$similiarity_heatmap_avgexp = p2
       return(ann)
    }
 

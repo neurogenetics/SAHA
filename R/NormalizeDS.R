@@ -93,7 +93,7 @@ NormalizeDS <- function(ann,assay_db = "RNA",assay_query){
    merged.df <- merge(avgexp_db.df, avgexp_query.df, by = "Row", all.x = T, all.y = T)
 
    merged.df <- column_to_rownames(merged.df, var = "Row")
-   ann@results$marker_free=list(norm_merge=merged.df)
+   ann@results$marker_free$norm_merge=merged.df
    #this need to be made into a list
    return(ann)
 

@@ -120,6 +120,9 @@ Create_MarkerBased_Viz <- function (ann, meta, facet){
 
 
 
-   ann@results=list(marker_based=list(markers_barplot=p2, all=p1,sig=p3,best=p4))
+   ann@results$marker_based$markers_barplot=p2
+   ann@results$marker_based$dotplot_all=p1
+   ann@results$marker_based$dotplot_sig=p3
+   ann@results$marker_based$dotplot_best=p4
    return(ann)
 }

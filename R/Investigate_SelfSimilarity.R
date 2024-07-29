@@ -13,9 +13,9 @@
 #   Check Package:             'Cmd + Shift + E'
 #   Test Package:              'Cmd + Shift + T'
 
-Investigate_Self_Similarity <- function(df, cluster1, cluster2,shared_df=NULL) {
+Investigate_Self_Similarity <- function(ann, cluster1, cluster2,shared_df=NULL) {
    # Ensure data is numeric
-   df <- as.matrix(df)
+   df <- as.matrix(ann@ann1$Marker_selfsim_matrix)
    df[is.na(df)] <- 0
 
    # Extract rows for the specified clusters

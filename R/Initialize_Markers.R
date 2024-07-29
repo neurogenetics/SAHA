@@ -60,6 +60,7 @@ Initialize_Markers <- function(ann, p_thresh = 0.05, FC_thresh = 1.5, sens_thres
    }
    #overwrite ann
    ann@ann1$query=ann_subset
+   db_subset$cluster <- gsub("-", " ", db_subset$cluster)
    ann@ann1$db=db_subset
    return(ann)
 }
