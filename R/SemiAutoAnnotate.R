@@ -13,23 +13,35 @@
 #Rework so this is the quickstart option########
 #################################################
 
-SemiAutoAnnotate = function(ann,data_type=NULL){
+SemiAutoAnnotate = function(ann,data_type=NULL,refine=NULL){
    #prompt through each one
    if(is.null(data_type)){
       print("Thank you for choosing the semi-automated approach. If you wish to proceed please select which data_type to auto-annotate using: Markers, AvgExp, or Both")
    }else if(data_type=="Markers"){
 
-      temp=ann@results$marker_based$all
+      temp=ann@results$marker_based$dotplot_all
       hand_names=data.frame(unique(temp$data$cluster))
       colnames(hand_names)[1]="old_names"
       hand_names$new_names=""
-      for (i in hand_names$old_names) {
+      if (!is.null(refine)) {
+         todo <- hand_names %>%
+            filter(old_names %in% unique(refine$cluster[refine$consensus!="MATCH"]))
+         tokeep <-todo <- hand_names %>%
+            filter(old_names %in% unique(refine$cluster[refine$consensus=="MATCH"]))
+         tokeep$new_names=refine[refine$consensus=="MATCH","best_match"]
+      }else{todo=hand_names}
+      for (i in todo$old_names) {
          temp2=temp
          temp2$data=temp$data[temp$data$cluster==i,]
          print(temp2+theme(legend.position = "none"))
          x=readline(paste0("What would you like to name cluster ",i,": "))
          hand_names[hand_names$old_names==i,"new_names"]=x
       }
+      if(!is.null(refine)){
+         hand_names=rbind(todo,tokeep)
+         hand_names %>%
+            arrange(desc(old_names))
+      }else{hand_names=todo}
       return(hand_names)
 
 
@@ -40,7 +52,14 @@ SemiAutoAnnotate = function(ann,data_type=NULL){
       hand_names=data.frame(rownames(ann3))
       colnames(hand_names)[1]="old_names"
       hand_names$new_names=""
-      for (i in hand_names$old_names) {
+      if (!is.null(refine)) {
+         todo <- hand_names %>%
+            filter(old_names %in% unique(refine$cluster[refine$consensus!="MATCH"]))
+         tokeep <-todo <- hand_names %>%
+            filter(old_names %in% unique(refine$cluster[refine$consensus=="MATCH"]))
+         tokeep$new_names=refine[refine$consensus=="MATCH","best_match"]
+      }else{todo=hand_names}
+      for (i in todo$old_names) {
          temp = ann3[i,]
          mat <- data.matrix(temp)
          print(Heatmap(mat,
@@ -61,12 +80,17 @@ SemiAutoAnnotate = function(ann,data_type=NULL){
          x=readline(paste0("What would you like to name cluster ",i,": "))
          hand_names[hand_names$old_names==i,"new_names"]=x
       }
+      if(!is.null(refine)){
+         hand_names=rbind(todo,tokeep)
+         hand_names %>%
+            arrange(desc(old_names))
+      }else{hand_names=todo}
       return(hand_names)
 
 
 
    }else if(data_type=="Both"){
-      ann2=ann@results$marker_based$all
+      ann2=ann@results$marker_based$dotplot_all
       hand_names1=data.frame(unique(ann2$data$cluster))
       colnames(hand_names1)[1]="old_names"
       ann3=ann@results$marker_free$corr
@@ -77,7 +101,14 @@ SemiAutoAnnotate = function(ann,data_type=NULL){
       hand_names=merge(hand_names1,hand_names2)
       hand_names <- hand_names %>% arrange(desc(old_names))
       hand_names$new_names=""
-      for (i in hand_names$old_names[1:2]) {
+      if (!is.null(refine)) {
+         todo <- hand_names %>%
+            filter(old_names %in% unique(refine$cluster[refine$consensus!="MATCH"]))
+         tokeep <-todo <- hand_names %>%
+            filter(old_names %in% unique(refine$cluster[refine$consensus=="MATCH"]))
+         tokeep$new_names=refine[refine$consensus=="MATCH","best_match"]
+      }else{todo=hand_names}
+      for (i in todo$old_names) {
          temp2=ann2
          temp2$data=ann2$data[ann2$data$cluster==i,]
          p1=temp2+theme(legend.position = "none")
@@ -103,6 +134,11 @@ SemiAutoAnnotate = function(ann,data_type=NULL){
          x=readline(paste0("What would you like to name cluster ",i,": "))
          hand_names[hand_names$old_names==i,"new_names"]=x
       }
+      if(!is.null(refine)){
+         hand_names=rbind(todo,tokeep)
+         hand_names %>%
+            arrange(desc(old_names))
+      }else{hand_names=todo}
       return(hand_names)
 
    }
