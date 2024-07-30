@@ -35,7 +35,7 @@ SemiAutoAnnotate = function(ann,data_type=NULL,refine=NULL){
          temp2$data=temp$data[temp$data$cluster==i,]
          print(temp2+theme(legend.position = "none"))
          x=readline(paste0("What would you like to name cluster ",i,": "))
-         hand_names[hand_names$old_names==i,"new_names"]=x
+         todo[todo$old_names==i,"new_names"]=x
       }
       if(!is.null(refine)){
          hand_names=rbind(todo,tokeep)
@@ -78,7 +78,7 @@ SemiAutoAnnotate = function(ann,data_type=NULL,refine=NULL){
                        column_title_side = "bottom",
                        column_title_gp = gpar(fontface = "bold")))
          x=readline(paste0("What would you like to name cluster ",i,": "))
-         hand_names[hand_names$old_names==i,"new_names"]=x
+         todo[todo$old_names==i,"new_names"]=x
       }
       if(!is.null(refine)){
          hand_names=rbind(todo,tokeep)
@@ -132,7 +132,7 @@ SemiAutoAnnotate = function(ann,data_type=NULL,refine=NULL){
          p2_grob <- grid.grabExpr(draw(p2))
          print(ggarrange(p1,p2_grob,nrow = 2))
          x=readline(paste0("What would you like to name cluster ",i,": "))
-         hand_names[hand_names$old_names==i,"new_names"]=x
+         todo[todo$old_names==i,"new_names"]=x
       }
       if(!is.null(refine)){
          hand_names=rbind(todo,tokeep)
