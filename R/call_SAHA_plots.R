@@ -21,7 +21,7 @@ call_SAHA_plots <- function(ann, plot_type, data_type=NULL){
       }else if (ann@data_type == "AvgExp" & plot_type == "self-similarity"){
          ann@results$self_similarity$similiarity_heatmap_avgexp
       }else if (ann@data_type == "Markers" & plot_type == "Marker-based"){
-         ann@results$marker_based$all
+         ann@results$marker_based$dotplot_all
       }else if (ann@data_type == "Markers" & plot_type == "Marker-free"){
          ann@results$marker_free$heatmap
       }else { print("Multiple data types detected, please specify data_type you would like to visualize.")}
@@ -32,7 +32,7 @@ call_SAHA_plots <- function(ann, plot_type, data_type=NULL){
       }else if (data_type == "AvgExp" & plot_type == "self-similarity"){
          ann@results$self_similarity$similiarity_heatmap_avgexp
       }else if (data_type == "Markers" & plot_type == "Marker-based"){
-         ann@results$marker_based$all
+         ann@results$marker_based$dotplot_all
       }else if (data_type == "AvgExp" & plot_type == "Marker-free"){
          ann@results$marker_free$heatmap
       }
