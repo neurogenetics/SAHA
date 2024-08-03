@@ -67,7 +67,7 @@ Create_MarkerBased_Viz <- function (ann, meta, facet){
             strip.text = element_text(size = 8))
 
    if (facet == TRUE) {
-      p1 <- p1+facet_grid(~class, scales="free_x")
+      p1 <- p1+facet_grid(~class, scales="free_x", space = "free")
    }
 
    # Barplot showing total available markers and proportion covered
@@ -97,7 +97,7 @@ Create_MarkerBased_Viz <- function (ann, meta, facet){
             plot.title = element_text(size = 10),
             strip.text = element_text(size = 8))
    if (facet == TRUE) {
-      p3 <- p3+facet_grid(~class, scales="free_x")
+      p3 <- p3+facet_grid(~class, scales="free_x", space = "free")
    }
 
 
@@ -115,7 +115,7 @@ Create_MarkerBased_Viz <- function (ann, meta, facet){
             plot.title = element_text(size = 10),
             strip.text = element_text(size = 8))
    if (facet == TRUE) {
-      p4 <- p4+facet_grid(~class, scales="free_x")
+      p4 <- p4+facet_grid(~class, scales="free_x", space = "free")
    }
 
 
