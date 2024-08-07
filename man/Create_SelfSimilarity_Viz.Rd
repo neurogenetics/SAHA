@@ -4,7 +4,7 @@
 \usage{
 Create_SelfSimilarity_Viz(ann,
    slot,
-   assay_db="RNA)
+   assay_db="RNA")
 }
 \description{
 Create heatmaps for similarity between all clusters of the query and store them in ann@results. When slot = "Markers" is sepecified the heatmap will represent the overlapping number of markers plotted on a log scale. When slot = "AvgExp" is specified the heatmap will plot the R^2 between given clusters based on all genes in ann@db$AvgExp.

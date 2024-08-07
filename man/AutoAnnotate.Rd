@@ -6,7 +6,7 @@ AutoAnnotate(ann,
              data_type = NULL)
 }
 \description{
-AutoAnnotate requires a SAHA object (ann) and data_type as inputs to function. This tool is used to view cluster identification quickly to aid in annotation. 
+AutoAnnotate requires a SAHA object (ann) and data_type as inputs to function. This tool is used to view cluster identification quickly to aid in annotation.
 The user is required to pick a datatype of markers, average experssion or both.
 If the user chooses "Markers":
 The annotation will first find the most significant annotation within each cluster and assign all of these into a new dataframe. The output dataframe's structure is: Cluster number, best cell type annotation, proportion, and sinificance.
@@ -18,7 +18,7 @@ To further refine best matches, use SemiAutoAnnotation() (check the description)
 }
 \arguments{
 \item{ann}{Required argument that takes a SAHA object generated from Run_Marker_Based().}
-\item{datatype}{Required argument that specifies which type of data the user is querying. The three available options are 'Markers' ,'AvgExp', and 'Both.' 
+\item{datatype}{Required argument that specifies which type of data the user is querying. The three available options are 'Markers' ,'AvgExp', and 'Both.'
 }
 \examples{
 auto=AutoAnnotate(ann,data_type = "Markers")
