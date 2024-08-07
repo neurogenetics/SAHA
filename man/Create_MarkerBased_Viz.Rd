@@ -17,7 +17,7 @@ This function is intended to write directly into a SAHA object (see usage below)
 }
 \arguments{
 \item{ann}{Required argument that takes a SAHA object generated from Run_Marker_Based().}
-\item{meta}{Optional arguemnt to load in dataframe providing additional information about the cell types. This metadata is used to initiate the main data frame (master_df) with class, class color, neurotransmitter, and neurotransmitter color information for each cell type.}
+\item{meta}{Optional argument to load in dataframe providing additional information about the cell types. This metadata is used to initiate the main data frame (master_df) with class, class color, neurotransmitter, and neurotransmitter color information for each cell type.}
 \item{facet}{Optional argument that can specify to turn on or off the faceting feature when creating the visualiations.}
 }
 \examples{
