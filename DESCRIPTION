@@ -1,0 +1,25 @@
+Package: SAHA
+Type: Package
+Title: Semi-Automated Hand Annotation for Single Cell and Spatial Datasets
+Version: 0.1.0
+Authors@R: c(person("Dominic", "Acri", email = "dominic.acri@nih.gov", role = c("aut","cre"),comment = c(ORCID=0000-0003-1942-0892)),person("Richard", "Mustaklem", email = "rmustak@iu.edu", role = c("aut")),person("Liam", "Horan-Portelance", email = "liam.horan-portelance@nih.gov", role = c("aut")))
+Maintainer: Dominic Acri <dominic.acri@gmail.com>
+Description: The SAHA (Semi-Automated Hand Annotation) package serves to assist in hand annotating cell types in Single Cell and Spatial Datasets.
+License: MIT
+Encoding: UTF-8
+LazyData: true
+Depends:
+   R (>= 4.3)
+Imports:
+   tidyverse,
+   ComplexHeatmap,
+   circilize,
+   methods,
+   ggrepel,
+   eulerr,
+   reshape2,
+   corrplot,
+   ggpubr,
+   ape,
+   dendextend
+   
