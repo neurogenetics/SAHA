@@ -1,27 +1,14 @@
----
-output: github_document
----
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "25%"
-)
-```
 
 # SAHA
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
-[S]{.underline}emi-[a]{.underline}utomated [H]{.underline}and [A]{.underline}nnotation for Single Cell and Spatial Datasets
+<u>S</u>emi-<u>a</u>utomated <u>H</u>and <u>A</u>nnotation for Single
+Cell and Spatial Datasets
 
-![](files/SAHA_logo_wbg.png){width="188"}
+<img src="files/SAHA_logo_wbg.png" width="188" />
 
 ## Installation
 
@@ -36,16 +23,16 @@ devtools::install_github("neurogenetics/SAHA")
 
 This is a basic example which shows you how to solve a common problem:
 
-```{r example}
+``` r
 library(SAHA)
+#> Thank you for using SAHA. If you enjoy this package, please consider citing Acri et al., (XXXX) bioRxiv.
 data("ABC_meta")
 data("CB_Markers")#Allen Brain Atlas Markers from Cerebellum
 data("CB_AvgExp")#Allen Brain Atlas AvgExp from Cerebellum
-My_Markers #your marker data
-My_AvgExp #your avgexp data
+#My_Markers #your marker data
+#My_AvgExp #your avgexp data
 ## Quickstart to Marker-based dotplot
-SAHA(query = My_markers, db = CB_Markers,meta = meta, data_type = "Markers")
+#SAHA(query = My_markers, db = CB_Markers,meta = meta, data_type = "Markers")
 #Quickstart to Marker-free heatmap
-SAHA(query = My_AvgExp, db = CB_AvgExp,meta = meta, data_type = "AvgExp")
-
+#SAHA(query = My_AvgExp, db = CB_AvgExp,meta = meta, data_type = "AvgExp")
 ```
