@@ -1,17 +1,14 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
+#' Downsamples query and database to shared genes
+#'
+#' This function reduces the size of the query and database components within an `ann` object
+#' by retaining only genes expressed in both datasets.
+#'
+#' @param ann An object containing `query$AvgExp` and `db$AvgExp` data frames.
+#'
+#' @return The input `ann` object with an added `ann3` component containing downsampled
+#'   data frames for query and database.
+#'
+#' @export
 Downsample <- function(ann){
    #3. Downsample database and query to mutually expressed genes
    query_genes=rownames(ann@query$AvgExp)

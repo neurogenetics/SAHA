@@ -1,17 +1,14 @@
-# SAHA
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
-#################################################
-#Rework so this is the quickstart option########
-#################################################
+#' Retrieves plot data from a SAHA analysis object
+#'
+#' This function returns plot data based on the specified plot type and data type.
+#' If `data_type` is not provided, it attempts to determine the data type from the `ann` object.
+#'
+#' @param ann A SAHA analysis object containing results.
+#' @param plot_type A character string specifying the desired plot type (e.g., "self-similarity", "Marker-based").
+#' @param data_type An optional character string specifying the data type to visualize (e.g., "Markers", "AvgExp").
+#' @return A data frame or matrix containing the plot data.
+#' @export
+
 
 call_SAHA_plots <- function(ann, plot_type, data_type=NULL){
    if (is.null(data_type)) {

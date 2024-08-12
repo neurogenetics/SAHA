@@ -1,17 +1,18 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
+#' Analyzes self-similarity between clusters in marker space
+#'
+#' Compares marker overlap between two specified clusters in the marker similarity matrix.
+#' Offers the option to return a data frame of shared features (optional).
+#'
+#' @param ann An object containing the `ann1$Marker_selfsim_matrix` data frame.
+#' @param cluster1 The name of the first cluster to compare.
+#' @param cluster2 The name of the second cluster to compare.
+#' @param shared_df Logical indicating whether to return a data frame of shared features (TRUE).
+#'   If FALSE (default), the function generates a Venn diagram.
+#'
+#' @return A Venn diagram or a data frame of shared features between clusters
+#'   (depending on the `shared_df` argument).
+#'
+#' @export
 
 Investigate_Self_Similarity <- function(ann, cluster1, cluster2,shared_df=NULL) {
    # Ensure data is numeric

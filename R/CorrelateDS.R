@@ -1,17 +1,17 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
+#' Computes Pearson correlations between query and database expression profiles
+#'
+#' This function calculates Pearson correlation coefficients between all query and
+#' database cell type expression profiles stored in the `ann@results$marker_free$norm_merge` data
+#' frame within the `ann` object. The results are stored in a data frame named
+#' `correlation.df` within `ann@results$marker_free`.
+#'
+#' @param ann An object containing normalized gene expression data (`ann@results$marker_free$norm_merge`).
+#'
+#' @return The modified `ann` object with the `correlation.df` stored within `ann@results$marker_free`.
+#'
+#' @importFrom stats cor.test
+#'
+#' @export
 CorrelateDS <- function(ann){
    # compute Pearson coefficients b/w query and ABC celltype expression profiles
    db_columns <- colnames(ann@results$marker_free$norm_merge)[grepl("db", colnames(ann@results$marker_free$norm_merge))]

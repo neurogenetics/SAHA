@@ -1,17 +1,21 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
+#' Creates a heatmap visualizing gene expression correlations
+#'
+#' Generates a heatmap representing Pearson correlation coefficients between
+#' query and database expression profiles. Includes optional faceting and annotation.
+#'
+#' @param ann An object containing correlation data (`ann@results$marker_free$corr`).
+#' @param facet Logical indicating whether to facet the heatmap by cell type class.
+#' @param meta A data frame containing cell type metadata (required for faceting).
+#' @param ABC Logical indicating whether to filter data based on ABC library method.
+#' @param chemistry The chemistry type to filter by (required if ABC is TRUE).
+#'
+#' @return The `ann` object with the heatmap stored in `ann@results$marker_free$heatmap`.
+#'
+#' @importFrom ComplexHeatmap Heatmap, HeatmapAnnotation, ht_opt, colorRamp2
+#' @importFrom circlize colorRamp2
+#' @importFrom dplyr %>% distinct, na.omit
+#'
+#' @export
 
 Create_MarkerFree_Viz <- function(ann, facet, meta,ABC,chemistry){
 

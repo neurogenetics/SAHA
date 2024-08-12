@@ -1,17 +1,21 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
+#' Normalizes and merges downsampled query and database expression data
+#'
+#' This function performs normalization and merging on the downsampled query and database
+#' expression data stored within an `ann` object. It assumes the data is gene expression
+#' for RNA-seq (assay_db = "RNA").
+#'
+#' @param ann An object containing downsampled expression data in `ann3$query` and `ann3$db`.
+#' @param assay_db Character string specifying the assay type for the database data (defaults to "RNA").
+#' @param assay_query Character string specifying the assay type for the query data (defaults to the value of `assay_db`).
+#'
+#' @return The input `ann` object with a new component `results$marker_free$norm_merge`
+#'   containing the normalized and merged expression data frame.
+#'
+#' @importFrom dplyr %>% pivot_longer, pivot_wider, rownames_to_column, split, lapply, mutate,
+#                   unite, column_to_rownames, merge
+#' @importFrom stats scale, pnorm
+#'
+#' @export
 NormalizeDS <- function(ann,assay_db = "RNA",assay_query){
    #1. Pivot to a new table - query
    piv_query <- ann@ann3$query %>%

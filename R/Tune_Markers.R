@@ -1,17 +1,19 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
+#' Tunes marker set based on specified criteria
+#'
+#' This function filters markers within a specified set (query or database) based on
+#' absolute or relative thresholding of a given variable.
+#'
+#' @param ann An object containing marker data in `ann1$query` or `ann1$db`.
+#' @param method The tuning method ("absolute" or "relative").
+#' @param method_value The threshold value for the tuning method.
+#' @param method_var The variable to apply the threshold to.
+#' @param set The set to tune ("query" or "db").
+#'
+#' @return The input `ann` object with the tuned marker set in `ann1[[set]]`.
+#'
+#' @importFrom dplyr %>% group_by, top_n, filter, ungroup, sym
+#'
+#' @export
 
 Tune_Markers = function(ann, method, method_value, method_var,set){
    if (is.null(ann@ann1[[set]])) {
@@ -32,14 +34,14 @@ Tune_Markers = function(ann, method, method_value, method_var,set){
          print("Method not supported. Please check documentation ?Tune_Markers().")
       }
    }
-   input_summary <- ann@ann1[[set]]%>%
-      group_by(cluster) %>%
-      summarise(n_markers =n())
+ #  input_summary <- ann@ann1[[set]]%>%
+ #     group_by(cluster) %>%
+ #     summarise(n_markers =n())
 
-   output_summary <- data.frame(tune_subset)%>%
-      group_by(cluster) %>%
-      summarise(n_markers =n())
-   print(paste0("By running Tune_Markers() you have lowered the median markers per cluster from ", summary(input_summary$n_markers)[3], " to ",summary(output_summary$n_markers)[3],"."))
+#   output_summary <- data.frame(tune_subset)%>%
+#      group_by(cluster) %>%
+#      summarise(n_markers =n())
+#   print(paste0("By running Tune_Markers() you have lowered the median markers per cluster from ", summary(input_summary$n_markers)[3], " to ",summary(output_summary$n_markers)[3],"."))
    ann@ann1[[set]]=data.frame(tune_subset)
    return(ann)
 

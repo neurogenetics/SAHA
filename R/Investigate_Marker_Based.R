@@ -1,17 +1,19 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
+#' Investigates marker overlap between query cluster and database cell types
+#'
+#' Generates visualizations or summaries to explore marker overlap between a specified
+#' cluster in the query data and cell types within the database.
+#'
+#' @param ann An object containing `ann1$query` and `ann1$db` data frames.
+#' @param query_cluster The cluster of interest in the query data.
+#' @param db_cell_type A specific cell type within the database (optional).
+#'   Set to "all" for a summary of cell types within the query cluster.
+#' @param plot The type of visualization to generate (optional):
+#'   - "venn": Creates a Venn diagram showing marker overlap.
+#'   - "stacked": Creates a stacked bar chart of marker distribution.
+#'
+#' @return No return value (prints informative messages and plots).
+#'
+#' @export
 
 Investigate_Marker_Based <- function(ann, query_cluster, db_cell_type = NULL, plot = NULL) {
 

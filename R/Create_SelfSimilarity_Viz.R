@@ -1,18 +1,20 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
-
+#' Create Self-Similarity Visualization
+#'
+#' This function creates a self-similarity visualization based on the provided
+#' annotation object. It generates heatmaps for marker self-similarity or average
+#' expression self-similarity, depending on the specified slot
+#'
+#' @param ann An object containing annotation data. It should have the required
+#'             matrices (`Marker_selfsim_matrix` or `AvgExp_selfsim_matrix`) and
+#'             result storage.
+#' @param slot A character string indicating which slot to use. Should be either
+#'             "Markers" or "AvgExp".
+#' @param assay_db A character string specifying the assay database prefix. Default is "RNA".
+#' @return The updated annotation object with self-similarity heatmaps stored in `ann@results$self_similarity`.
+#' @importFrom ComplexHeatmap Heatmap rowAnnotation columnAnnotation
+#' @importFrom stats cor
+#' @importFrom grDevices colorRampPalette
+#' @export
 Create_SelfSimilarity_Viz <- function(ann, slot,assay_db="RNA") {
    # Ensure data is numeric
    if(slot=="Markers"){

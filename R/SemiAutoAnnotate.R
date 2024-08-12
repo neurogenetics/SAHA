@@ -1,17 +1,21 @@
-# SAHA
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
-#################################################
-#Rework so this is the quickstart option########
-#################################################
+#' Semi-automated annotation of query clusters
+#'
+#' This function provides a semi-automated approach for annotating query clusters.
+#' Users are prompted to manually assign names to clusters based on visualizations
+#' of marker-based or marker-free data.
+#'
+#' @param ann An object containing SAHA analysis results.
+#' @param data_type The type of data to use for annotation ("Markers", "AvgExp", or "Both").
+#' @param refine A data frame containing previously refined annotations (optional).
+#'
+#' @return A data frame containing the original and new cluster names.
+#'
+#' @importFrom dplyr filter, arrange
+#' @importFrom ggplot2 ggarrange
+#' @importFrom ComplexHeatmap Heatmap
+#' @importFrom grid grid.grabExpr
+#'
+#' @export
 
 SemiAutoAnnotate = function(ann,data_type=NULL,refine=NULL){
    #prompt through each one

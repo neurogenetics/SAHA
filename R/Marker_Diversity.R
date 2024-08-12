@@ -1,17 +1,17 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
+#' Marker Diversity Function
+#'
+#' This function calculates the Shannon diversity index for markers within clusters
+#' and categorizes the diversity into "High", "Within 95% CI", and "Low" categories.
+#'
+#' @param ann An object containing annotation data.
+#' @return A ggplot object showing the Shannon diversity by cluster.
+#' @importFrom dplyr case_when
+#' @importFrom tidyr spread
+#' @importFrom vegan diversity
+#' @importFrom ggplot2 ggplot aes geom_point scale_color_manual geom_hline theme_bw labs
+#' @importFrom tibble column_to_rownames
+#' @importFrom stats lm confint
+#' @export
 
 Marker_Diversity = function(ann){
    ann1=ann@ann1

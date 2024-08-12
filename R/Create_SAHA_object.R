@@ -1,17 +1,20 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
+
+#' Creation of SAHA object for analysis
+#'
+#' The `SAHA` class is used to store and manage data throughout the SAHA analysis workflow.
+#' It holds information about query and database data, matched markers for different analyses,
+#' and final analysis results.
+#'
+#' @slot query A list containing data frames for both marker (Markers) and average expression (AvgExp) data of the query.
+#' @slot db A list containing data frames for both marker (Markers) and average expression (AvgExp) data of the database.
+#' @slot ann1 A list to store data frames containing matched query and database markers for self-similarity analyses (populated later).
+#' @slot ann2 A list to store data frames containing matched query and database markers for marker-based analyses (populated later).
+#' @slot ann3 A list to store data frames containing matched query and database markers for marker-free analyses (populated later).
+#' @slot results A list to store objects containing final analysis results required for visualizations (populated later).
+#' @slot data_type A character string indicating the currently loaded data type ("Markers", "AvgExp", or "Markers & AvgExp").
+#'
+#'
+#' @export
 
 Create_SAHA_object <- function(query, db,data_type,existing=NULL){
    #SAHA Object will be a class made up of 6 components
@@ -21,28 +24,6 @@ Create_SAHA_object <- function(query, db,data_type,existing=NULL){
    # 4. ann2 = a list of df's containing matched query and db markers for marker-based analyses
    # 5. ann3 = a list of df's containing matched query and db markers for marker-free analyses
    # 6. results = a list of objects containing final analyses  required to make plots
-   if (is.null(existing)){
-      setClass("SAHA",
-               slots = c(
-                  data_type = "character",
-                  query = "list",
-                  db = "list",
-                  ann1 = "list",
-                  ann2 = "list",
-                  ann3 = "list",
-                  results = "list"
-               )
-      )
-      setMethod("show", "SAHA", function(object) {
-         cat(is(object)[[1]], "\n",
-             "  data_type: ", object@data_type, "\n",
-             "  Your query contains:  ", length(unique(object@query$Markers$cluster))," clusters.", "\n",
-             "  Your database contains:  ", length(unique(object@db$Markers$cluster))," possible annotations.", "\n",
-             sep = ""
-         )
-      })
-   }else{print("Merging new markers into existing SAHA object.")}
-
 
    #################
    # Code written in Gemini for printing different slot types w/ lapply. I feel okay about it so work with it to adapt to printign diferent slot types.....

@@ -1,17 +1,17 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
+#' Looks up marker overlap between query cluster and database cell types
+#'
+#' This function calculates the number of markers from a specified query cluster
+#' that overlap with each cell type in the database.
+#'
+#' @param cluster The name of the query cluster.
+#' @param ann An object containing marker data in `ann1$query` and `ann1$db`.
+#'
+#' @return A numeric vector representing the number of markers from the query cluster
+#'   that overlap with each database cell type.
+#'
+#' @importFrom dplyr filter
+#'
+#' @export
 SAHA_lookup_cluster <- function(cluster,ann) {
    k=ann@ann1$query[ann@ann1$query$cluster==cluster,"gene"]
    return(summary(factor(ann@ann1$db[ann@ann1$db$SYMBOL %in% k, "cluster"], levels(factor(ann@ann1$db$cluster)))))

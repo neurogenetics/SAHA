@@ -1,15 +1,19 @@
-# SAHA
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
-#################################################
+#' Creates a dendrogram for self-similarity analysis
+#'
+#' This function generates a dendrogram based on the self-similarity matrix for either
+#' marker-based or average expression data. It also attempts to rename the dendrogram
+#' labels based on a provided annotation data frame.
+#'
+#' @param ann An object containing SAHA analysis results.
+#' @param sim_type The type of similarity matrix to use ("Markers" or "AvgExp").
+#' @param annotation A data frame containing cluster annotations (optional).
+#'
+#' @return A plot of the self-similarity dendrogram.
+#'
+#' @importFrom graphics plot, par, labels
+#' @importFrom stats hclust
+#'
+#' @export
 
 SimilarityDend <- function(ann,sim_type,annotation){
    if (sim_type == "Markers") {

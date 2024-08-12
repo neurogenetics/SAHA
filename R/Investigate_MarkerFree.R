@@ -1,17 +1,15 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
+#' Compares gene expression between query cluster and database cell type
+#'
+#' Generates a scatter plot comparing gene expression levels between a specified query cluster
+#' and a database cell type. Highlights top expressed genes and outliers.
+#'
+#' @param ann An object containing normalized gene expression data in `ann@results$marker_free$norm_merge`.
+#' @param query_cluster The cluster of interest in the query data.
+#' @param db_cell_type The cell type of interest in the database.
+#'
+#' @return A scatter plot visualizing the gene expression comparison.
+#'
+#' @export
 
 Investigate_MarkerFree = function(ann,query_cluster, db_cell_type){
    # Extract gene expression data for the cluster of interest

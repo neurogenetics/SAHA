@@ -19,7 +19,7 @@ To further refine best matches, use SemiAutoAnnotation() (check the description)
 \arguments{
 \item{ann}{Required argument that takes a SAHA object generated from Run_Marker_Based().}
 \item{datatype}{Required argument that specifies which type of data the user is querying. The three available options are 'Markers' ,'AvgExp', and 'Both.'
-}
+}}
 \examples{
 auto=AutoAnnotate(ann,data_type = "Markers")
 auto=AutoAnnotate(ann,data_type = "AvgExp")

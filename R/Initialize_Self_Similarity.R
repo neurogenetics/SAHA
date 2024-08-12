@@ -1,18 +1,14 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
-
+#' Initialize Self-Similarity Matrices
+#'
+#' This function initializes self-similarity matrices based on the specified slot.
+#'
+#' @param ann An object containing annotation data.
+#' @param slot A character string specifying the slot. It can be "AvgExp" or "Markers".
+#' @return An updated object with the self-similarity matrix stored in the appropriate slot.
+#' @importFrom dplyr %>%
+#' @importFrom tidyr spread
+#' @importFrom tibble column_to_rownames
+#' @export
 
 Initialize_Self_Similiarity <- function(ann,slot){
    if (slot=="AvgExp") {

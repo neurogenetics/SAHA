@@ -1,17 +1,21 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
+#' Analyzes marker-based enrichment for each query cluster
+#'
+#' This function analyzes marker enrichment for each cluster identified in the query data
+#' against the database clusters. It calculates the total number of markers per cluster,
+#' proportion of markers shared with each database cell type, and hypergeometric test
+#' p-values for enrichment significance.
+#'
+#' @param ann An object containing marker data in `ann1$query` and `ann1$db`.
+#'
+#' @return The input `ann` object with a new component `ann2` containing a data frame
+#'   summarizing marker enrichment analysis results. The function also returns a named list
+#'   containing the enrichment results (`master_df`), query marker data (`query_data`),
+#'   and database marker data (`marker_data`).
+#'
+#' @importFrom dplyr %>% group_by, mutate, ungroup, data.frame
+#' @importFrom stats dhyper, factor
+#'
+#' @export
 Run_Marker_Based <- function(ann){
    #5. Making our Master Data Frame
    master_df <- data.frame(summary(factor(ann@ann1$db$cluster)))

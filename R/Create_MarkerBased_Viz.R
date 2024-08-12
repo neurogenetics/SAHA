@@ -1,17 +1,26 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
+#' Creates marker-based visualizations for cell type annotation
+#'
+#' Generates various visualizations based on marker-based cell type annotation results
+#' stored in the `ann` object. Requires additional cell type metadata from the `meta`
+#' data frame. Creates dot plots, bar plots, and facilitates faceting by cell type class.
+#'
+#' @param ann An SAHA analysis object containing annotation results.
+#' @param meta A data frame or path to a CSV file containing cell type metadata.
+#' @param facet Logical indicating whether to facet plots by cell type class.
+#'
+#' @return The `ann` object with additional elements in the `results$marker_based` slot:
+#'   - `markers_barplot`: A bar plot showing the total number of markers per cell type.
+#'   - `dotplot_all`: A dot plot showing all markers for each cell type and cluster.
+#'   - `dotplot_sig`: A dot plot showing only significant markers for each cell type and cluster.
+#'   - `dotplot_best`: A dot plot showing the most significant marker for each cell type and cluster.
+#'
+#' @importFrom utils read.csv
+#' @importFrom dplyr %>% group_by, filter, slice_min, ungroup, mutate, select, as.data.frame
+#' @importFrom stringr str_remove_all, str_replace, str_replace_all, if_else
+#' @importFrom data.table full_join
+#' @importFrom ggplot2 ggplot, geom_point, scale_size_continuous, labs, scale_color_manual, theme_bw, theme, element_text, facet_grid, geom_bar, geom_text, coord_cartesian
+#'
+#' @export
 
 Create_MarkerBased_Viz <- function (ann, meta, facet){
    if (inherits(meta, "data.frame")) {

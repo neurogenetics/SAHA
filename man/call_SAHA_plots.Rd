@@ -19,7 +19,7 @@ The static outputs of SAHA (Self-Similarity, Marker-Based, and Marker-Free) are 
 \item{data_type}{Optional argument that if left NULL will plot whatever analysis has been run. If more than one flavor of SAHA is loaded into the object, the user will need to specific which data_type the plot will be based on:
    * "Markers": Marker dataframe formated as the default output of Seurat::FindAllMarkers()
    * "AvgExp": AvgExp dataframe containing the average expression of each gene (rows) per cluster (column).
-}
+}}
 \examples{
 #Call self-similarity heatmap based on markers
 call_SAHA_plots(ann, plot_type = "self-similarity",data_type = "Markers")

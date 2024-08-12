@@ -1,18 +1,27 @@
-# SAHA
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
-#################################################
-#Rework so this is the quickstart option########
-#################################################
-
+#' Auto-annotates query clusters with best matching database cell types
+#'
+#' This function offers three auto-annotation options based on the `data_type` argument:
+#'   - "Markers": Uses the minimum p-value from the annotation data (`ann@ann2`)
+#'     to identify the best matching cell type for each query cluster.
+#'   - "AvgExp": Uses the maximum correlation coefficient from the average expression
+#'     correlation matrix (`ann@results$marker_free$corr`) for auto-annotation.
+#'   - "Both": Combines both marker-based and average expression approaches,
+#'     providing marker-based and marker-free best matches and a consensus annotation.
+#'
+#' @param ann An object containing marker data (`ann@ann2`) and expression data (`ann@results$marker_free$corr`).
+#' @param data_type The type of data to use for auto-annotation (optional):
+#'   - "Markers" (default): Uses marker-based p-values.
+#'   - "AvgExp": Uses average expression correlation.
+#'   - "Both": Combines both marker and expression data.
+#'
+#' @return A data frame containing information about the auto-annotated cell types.
+#'   The specific columns depend on the `data_type` argument.
+#'
+#' @importFrom dplyr %>% group_by, filter, slice_min, ungroup, mutate, select, as.data.frame
+#' @importFrom stringr str_remove_all, str_replace, str_replace_all, if_else
+#' @importFrom data.table full_join
+#'
+#' @export
 
 AutoAnnotate = function(ann, data_type=NULL){
    if(is.null(data_type)){

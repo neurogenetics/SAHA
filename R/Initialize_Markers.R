@@ -1,17 +1,19 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
+#' Initializes marker sets for SAHA analysis
+#'
+#' Filters markers from query and database datasets based on specified thresholds.
+#'
+#' @param ann An object containing `query$Markers` and `db$Markers` data frames.
+#' @param p_thresh Adjusted p-value threshold for marker selection.
+#' @param FC_thresh Fold change threshold for marker selection.
+#' @param sens_thresh Sensitivity threshold for marker selection.
+#' @param spec_thresh Specificity threshold for marker selection.
+#'
+#' @return The input `ann` object with updated `ann1$query` and `ann1$db` components
+#'   containing filtered marker sets.
+#'
+#' @importFrom dplyr subset
+#'
+#' @export
 
 Initialize_Markers <- function(ann, p_thresh = 0.05, FC_thresh = 1.5, sens_thresh = 0.25, spec_thresh = 0.75){
    # Assuming your dataframe is named 'df' and has columns 'cluster' and 'log2FC'
@@ -30,11 +32,11 @@ Initialize_Markers <- function(ann, p_thresh = 0.05, FC_thresh = 1.5, sens_thres
                                               pct.2 < spec_thresh))
    }
 
-   marker_summary <- ann_subset%>%
-      group_by(cluster) %>%
-      summarise(n_markers =n())
+#   marker_summary <- ann_subset%>%
+#      group_by(cluster) %>%
+#      summarise(n_markers =n())
 
-   print(paste("Loaded query dataset contains", length(unique(ann_subset$cluster)),"unique clusters with a median of", summary(marker_summary$n_markers)[3], "markers per cluster and a range from",summary(marker_summary$n_markers)[1],"to",summary(marker_summary$n_markers)[6],"markers per cluster."))
+#   print(paste("Loaded query dataset contains", length(unique(ann_subset$cluster)),"unique clusters with a median of", summary(marker_summary$n_markers)[3], "markers per cluster and a range from",summary(marker_summary$n_markers)[1],"to",summary(marker_summary$n_markers)[6],"markers per cluster."))
 
 
    #ann1$db #need to filter these!!!!!!!!!!!!!!!
@@ -45,14 +47,14 @@ Initialize_Markers <- function(ann, p_thresh = 0.05, FC_thresh = 1.5, sens_thres
                                          pct.2 < spec_thresh))
 
 
-   db_marker_summary <- db_subset%>%
-      group_by(cluster) %>%
-      summarise(n_markers =n())
+#   db_marker_summary <- db_subset%>%
+#      group_by(cluster) %>%
+#      summarise(n_markers =n())
 
-   print(paste("Loaded db dataset contains", length(unique(db_subset$cluster)),"unique clusters with a median of", summary(db_marker_summary$n_markers)[3], "markers per cluster and a range from",summary(db_marker_summary$n_markers)[1],"to",summary(db_marker_summary$n_markers)[6],"markers per cluster."))
-   print("If these summaries match your expetaction for running the SAHA pipeline, no further action is needed. If you would like to re-define markers based on unique p_value or log2FC cutoffs, please re-run Initialize_SAHA() with arguments for thresholds. Otherwise, db markers can be specified using Tune_Markers()")
-   print(marker_summary)
-   print(db_marker_summary)
+#   print(paste("Loaded db dataset contains", length(unique(db_subset$cluster)),"unique clusters with a median of", summary(db_marker_summary$n_markers)[3], "markers per cluster and a range from",summary(db_marker_summary$n_markers)[1],"to",summary(db_marker_summary$n_markers)[6],"markers per cluster."))
+#   print("If these summaries match your expetaction for running the SAHA pipeline, no further action is needed. If you would like to re-define markers based on unique p_value or log2FC cutoffs, please re-run Initialize_SAHA() with arguments for thresholds. Otherwise, db markers can be specified using Tune_Markers()")
+ #  print(marker_summary)
+ #  print(db_marker_summary)
 
    ##check how
    if (length(unique(ann@query$Markers$cluster))!=length(unique(ann_subset$cluster))) {

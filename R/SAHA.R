@@ -1,17 +1,19 @@
-# SAHA
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
-#################################################
-#Rework so this is the quickstart option########
-#################################################
+#' Conducts SAHA analysis on query and database data
+#'
+#' This function orchestrates the SAHA analysis pipeline based on the specified `data_type`.
+#' It includes steps for marker-based or marker-free analysis, depending on the input data.
+#'
+#' @param query A data frame or path to a CSV file containing query data (markers or average expression).
+#' @param db A data frame or path to a CSV file containing database data (markers or average expression).
+#' @param meta A data frame containing cell type metadata (required for marker-based analysis).
+#' @param data_type The type of data being analyzed ("Markers" or "AvgExp").
+#'
+#' @return The function calls appropriate plotting functions based on the analysis type
+#'   and returns the corresponding plots.
+#'
+#' @importFrom utils read.csv
+#'
+#' @export
 
 SAHA <- function(query,db,meta,data_type){
    ann=Create_SAHA_object(query = query,db = db,data_type = data_type)

@@ -1,17 +1,12 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
+#' Marker Richness Function
+#'
+#' This function calculates the richness of markers within clusters, either using all genes or a specified set of variable features.
+#'
+#' @param ann An object containing annotation data.
+#' @param varfeat A vector of variable features (genes) to consider. If NULL, all genes are used.
+#' @return A data frame with gene counts by cluster.
+#' @importFrom dplyr group_by count mutate summarize
+#' @export
 
 Marker_Richness = function(ann, varfeat = NULL){
    if (is.null(varfeat)) {
