@@ -34,16 +34,10 @@ Tune_Markers = function(ann, method, method_value, method_var,set){
          print("Method not supported. Please check documentation ?Tune_Markers().")
       }
    }
- #  input_summary <- ann@ann1[[set]]%>%
- #     group_by(cluster) %>%
- #     summarise(n_markers =n())
-
-#   output_summary <- data.frame(tune_subset)%>%
-#      group_by(cluster) %>%
-#      summarise(n_markers =n())
-#   print(paste0("By running Tune_Markers() you have lowered the median markers per cluster from ", summary(input_summary$n_markers)[3], " to ",summary(output_summary$n_markers)[3],"."))
+   input_summary <- aggregate(gene~cluster, ann@ann1[[set]], length)
+   output_summary <- aggregate(gene~cluster, tune_subset, length)
+  cat(paste0("By running Tune_Markers() you have lowered the median markers per cluster from ", summary(input_summary$gene)[3], " to ",summary(output_summary$gene)[3],"."))
    ann@ann1[[set]]=data.frame(tune_subset)
    return(ann)
-
 
 }

@@ -11,7 +11,7 @@
 #' @return A data frame containing the original and new cluster names.
 #'
 #' @importFrom dplyr filter, arrange
-#' @importFrom ggplot2 ggarrange
+#' @importFrom ggpubr ggarrange
 #' @importFrom ComplexHeatmap Heatmap
 #' @importFrom grid grid.grabExpr
 #'
@@ -29,10 +29,10 @@ SemiAutoAnnotate = function(ann,data_type=NULL,refine=NULL){
       hand_names$new_names=""
       if (!is.null(refine)) {
          todo <- hand_names %>%
-            filter(old_names %in% unique(refine$cluster[refine$consensus!="MATCH"]))
-         tokeep <-todo <- hand_names %>%
-            filter(old_names %in% unique(refine$cluster[refine$consensus=="MATCH"]))
-         tokeep$new_names=refine[refine$consensus=="MATCH","best_match"]
+            filter(old_names %in% unique(refine$cluster[refine$best_match=="INCONCLUSIVE"]))
+         tokeep <- hand_names %>%
+            filter(old_names %in% unique(refine$cluster[refine$best_match!="INCONCLUSIVE"]))
+         tokeep$new_names=refine[refine$best_match!="INCONCLUSIVE","best_match"]
       }else{todo=hand_names}
       for (i in todo$old_names) {
          temp2=temp
@@ -58,10 +58,10 @@ SemiAutoAnnotate = function(ann,data_type=NULL,refine=NULL){
       hand_names$new_names=""
       if (!is.null(refine)) {
          todo <- hand_names %>%
-            filter(old_names %in% unique(refine$cluster[refine$consensus!="MATCH"]))
-         tokeep <-todo <- hand_names %>%
-            filter(old_names %in% unique(refine$cluster[refine$consensus=="MATCH"]))
-         tokeep$new_names=refine[refine$consensus=="MATCH","best_match"]
+            filter(old_names %in% unique(refine$cluster[refine$best_match=="INCONCLUSIVE"]))
+         tokeep <- hand_names %>%
+            filter(old_names %in% unique(refine$cluster[refine$best_match!="INCONCLUSIVE"]))
+         tokeep$new_names=refine[refine$best_match!="INCONCLUSIVE","best_match"]
       }else{todo=hand_names}
       for (i in todo$old_names) {
          temp = ann3[i,]
@@ -107,10 +107,10 @@ SemiAutoAnnotate = function(ann,data_type=NULL,refine=NULL){
       hand_names$new_names=""
       if (!is.null(refine)) {
          todo <- hand_names %>%
-            filter(old_names %in% unique(refine$cluster[refine$consensus!="MATCH"]))
-         tokeep <-todo <- hand_names %>%
-            filter(old_names %in% unique(refine$cluster[refine$consensus=="MATCH"]))
-         tokeep$new_names=refine[refine$consensus=="MATCH","best_match"]
+            filter(old_names %in% unique(refine$cluster[refine$best_match=="INCONCLUSIVE"]))
+         tokeep <- hand_names %>%
+            filter(old_names %in% unique(refine$cluster[refine$best_match!="INCONCLUSIVE"]))
+         tokeep$new_names=refine[refine$best_match!="INCONCLUSIVE","best_match"]
       }else{todo=hand_names}
       for (i in todo$old_names) {
          temp2=ann2

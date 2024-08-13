@@ -58,7 +58,7 @@ AutoAnnotate = function(ann, data_type=NULL){
                                       best_match = apply(ann@results$marker_free$corr, 1, function(row) names(ann@results$marker_free$corr)[which.max(row)]),
                                       correlation = apply(ann@results$marker_free$corr, 1, max))
       best_match.AvgExp$cluster<- gsub(paste0("^query\\."), "", rownames(best_match.AvgExp))
-      best_matches=full_join(best_match.AvgExp,y = best_match.Markers)
+      best_matches=invisible(full_join(best_match.AvgExp,y = best_match.Markers))
       best_matches <- best_matches %>%
          #select(best_match) %>%
          mutate(best_match_avg = str_replace(best_match, "^db\\.", "")) %>%

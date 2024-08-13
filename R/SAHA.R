@@ -32,6 +32,6 @@ SAHA <- function(query,db,meta,data_type){
       ann=Create_MarkerFree_Viz(ann,facet = TRUE,meta = meta, ABC = TRUE, chemistry = "10Xv3")
       return(call_SAHA_plots(ann, plot_type = "Marker-free",data_type = "AvgExp"))
    }else{
-      print("Something went wrong. Please read the documentation or consider running the full SAHA pipeline.")
+      cat("Something went wrong. Please read the documentation or consider running the full SAHA pipeline.")
    }
 }

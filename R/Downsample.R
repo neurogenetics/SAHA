@@ -18,9 +18,9 @@ Downsample <- function(ann){
    ann3=list("query"=query_ds, "db"=db_ds)
    #5. Check to see that all rownames of query are in rownames of db
    if (all(rownames(ann3$query)%in%rownames(ann3$db))) {
-      print(paste("Downsampled query and database contain",length(rownames(ann3$query)),"genes."))
+      cat(paste("Downsampled query and database contain",length(rownames(ann3$query)),"genes."))
    }else{
-      print("Something went wrong! It appears there are either no shared genes between query and db. Please check downsampling manually to ensure that symbols (gene names) are in the same format and that query and db share common genes for SAHA flavor 3.")
+      cat("Something went wrong! It appears there are either no shared genes between query and db. Please check downsampling manually to ensure that symbols (gene names) are in the same format and that query and db share common genes for SAHA flavor 3.")
    }
    #6. Return the dataframe
    ann@ann3=ann3

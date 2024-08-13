@@ -14,23 +14,29 @@ Marker_Richness = function(ann, varfeat = NULL){
       df = data.frame(ann1$query[,c("gene","cluster")])
 
       gene_count_by_cluster <- df %>%
-         group_by(cluster) %>%  # Filter for rows where gene and cluster values match
-         count()  # Count the number of rows after filtering
+         group_by(cluster)   # Filter for rows where gene and cluster values match
 
-      print(gene_count_by_cluster)
+      print(data.frame(gene_count_by_cluster))
+
+      p1 = aggregate(gene~cluster, gene_count_by_cluster, length)
+
+      ggplot(p1,aes(x=cluster,y=gene))+
+         geom_bar(stat="identity")+
+         theme_bw()
    }else{
       ann1=ann@ann1
       df = data.frame(ann1$query[,c("gene","cluster")])
 
       # Count genes present in varfeat
       gene_counts <- df %>%
-         mutate(in_varfeat = gene %in% varfeat) %>%  # Create a new column indicating presence
-         group_by(cluster)%>%
-         summarize(
-            all_genes = n(),
-            genes_in_varfeat=sum(in_varfeat)  # Count occurrences of each gene and presence flag
-         )
+         mutate(in_varfeat = gene %in% varfeat)
+
+      p2 = aggregate(in_varfeat~cluster, gene_counts, sum)
       # Print the results
-      print(gene_counts)
+      ggplot(p2,aes(x=cluster,y=in_varfeat))+
+         geom_bar(stat="identity")+
+         geom_hline(yintercept = length(varfeat),linetype = 3)+
+         theme_bw()
+      print(data.frame(gene_counts))
    }
 }

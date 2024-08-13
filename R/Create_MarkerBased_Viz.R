@@ -31,8 +31,6 @@ Create_MarkerBased_Viz <- function (ann, meta, facet){
       meta <- read.csv(meta)
    }
    master_df = ann@ann2
-   #master_df = ann2 #######need to change to a list where master_df is added!!!!!!!!!!!!
-   ##
    master_df$celltype <- gsub("-", " ", master_df$celltype)
    temp_met=meta[meta$subclass_spa %in% unique(master_df$celltype),]
 
@@ -61,9 +59,11 @@ Create_MarkerBased_Viz <- function (ann, meta, facet){
 
    # Create the ggplot plot with the ordered 'cluster' variable -- ALL
 
+   plot_df = subset(master_df, cluster != "REF")
+   plot_df=na.omit(plot_df)
+   plot_df$cluster= factor(plot_df$cluster,levels=sort(unique(plot_df$cluster),decreasing = T))
 
-
-   p1 <- ggplot(data = subset(master_df, cluster != "REF"),
+   p1 <- ggplot(data = plot_df,
                 aes(x = celltype, y = cluster, alpha = as.numeric(-log(pvalue,10)))) +
       geom_point(aes(size = as.numeric(prop), color = sig)) +
       scale_size_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.25)) +
@@ -73,14 +73,15 @@ Create_MarkerBased_Viz <- function (ann, meta, facet){
       theme(axis.text.x = element_text(angle = 90, hjust = 1),
             axis.text.y = element_text(size = 8),
             plot.title = element_text(size = 10),
-            strip.text = element_text(size = 8))
+            strip.text = element_text(size = 8))+
+      labs(color = "Enrichment \n(cutoff p < 0.05)", size = "Proportion of Markers",alpha = "Enrichment \n(-log10(p))")
 
    if (facet == TRUE) {
       p1 <- p1+facet_grid(~class, scales="free_x", space = "free")
    }
 
    # Barplot showing total available markers and proportion covered
-   p2 <- ggplot(data = subset(master_df, cluster == "REF"), aes(x = celltype, y = total_marker)) +
+   p2 <- ggplot(data =plot_df, aes(x = celltype, y = total_marker)) +
       geom_bar(stat = "identity", fill = "Black") +
       geom_text(aes(label = total_marker), vjust = -0.5, size = 3) +
       labs(title = "Total Amount of %s Markers in %s Database", y = "Proportion") +
@@ -94,7 +95,7 @@ Create_MarkerBased_Viz <- function (ann, meta, facet){
 
 
    # Create the ggplot plot with the ordered 'cluster' variable -- ONLY SIGNFICANT without facet grid
-   p3 <- ggplot(data = subset(master_df, cluster != "REF"),
+   p3 <- ggplot(data = plot_df,
                 aes(x = celltype, y = cluster, alpha = as.numeric(-log(pvalue,10)))) +
       geom_point(aes(size = as.numeric(prop), color = sig)) +
       scale_size_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.25)) +
@@ -104,7 +105,8 @@ Create_MarkerBased_Viz <- function (ann, meta, facet){
       theme(axis.text.x = element_text(angle = 90, hjust = 1),
             axis.text.y = element_text(size = 8),
             plot.title = element_text(size = 10),
-            strip.text = element_text(size = 8))
+            strip.text = element_text(size = 8))+
+      labs(color = "Enrichment \n(cutoff p < 0.05)", size = "Proportion of Markers",alpha = "Enrichment \n(-log10(p))")
    if (facet == TRUE) {
       p3 <- p3+facet_grid(~class, scales="free_x", space = "free")
    }
@@ -112,7 +114,7 @@ Create_MarkerBased_Viz <- function (ann, meta, facet){
 
 
    # Create the ggplot plot with the ordered 'cluster' variable -- ONLY TOP SIGNFICANT without facet grid
-   p4 <- ggplot(data = subset(master_df, cluster != "REF"),
+   p4 <- ggplot(data = plot_df,
                 aes(x = celltype, y = cluster, alpha = as.numeric(-log(pvalue,10)))) +
       geom_point(aes(size = as.numeric(prop), color = top_sig)) +
       scale_size_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.25)) +
@@ -122,7 +124,8 @@ Create_MarkerBased_Viz <- function (ann, meta, facet){
       theme(axis.text.x = element_text(angle = 90, hjust = 1),
             axis.text.y = element_text(size = 8),
             plot.title = element_text(size = 10),
-            strip.text = element_text(size = 8))
+            strip.text = element_text(size = 8))+
+      labs(color = "Enrichment \n(cutoff p < 0.05)", size = "Proportion of Markers",alpha = "Enrichment \n(-log10(p))")
    if (facet == TRUE) {
       p4 <- p4+facet_grid(~class, scales="free_x", space = "free")
    }

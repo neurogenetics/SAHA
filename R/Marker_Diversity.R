@@ -29,7 +29,7 @@ Marker_Diversity = function(ann){
       column_to_rownames("cluster")
 
    # Print the resulting dataframe
-   print(wide_data)
+   #print(wide_data)
 
 
 
@@ -51,6 +51,7 @@ Marker_Diversity = function(ann){
          shannon_diversity$shannon_diversity > CI[1] ~ "Within 95% CI",
          TRUE ~ "Low Marker Diversity"
       ))
+   print(shannon_diversity)
 
    # Print or further analyze the shannon_diversity object (numeric vector)
    return(ggplot(shannon_diversity,aes(x=cluster,y=shannon_diversity))+
@@ -63,4 +64,4 @@ Marker_Diversity = function(ann){
              labs(title = "Marker Diversity by Cluster", y = "Shannon Diveristy", x = "Cluster ID",
                   color = "Marker Diversity"))  # Rename legend title
 
-}
+   }

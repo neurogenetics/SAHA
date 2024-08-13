@@ -47,7 +47,8 @@ Investigate_Self_Similarity <- function(ann, cluster1, cluster2,shared_df=NULL) 
               shape = "circle",
               fill = list(fill = c("pink", "gray"))))
    if (!is.null(shared_df)) {
-      return(bound)
+      bound_df=bound[rowSums(bound)>=1,]
+      return(bound_df)
    }
 
 }
