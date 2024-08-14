@@ -36,6 +36,7 @@ AutoAnnotate = function(ann, data_type=NULL){
          select(cluster,celltype, prop, pvalue)%>%
          as.data.frame()
       colnames(best_match.df)[2]="best_match"
+      best_match.df$cluster=sort(as.numeric(unique(best_match.df$cluster)),decreasing = F)
       return(best_match.df)
 
    }else if(data_type=="AvgExp"){
@@ -43,6 +44,9 @@ AutoAnnotate = function(ann, data_type=NULL){
                                   best_match = apply(ann@results$marker_free$corr, 1, function(row) names(ann@results$marker_free$corr)[which.max(row)]),
                                   correlation = apply(ann@results$marker_free$corr, 1, max))
       colnames(best_match.df)[2]="best_match"
+      best_match.df$cluster=gsub("^query\\.", "", rownames(best_match.df))
+      best_match.df=best_match.df[,c(3,1,2)]
+      best_match.df$cluster=sort(as.numeric(unique(best_match.df$cluster)),decreasing = F)
       return(best_match.df)
    }else if(data_type=="Both"){
       best_match.Markers <-  ann@ann2 %>%
@@ -72,6 +76,7 @@ AutoAnnotate = function(ann, data_type=NULL){
       best_matches <- best_matches %>%
          select(cluster, celltype,best_match_avg,consensus,final_output)
       colnames(best_matches)=c("cluster","marker_based","marker_free","consensus","best_match")
+      best_matches$cluster=sort(as.numeric(unique(best_matches$cluster)),decreasing = F)
       return(best_matches)
    }
 }
