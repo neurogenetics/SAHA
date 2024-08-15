@@ -9,9 +9,13 @@
 #'   data frames for query and database.
 #'
 #' @export
-Downsample <- function(ann){
+Downsample <- function(ann, custom_ds=NULL){
    #3. Downsample database and query to mutually expressed genes
-   query_genes=rownames(ann@query$AvgExp)
+   if (is.null(custom_ds)) {
+     query_genes=rownames(ann@query$AvgExp)
+   }else{
+     query_genes=custom_ds
+   }
    db_ds=ann@db$AvgExp[rownames(ann@db$AvgExp)%in%query_genes,]
    query_ds=ann@query$AvgExp[rownames(ann@query$AvgExp)%in%rownames(db_ds),]
    #4. Create list of data.frames
