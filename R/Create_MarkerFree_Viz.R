@@ -79,7 +79,7 @@ Create_MarkerFree_Viz <- function(ann, facet, meta,ABC,chemistry){
                      row_names_gp = gpar(fontsize = 11),
                      column_names_side = "bottom",
                      column_names_gp = gpar(fontsize = 11),
-                     row_title = "Xenium cluster",
+                     row_title = "cluster",
                      row_title_rot = 90,
                      row_title_side = "left",
                      row_title_gp = gpar(fontface = "bold"),
