@@ -175,7 +175,7 @@ Varfeat cannot be calculated from the dataframes input into SAHA alone. These mu
 ### Full Self-similarity pipeline
 <u>Will remove and add to vignette upon package release</u>
 
-To some extent, self-similarity has already been determined in your dataset. However, over-interpreting distance in two dimensions (PCA, tSNE, UMAP) is heavily frowned upon for annotation (CITE CITE CITE). Remember that reduced dimensions are just that... reductions. They are randomly signed (+/-) and scaled to your data (-1 and 1 might be just as "far" as -100 and 100 given prior decisions concerning data processing). <i>"Is cluster 1 and cluster 10 similar?"</i>, don't take a reduction... look at the <b>data</b>.
+To some extent, self-similarity has already been determined in your dataset. However, over-interpreting distance in two dimensions (PCA, tSNE, UMAP) is heavily frowned upon for annotation (CITE CITE CITE). Remember that reduced dimensions are just that... reductions. They are randomly signed (+/-) and scaled to your data (-1 and 1 might be just as "far" as -100 and 100 given prior decisions concerning data processing). <i>"Are cluster 1 and cluster 10 similar?"</i>, don't take a reduction... look at the <b>data</b>.
 
 ``` r
 ###self sim
