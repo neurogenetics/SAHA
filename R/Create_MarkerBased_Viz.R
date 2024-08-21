@@ -61,7 +61,22 @@ Create_MarkerBased_Viz <- function (ann, meta, facet){
 
    plot_df = subset(master_df, cluster != "REF")
    plot_df=na.omit(plot_df)
-   plot_df$cluster= factor(plot_df$cluster,levels=sort(unique(plot_df$cluster),decreasing = T))
+   if("REF"%in%levels(plot_df$cluster)){
+      plot_df <- plot_df %>%
+         mutate(cluster = fct_drop(cluster, "REF"))
+   }else{
+      plot_df<-plot_df
+   }
+   if("0"%in%levels(plot_df$cluster)){
+      plot_df$cluster=factor(plot_df$cluster,levels=(c(0,1:(length(unique(plot_df$cluster))-1))))
+   }else{
+      plot_df <- plot_df %>%
+         mutate(cluster = fct_relevel(cluster, sort))
+   }
+   # Remove rows with NA values in the 'index' column
+   plot_df <- plot_df %>%
+      filter(!is.na(cluster))
+
 
    p1 <- ggplot(data = plot_df,
                 aes(x = celltype, y = cluster, alpha = as.numeric(-log(pvalue,10)))) +
