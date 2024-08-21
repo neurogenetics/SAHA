@@ -257,7 +257,7 @@ call_SAHA_plots(ann, plot_type = "Marker-free",data_type = "AvgExp")
 ```
 <img src="files/HeatmapMarkerFree.png" width="400"/>
 
-Additioanlly we have included options for any object to be downsampled to a set gene list. If one assay is whole-transcriptome, but the other is panel based the Downsampling will happen automatically. However, if you wish to annotated based on a specific set of genes you may include a custom_ds argument.
+Additionally, we have included options for any object to be downsampled to a set gene list. If one assay is whole-transcriptome, but the other is panel based the Downsampling will happen automatically. However, if you wish to annotated based on a specific set of genes you may include a custom_ds argument.
 
 ``` r
 downsample_list = c("GeneX", "GeneY","GeneZ"...)
