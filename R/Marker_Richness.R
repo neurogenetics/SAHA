@@ -16,10 +16,8 @@ Marker_Richness = function(ann, varfeat = NULL){
       gene_count_by_cluster <- df %>%
          group_by(cluster)   # Filter for rows where gene and cluster values match
 
-      print(data.frame(gene_count_by_cluster))
-
       p1 = aggregate(gene~cluster, gene_count_by_cluster, length)
-
+      print(p1)
       ggplot(p1,aes(x=cluster,y=gene))+
          geom_bar(stat="identity")+
          theme_bw()
@@ -32,11 +30,11 @@ Marker_Richness = function(ann, varfeat = NULL){
          mutate(in_varfeat = gene %in% varfeat)
 
       p2 = aggregate(in_varfeat~cluster, gene_counts, sum)
+      print(p2)
       # Print the results
       ggplot(p2,aes(x=cluster,y=in_varfeat))+
          geom_bar(stat="identity")+
          geom_hline(yintercept = length(varfeat),linetype = 3)+
          theme_bw()
-      print(data.frame(gene_counts))
    }
 }

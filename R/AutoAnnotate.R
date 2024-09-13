@@ -29,14 +29,26 @@ AutoAnnotate = function(ann, data_type=NULL){
    }else if(data_type=="Markers"){
       best_match.df <-  ann@ann2 %>%
          group_by(cluster) %>%
-         filter(any(pvalue < 0.05)) %>%
+         filter(any(pvalue < 0.05) & cluster != "REF") %>%
          slice_min(pvalue) %>%
          ungroup() %>%
          mutate(celltype = ifelse(is.na(celltype), "UNKNOWN", celltype))%>%
          select(cluster,celltype, prop, pvalue)%>%
          as.data.frame()
+      unique_clust=unique(ann@ann2$cluster)
+      filtered_clusters <- unique_clust[unique_clust != "REF"]
+      if (!all(filtered_clusters%in%best_match.df$cluster)) {
+         missing_clusters <- setdiff(filtered_clusters, best_match.df$cluster)
+         missing_data <- data.frame(
+            cluster = missing_clusters,
+            celltype = "INCONCLUSIVE",
+            prop = NA,
+            pvalue = NA)
+         best_match.df <- rbind(best_match.df, missing_data)
+      }
       colnames(best_match.df)[2]="best_match"
-      best_match.df$cluster=sort(as.numeric(unique(best_match.df$cluster)),decreasing = F)
+      best_match.df <- best_match.df %>%
+         arrange(cluster)
       return(best_match.df)
 
    }else if(data_type=="AvgExp"){
@@ -76,7 +88,6 @@ AutoAnnotate = function(ann, data_type=NULL){
       best_matches <- best_matches %>%
          select(cluster, celltype,best_match_avg,consensus,final_output)
       colnames(best_matches)=c("cluster","marker_based","marker_free","consensus","best_match")
-      best_matches$cluster=sort(as.numeric(unique(best_matches$cluster)),decreasing = F)
       return(best_matches)
    }
 }
