@@ -100,7 +100,7 @@ Create_MarkerBased_Viz <- function (ann, meta = NULL, facet = F){
 
    if (facet == TRUE & length(meta) > 0 ) {
       p1 <- p1+facet_grid(~class, scales="free_x", space = "free")
-   }else{warning("You are attempting to facet the Marker-free plot, however there is a problem with the metadata file loaded. Please refer to the SAHA manual or open an issue on GitHub.")}
+   }else{warning("You are attempting to facet the Marker-based plot, however there is a problem with the metadata file loaded. Please refer to the SAHA manual or open an issue on GitHub.")}
 
    # Barplot showing total available markers and proportion covered
    p2 <- ggplot(data =plot_df, aes(x = celltype, y = total_marker)) +
