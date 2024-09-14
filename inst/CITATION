@@ -1,0 +1,11 @@
+bibentry(
+  bibtype  = "Article",
+  title    = "SAHA",
+  author   = "A",
+  journal  = "A",
+  year     = "A",
+  volume   = "A",
+  number   = "A",
+  pages    = "A",
+  doi      = "a"
+)

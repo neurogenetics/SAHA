@@ -22,13 +22,20 @@
 #'
 #' @export
 
-Create_MarkerBased_Viz <- function (ann, meta, facet){
-   if (inherits(meta, "data.frame")) {
-      # If query is already a data frame, use it directly
-      meta <- meta
+Create_MarkerBased_Viz <- function (ann, meta = NULL, facet = F){
+   # Check if meta is a data frame or NULL
+   if (!is.null(meta)) {
+      if (inherits(meta, "data.frame")) {
+         # Meta is already a data frame, use it directly
+         meta <- meta
+      } else {
+         # Meta is a path to a CSV file, read it into a data frame
+         meta <- read.csv(meta)
+      }
    } else {
-      # If query is a path to a CSV file, read it into a data frame
-      meta <- read.csv(meta)
+      # Handle case where meta is NULL
+      warning("meta argument is NULL. Function might not work as expected.")
+      meta <- data.frame()  # Create an empty data frame
    }
    master_df = ann@ann2
    master_df$celltype <- gsub("-", " ", master_df$celltype)
@@ -91,9 +98,9 @@ Create_MarkerBased_Viz <- function (ann, meta, facet){
             strip.text = element_text(size = 8))+
       labs(color = "Enrichment \n(cutoff p < 0.05)", size = "Proportion of Markers",alpha = "Enrichment \n(-log10(p))")
 
-   if (facet == TRUE) {
+   if (facet == TRUE & length(meta) > 0 ) {
       p1 <- p1+facet_grid(~class, scales="free_x", space = "free")
-   }
+   }else{warning("You are attempting to facet the Marker-free plot, however there is a problem with the metadata file loaded. Please refer to the SAHA manual or open an issue on GitHub.")}
 
    # Barplot showing total available markers and proportion covered
    p2 <- ggplot(data =plot_df, aes(x = celltype, y = total_marker)) +
@@ -122,7 +129,8 @@ Create_MarkerBased_Viz <- function (ann, meta, facet){
             plot.title = element_text(size = 10),
             strip.text = element_text(size = 8))+
       labs(color = "Enrichment \n(cutoff p < 0.05)", size = "Proportion of Markers",alpha = "Enrichment \n(-log10(p))")
-   if (facet == TRUE) {
+
+   if (facet == TRUE & length(meta) > 0 ) {
       p3 <- p3+facet_grid(~class, scales="free_x", space = "free")
    }
 
@@ -141,7 +149,7 @@ Create_MarkerBased_Viz <- function (ann, meta, facet){
             plot.title = element_text(size = 10),
             strip.text = element_text(size = 8))+
       labs(color = "Enrichment \n(cutoff p < 0.05)", size = "Proportion of Markers",alpha = "Enrichment \n(-log10(p))")
-   if (facet == TRUE) {
+   if (facet == TRUE & length(meta) > 0 ) {
       p4 <- p4+facet_grid(~class, scales="free_x", space = "free")
    }
 

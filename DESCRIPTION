@@ -22,5 +22,6 @@ Imports:
    ggpubr,
    ape,
    vegan,
+   testthat,
    dendextend
    
