@@ -13,8 +13,10 @@
 Initialize_Self_Similiarity <- function(ann,slot){
    if (slot=="AvgExp") {
       temp=ann@query$AvgExp
-      temp <- temp %>%
-         column_to_rownames("X")
+      if (!"X"%in%colnames(temp)) {
+         temp <- temp %>%
+            column_to_rownames("X")
+      }
       cor_mat <- cor(temp)
       # Print the resulting dataframe
       ann@ann1$AvgExp_selfsim_matrix=cor_mat
