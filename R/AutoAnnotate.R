@@ -58,7 +58,9 @@ AutoAnnotate = function(ann, data_type=NULL){
       colnames(best_match.df)[2]="best_match"
       best_match.df$cluster=gsub("^query\\.", "", rownames(best_match.df))
       best_match.df=best_match.df[,c(3,1,2)]
-      best_match.df$cluster=sort(as.numeric(unique(best_match.df$cluster)),decreasing = F)
+      if (typeof(best_match.df$cluster)!="character") {
+         best_match.df$cluster=sort(as.numeric(unique(best_match.df$cluster)),decreasing = F)
+      }
       return(best_match.df)
    }else if(data_type=="Both"){
       best_match.Markers <-  ann@ann2 %>%

@@ -63,7 +63,7 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
 
       if (!is.null(refine)) {
          hand_names = rbind(todo, tokeep)
-         hand_names = hand_names %>% arrange(desc(old_names))
+         hand_names = hand_names %>% arrange(old_names)
       } else {
          hand_names = todo
       }
@@ -121,7 +121,7 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
 
       if (!is.null(refine)) {
          hand_names = rbind(todo, tokeep)
-         hand_names = hand_names %>% arrange(desc(old_names))
+         hand_names = hand_names %>% arrange(old_names)
       } else {
          hand_names = todo
       }
@@ -136,7 +136,7 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
       hand_names2 = data.frame(rownames(ann3))
       colnames(hand_names2)[1] = "old_names"
       hand_names = merge(hand_names1, hand_names2, by = "old_names")
-      hand_names = hand_names %>% arrange(desc(old_names))
+      hand_names = hand_names %>% arrange(old_names)
       hand_names$new_names = ""
 
       if (!is.null(existing)) {
@@ -189,7 +189,7 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
 
       if (!is.null(refine)) {
          hand_names = rbind(todo, tokeep)
-         hand_names = hand_names %>% arrange(desc(old_names))
+         hand_names = hand_names %>% arrange(old_names)
       } else {
          hand_names = todo
       }
