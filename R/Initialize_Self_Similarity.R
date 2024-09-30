@@ -10,12 +10,15 @@
 #' @importFrom tibble column_to_rownames
 #' @export
 
-Initialize_Self_Similiarity <- function(ann,slot){
+Initialize_Self_Similiarity <- function(ann,slot,custom_ds=NULL){
    if (slot=="AvgExp") {
       temp=ann@query$AvgExp
       if ("X"%in%colnames(temp)) {
          temp <- temp %>%
             column_to_rownames("X")
+      }
+      if (!is.null(custom_ds)) {
+         temp <- temp[rownames(temp)%in%custom_ds,]
       }
       cor_mat <- cor(temp)
       # Print the resulting dataframe
