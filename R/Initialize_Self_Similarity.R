@@ -13,7 +13,7 @@
 Initialize_Self_Similiarity <- function(ann,slot){
    if (slot=="AvgExp") {
       temp=ann@query$AvgExp
-      if (!"X"%in%colnames(temp)) {
+      if ("X"%in%colnames(temp)) {
          temp <- temp %>%
             column_to_rownames("X")
       }
