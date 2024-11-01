@@ -14,6 +14,12 @@ Cell and Spatial Datasets
 
 <b>Beta Prior to Release:</b> If you chose to use, please check back regularly for updates and improvements. <b>Version 1.0</b> will indicate stable release and contain links to publication or preprint.
 
+## Useful links
+[Installation](https://github.com/neurogenetics/SAHA/edit/main/README.md#installation)
+
+[Getting started with SAHA](https://github.com/neurogenetics/SAHA/wiki/SAHA-Main-Workflow)
+
+## Why Use SAHA to annotate your single cell or spatial data?
 SAHA is a user-friendly package with simple meta-data level input resulting in easy-to-understand exploration of cell annotation in single cell and spatial RNA sequencing datasets. Using either marker gene or average experession dataframes, the user has the option to compare the similarity of their <i>unannotated</i> clusters to <b>any</b> annotations in the literature.
 
 <b>IMPORTANTLY:</b> This approach differs from label-transfer and integration-based approaches in that it does not require a large Seurat, SCE, Anndata, or any common data type in which the computational burden of the pipeline scales with the size of an object. Most (if not all) data fed into SAHA will be able to run on a laptop without the need for high-RAM devices or supercomputers.
@@ -26,12 +32,12 @@ Whether you can run every single cell package ever released or just finished you
 ## Installation
 
 ### Dependencies
-* ComplexHeatmap
-* circlize
+* [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html)
+* [circlize](https://cran.r-project.org/web/packages/circlize/index.html)
 * dplyr
 * methods
-* ggrepel
-* eulerr
+* [ggrepel](https://cran.r-project.org/web/packages/ggrepel/index.html)
+* [eulerr](https://cran.r-project.org/web/packages/eulerr/index.html)
 * reshape2
 * corrplot
 * ggpubr
@@ -49,7 +55,4 @@ devtools::install_github("neurogenetics/SAHA")#main package
 devtools::install_github("neurogenetics/SAHAdata")#data package containing Allen Brain Cell Atlas db inputs
 ```
 Upon stable release, instructions for CRAN installation will be posted here.
-
-## Vignettes and Troubleshooting guides
-[Getting started with SAHA](https://github.com/neurogenetics/SAHA/wiki/SAHA-Main-Workflow)
 
