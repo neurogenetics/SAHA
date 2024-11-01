@@ -49,3 +49,7 @@ devtools::install_github("neurogenetics/SAHA")#main package
 devtools::install_github("neurogenetics/SAHAdata")#data package containing Allen Brain Cell Atlas db inputs
 ```
 Upon stable release, instructions for CRAN installation will be posted here.
+
+## Vignettes and Troubleshooting guides
+[Getting started with SAHA](https://github.com/neurogenetics/SAHA/wiki/SAHA-Main-Workflow)
+
