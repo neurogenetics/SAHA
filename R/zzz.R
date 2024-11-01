@@ -14,7 +14,7 @@
 #   Test Package:              'Cmd + Shift + T'
 
 .onAttach <- function(...) {
-   packageStartupMessage("Thank you for using SAHA. If you enjoy this package, please consider citing Acri et al., (XXXX) bioRxiv.")
+   packageStartupMessage("Thank you for using SAHA. You have downloaded version prior to release (V1.0), as such it is in beta and may not work as intended. Check back at www.github.com/neurogenetics/SAHA/ periodically for updates.")
 }
 
 .onLoad <- function(...){
