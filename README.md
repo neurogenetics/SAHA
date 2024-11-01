@@ -44,7 +44,6 @@ Whether you can run every single cell package ever released or just finished you
 You can install the development version of SAHA like so:
 
 ``` r
-#This is just a placeholder... if you'd like to user please reach out to Dom for the .Rproj files so you can compile in RStudio prior to releasex
 library(devtools)
 devtools::install_github("neurogenetics/SAHA")#main package
 devtools::install_github("neurogenetics/SAHAdata")#data package containing Allen Brain Cell Atlas db inputs
