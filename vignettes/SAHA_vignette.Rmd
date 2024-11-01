@@ -1,0 +1,380 @@
+---
+title: "SAHA"
+author: "Dom Acri, Richard Mustaklem, Liam Horan-Portelance"
+date: "2024-08-21"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{SAHA Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Required Files](#required-files)
+- [Quickstart](#quickstart)
+- [Vignette](#vignette)
+
+<div style="text-align: center;">
+### Semi-automated Hand Annotation for Single Cell and Spatial Datasets
+```{r, echo=FALSE, out.width='50%', fig.align='center'}
+knitr::include_graphics("C:/Users/rmustak/OneDrive - Indiana University/Mustaklem_Richard/Projects/Rstudio/SAHA.Aug15/SAHA/files/SAHA_logo_wbg.png")
+```
+</div>
+
+SAHA is a user-friendly package that accepts simple meta-data level input, allowing for easy exploration of cell annotation in single-cell and spatial RNA sequencing datasets. Using either marker gene or average expression data frames, users can compare the similarity of their unannotated clusters to **any** annotations found in the literature.
+
+**Importantly:** This approach differs from label-transfer and integration-based approaches in that it does not requre a large Seurat, SCE, Anndata, or any common data type in which the computational burden of the pipeline scales with the size of an object. Most (if not all) data processed by SAHA can run on a standard laptop without the need for high-RAM devices or supercomputers. 
+
+Whether you're capable of running every single-cell package ever released or have just completed your first single-cell vignette, SAHA offers options to **Create**, **Investigate**, or **Refine** cell annotations based on:
+
+- Self-similarity: likeness of clusters within your query data
+- Marker-based: presence of markers in a known database
+- Marker-free: expression of **non-marker genes** in your data
+
+## Installation {#installation}
+
+**Dependencies**
+
+- ComplexHeatmap
+- circlize
+- dplyr
+- methods
+- ggrepel
+- eulerr
+- reshape2
+- corrplot
+- ggpubr
+- ape
+- vegan
+- dendextend
+
+**Install development version from github using devtools**
+
+You can install the development version of SAHA like so:
+
+```{r, eval=FALSE}
+library(devtools)
+devtools:install_github("neurogenetics/SAHA")
+```
+
+*Upon stable release, instructions for CRAN installation will be posted here.*
+
+## Required Files {#required-files}
+
+In order to run SAHA, you may load in the following:
+
+- Query_markers: a dataframe output of Seurat::FinadAllMarkers() from your unannotated data
+- Query_AvgExp: a dataframe output of Seurat::AverageExpression() from your unannotated data
+- Database_Markers: a dataframe output of Seurat::FindAllMarkers() from a database of interest
+- Database_AvgExp: a dataframe output of Seurat::AverageExpression() from a database of interest
+
+At least one pair must be present:
+
+- Markers (Marker-based SAHA)
+- AvgExp (Marker-free SAHA). 
+
+However you may also load **both** in the same SAHA object.
+
+**The "Database"**
+
+To aid with your annotation journey, we have added pre-prepared Markers and AvgExp dataframes from each of the regions in the Allen Brain Cell Atlas (mouse only, CITE CITE CITE). We have prepared from objects found on the Allen Brain's website (LINK) as of (DATE).
+
+These are loaded in package data and may be loaded in with data(ROI_Markers) or data(ROI_AvgExp). For a full list of pre-loaded databases please see SAHA WITH ABC vignette.
+
+However, we (the creators of SAHA) recognize that this may not match your data. You have the freedom to input any similarly-structured dataframes if you'd like to run against a database of your choice. In this way, you may select annotations from a previous study, another online database, or your own DIY database. For more information on how to run custom databases please visit our SAHA WITH CUSTOM DATABASE vignette. (LINK)
+
+## Quickstart {#quickstart}
+
+For those wanting a one-click annotation, quickstart options will output the summary level results of either Marker-based or Marker-free analysis.
+
+Note: The SAHA team only recommends using this option for quick data exploration, as users generally yield better results through a more manual annotation approach.
+
+```{r, results='hide',message=FALSE}
+library(SAHA)
+data("ABC_meta")
+data("CB_Markers")# allen brain atlas markers from cerebellum
+data("CB_AvgExp")# allen brain atlas avgExp from cerebellum
+meta = ABC_meta
+query_Markers = read.csv("C:/Users/rmustak/OneDrive - Indiana University/Mustaklem_Richard/Projects/Rstudio/vignette_cluster_markers_res0.5.csv")
+query_AvgExp = read.csv("C:/Users/rmustak/Downloads/demo_query_AE.csv") 
+```
+
+Now that we have loaded our databases and query datasets, we can run a quick version of SAHA. Below is a marker-based analysis. 
+
+```{r, fig.width=7.5, fig.height=7}
+## Quickstart to Marker-based dotplot
+SAHA(query = query_Markers, db = CB_Markers,meta = meta, data_type = "Markers")
+```
+
+This first type of SAHA analysis uses a marker-based annotation approach which outputs significantly enriched clusters with their corresponding cell type. In this example, we can see cluster 0 is strongly representing Oligodendrocytes within the Allen Brain Atlas database. Additionally, SAHA is also capable of performing a marker-free analysis, as shown below. 
+
+```{r, fig.width=7, fig.height=7}
+#Quickstart to Marker-free heatmap
+SAHA(query = query_AvgExp, db = CB_AvgExp,meta = meta, data_type = "AvgExp")
+```
+
+The second type of analysis is a marker-free approach. (insert info here)
+
+## Vignette {#vignette}
+
+**Create Object**
+
+Start by loading your data. It is advised to have a marker dataset, produced from Seurats FindVariableFeatures(), and an Average Expression dataset, produced from (insert here)
+
+```{r, results ="hide", message=FALSE}
+library(SAHA)
+data("ABC_meta")
+data("CB_Markers")
+data("CB_AvgExp")
+meta = ABC_meta
+query_Markers = read.csv("C:/Users/rmustak/OneDrive - Indiana University/Mustaklem_Richard/Projects/Rstudio/vignette_cluster_markers_res0.5.csv") 
+query_AvgExp = read.csv("C:/Users/rmustak/Downloads/demo_query_AE.csv") 
+```
+
+Once we have loaded in our marker and/or average expression data, we need to create the SAHA object. 
+
+The SAHA object can load this data in any combination, just make sure you set existing = df as shown below when adding in new information. 
+
+```{r, results="hide", message=FALSE}
+# Create SAHA object (only markers)
+ann=Create_SAHA_object(query = query_Markers,db = CB_Markers,data_type = "Markers")
+# Creating SAHA object with both markers and avgexp
+ann=Create_SAHA_object(query = query_AvgExp,db = CB_AvgExp,data_type = "AvgExp",existing = ann)
+ann
+```
+
+Your Markers or AvgExp will be stored in ann@query and ann@db without any alteration. If you subset or initialize your markers in a way that doesn't give you deesired results, rerun from this point without creating a new object.
+
+Initialize_markers filters markers from query and database datasets based on specified thresholds. The default vales are p_thresh = 0.05 (p value), FC_thresh = 1.5 (Log base 2 Fold Chance), sens_thresh = 0.25 (Sensitivity), and spec_thresh = 0.75 (Specificity). These values are the suggested cutoff and you should alter them carefully.
+
+```{r}
+#Initialize Markers (suggested cutoffs)
+ann=Initialize_Markers(ann)
+```
+
+Marker_Richness is used for visualization purposes. (add more here from Dom's version)
+
+```{r, fig.width=7, fig.height=7}
+Marker_Diversity(ann)
+```
+
+We can also filter our SAHA object with a seurat object's most variable features, demonstrated below. 
+
+Varfeat cannot be calculated from the dataframes input into SAHA alone. These must be saved separately from your single cell data object and input as a string of gene names. For demonstration here, we used [10X genomics 5k Adult mouse dataset](https://www.10xgenomics.com/datasets/5k-adult-mouse-brain-nuclei-isolated-with-chromium-nuclei-isolation-kit-3-1-standard). Your varfeat object will likely be either 2000 or 5000 genes.
+
+```{r}
+library(Seurat)
+seurat_obj <- readRDS("C:/Users/rmustak/OneDrive - Indiana University/Mustaklem_Richard/Projects/Rstudio/seurat_obj_vignette.rds")
+varfeat=VariableFeatures(seurat_obj)
+#Dummy variable features shown below, put in the real one from a Seurat object
+#varfeat=ann@ann1$query[1:10,"gene"]
+```
+
+Need descritption here from Dom's function talking about the graph showing a subset of the original set of genes based on only the variable features.
+
+```{r, results='hide'}
+Marker_Richness(ann,varfeat = varfeat)
+```
+
+**Tuning markers**
+
+Every single-cell or spatial dataset is unique. You've already made many decisions that affect the quality of your data (e.g., isolation preparation, library creation, normalization/integration across samples). Now, you need to make one more decision: what defines a marker gene. While we can't make this choice for you, we recommend keeping your search space broad (database information) and your query space focused (your data).
+If you do not know where to start, we recommend the following:
+
+- Use absolute cutoffs to limit how many features define an annotation in the database (e.g., top 100 markers by log2FC in your database of interest).
+
+- Use relative cutoffs to limit what you consider a marker in your dataset (e.g., top 25th percentile by log2FC in your dataset to be annotated).
+
+For more information on tuning your markers a separate vignette is being developed and will be released **soon**
+
+```{r}
+#Tune Markers to top 100 by FC (db top 100, query top 25%-ile for demonstration)
+ann=Tune_Markers(ann = ann,method = "absolute",method_value = 100,method_var = "avg_log2FC",set = "db")
+ann=Tune_Markers(ann = ann,method = "relative",method_value = 0.75,method_var = "avg_log2FC",set = "query")
+```
+
+One way to investigate whether or not you made a decision is to investigate what we call "diversity" and "richness":
+
+- Diversity: Shannon Diversity Index (CITE) to identify high- or low- diversity clusters
+   - High Diversity: Clusters with diverse markers may contain many markers to various cell types
+   - Low Diversity: Clusters with low-diversity markers may be hard to annotate based on lack of unique identity
+   
+- Richness: Number of markers
+   - Many markers: Indicates your "Cluster-of-interest VS. ALL" calculation yielded many differences
+   - Few markers: Indicates your "Cluster-of-interest VS. ALL" calculation yieled not much different from every other cell
+   - Low markers in varfeat: Most clustering algorithms require the input of variable features (LINK) so if a cluster's markers do not contain many varfeats your dimensionality reduction and cluster identification it could indicate overclustering & debris- or ambient signals.
+   
+```{r}
+#Initialize Markers (suggested cutoffs)
+ann=Initialize_Markers(ann)
+```
+
+**Full Self-similarity pipeline**
+
+Will remove and add vignette upon package release
+
+To some extent, self-similarity has already been determined in your dataset. However, over-interpreting distance in two dimensions (PCA,tSNE, UMAP) is heavily frowned upon for annotation (CITE CITE CITE). Remember that reduced dimensions are just that... reductions. They are randomly signed (+/-) and scaled to your data (-1 and 1 might be just as "far" as -100 and 100 given prior decisions concerning data processing). "Is cluster 1 and cluster 10 similar?", don't take a reduction... look at the **data**.
+
+```{r, fig.width=8, fig.height=6}
+###self sim
+ann=Initialize_Self_Similiarity(ann,slot = "Markers")
+ann=Create_SelfSimilarity_Viz(ann,slot = "Markers")
+call_SAHA_plots(ann, plot_type = "self-similarity",data_type = "Markers")
+#The size of genes will scale with time this takes
+ann=Initialize_Self_Similiarity(ann,slot = "AvgExp")
+#Not so here
+ann=Create_SelfSimilarity_Viz(ann,slot = "AvgExp")
+call_SAHA_plots(ann, plot_type = "self-similarity",data_type = "AvgExp")
+shared_marker_df=Investigate_Self_Similarity(ann,cluster1 = 1, cluster2 = 10,shared_df = TRUE)
+head(shared_marker_df)
+```
+
+For markers this similarity can be quantified as "shared markers" (if cluster 1 and cluster 10 both contain 200 of the same markers, "shared markers" = 200). For AvgExp a correlation between min-max scaled expression indicate high similarity (cluster1-GeneX = 99th percentile + cluster10-GeneX = 99th percentile == correlated).
+
+You will notice significant disparity in AvgExp correlation in targeted or downsampled datasets. However if whole-transcriptome data is analyzed, it is likely the only correlation for all 20k some genes will only reveal correlation between self (cluster1-cluster1).
+
+**Full Marker-based pipeline**
+
+will remove and add to vignette upon package release
+
+**For whole-transcriptome data, Marker-based annotation is recommended.** Over-representation analysis (or enrichment) of markers in each cluster (y-axis) to annotations (x-axis) will reveal which known cell type identities are likely to describe your data.
+
+```{r, fig.width=8, fig.height=6}
+#Marker-based
+ann=Run_Marker_Based(ann)
+#Need to make sure this works without meta AND facet = F
+#Maybe also be able to choose the facet level...
+#Need to see if we can make facet be proportional in size...
+#needs to work without meta
+#ann=Create_MarkerBased_Viz(ann)
+#in the meantime
+ann=Create_MarkerBased_Viz(ann,meta = meta, facet = TRUE)
+ann@results$marker_based$dotplot_all
+```
+
+- All enrichments (significant, p < 0.05) and non-significant are plotted by default using the `call_SAHA_plots()` function shown above.
+
+```{r, fig.width=8, fig.height=6}
+ann@results$marker_based$dotplot_sig
+```
+
+- Only significant enrichments are available in `ann@results$marker_based$dotplot_sig`
+
+```{r, fig.width=8, fig.height=6}
+ann@results$marker_based$dotplot_best
+```
+
+- Most significant enrichments are available in `ann@results$marker_based$dotplot_best`
+
+*If a cluster has no significant enrichmnents please consult the troubleshooting page* (LINK).
+
+Once annotations have been completed you may investigate the enrichment one of two ways:
+
+```{r, fig.width=8, fig.height=6}
+Investigate_Marker_Based(ann,query_cluster = 6,plot = "stacked")
+```
+
+- Stacked Barplot: for a query cluster, dotplot will show how many markers (could) be in each group colored by how many markers are in each
+group.
+
+```{r, fig.width=8, fig.height=6}
+Investigate_Marker_Based(ann,query_cluster = 6,plot = "venn",db_cell_type = "295 CBN Dmbx1 Gaba")
+```
+
+- Venn: for a query cluster & a selected annotation, a venn diagram will show how many markers overlap and print their names in the
+console.
+
+**Full Marker-free pipeline**
+
+Will remove and add to vignette upon package release
+
+**For targeted or panel-based data, Marker-based annotation is recommended.** 
+
+Many targeted approaches do not contain enough marker genes to make a clear decision. Given that these assays are sparse (read more HERE), even the inclusion of 1 marker for your cell-type of
+interest may not be covered at a depth where they will show up with marker calculations. Instead use all of the expression in your data object to search annotations.
+
+It is critical that both your query and db dataframe are calculated the same way. This will allow different gene expression assays to be
+compared to each other (i.e. Image Based Hybridization assays vs. Sequencing-based assays). To ensure they are scaled properly please
+see the Data Preparation page (LINK).
+
+```{r, fig.width=8, fig.height=6}
+ann=Initialize_MarkerFree(ann = ann)
+ann=Downsample(ann)
+#> Downsampled query and database contain 21665 genes.
+ann=NormalizeDS(ann,assay_query = "RNA")
+#This one does not
+ann=CorrelateDS(ann)
+ann=Create_MarkerFree_Viz(ann,facet = TRUE,meta = meta, ABC = TRUE, chemistry = "10Xv3")
+
+call_SAHA_plots(ann, plot_type = "Marker-free",data_type = "AvgExp")
+```
+
+Additioanlly we have included options for any object to be downsampled to a set gene list. If one assay is whole-transcriptome, but the other is panel based the Downsampling will happen automatically. However, if you wish to annotated based on a specific set of genes you may include a custom_ds argument.
+
+```{r}
+downsample_list = c("GeneX", "GeneY","GeneZ")
+ann=Downsample(ann,custom_ds=downsample_list)
+```
+
+This option will alter your results, but can be particularly powerful if there are genes in a panel that you do not expect to contribute to cell identity (e.g. a 1000 gene panel with 500 genes expressed normally and 500 genes only expressed in a disease condition). In this example we would recommend removing the genes you want to test and only keep genes you expect to be in both your dataset and a normal wildtype condition.
+
+You have the option to visualize a scatterplot of all downsampled genes in a cluster of interest vs an annotated cell type in the database.
+
+```{r, fig.width=8, fig.height=6}
+Investigate_MarkerFree(ann = ann,query_cluster = 21,db_cell_type = "327.Oligo.NN")
+```
+
+The top 10 correlated genes (high in query and db) as well as top 10 outliers (only in query OR db) will be automatically labeled on the plot.
+
+**Getting Annotations & SAHA to Seurat**
+
+Will remove and add to vignette upon package release
+
+Annotation is often described as an "iterative process" involving literature search, reading through dozens of spreadsheets, and re-doing several times until the data makes biological sense. While the later point is specific to your study the former two points can be aided by quick visualizations and semi-automated annotation.
+
+First, if you desire a one-click auto annotation... this option is available but we recommend extreme caution.
+
+**Auto Annotations**
+
+```{r}
+#Auto-annotate!!
+#needs to return all query REGARDLESS OF BEST MATCH (especially for Markers)
+auto=AutoAnnotate(ann,data_type = "Markers")
+auto
+auto=AutoAnnotate(ann,data_type = "AvgExp")
+auto
+#Need a better way to give consensus... like "close" consensus...
+#error here if there is not both ann results!!
+#auto=AutoAnnotate(ann,data_type = "Both")
+#auto
+```
+
+If you chose to run both Marker-based and Marker-free pipelines on your data, you will note that there are several possibilities:
+   
+- INCONCLUSIVE - auto annotation yielded no results (see TROUBLESHOOTING for more info)
+- DISAGREEMENT - Marker-based and Marker-free yielded two separate annotations
+- MATCH - Marker-based and Marker-free yielded one best match!
+
+**Semi-Auto Annotations**
+
+SAHA gets it's name from the idea that a user's own eye (or hand) is needed to make some biological decisions. In this promptable function, you will see the results of SAHA on a per-cluster basis and be asked to write in your preferred annotation.
+
+Please note - you do not have to choose the name on the screen. If a neuron cluster gets two GABA-ergic annotations, you may write
+
+"GABA", "Inhibitory Neuron", "Unknown", or any name you'd like.
+
+
+```{r, eval=FALSE}
+semi_auto=SemiAutoAnnotate(ann,data_type = "Both", refine = auto)
+```
+
+<div style="text-align: center;">
+<video width="600" controls>
+  <source src="C:/Users/rmustak/OneDrive - Indiana University/Mustaklem_Richard/Presentations/SAHA/SAHA_Files/Screen Recording 2024-09-16 101018.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+</div>
+
+
