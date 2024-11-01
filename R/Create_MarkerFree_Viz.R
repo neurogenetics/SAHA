@@ -17,7 +17,7 @@
 #'
 #' @export
 
-Create_MarkerFree_Viz <- function(ann, facet, meta,ABC,chemistry){
+Create_MarkerFree_Viz <- function(ann, facet, meta,ABC,chemistry=NULL){
 
    # set global heatmap options
    ht_opt(RESET = TRUE)
@@ -73,7 +73,7 @@ Create_MarkerFree_Viz <- function(ann, facet, meta,ABC,chemistry){
       ht1 <- Heatmap(mat,
                      name = "Pearson R",
                      col = col_fun,
-                     cluster_rows = T,
+                     cluster_rows = F,
                      cluster_columns = T,
                      row_names_side = "left",
                      row_names_gp = gpar(fontsize = 11),
@@ -92,7 +92,7 @@ Create_MarkerFree_Viz <- function(ann, facet, meta,ABC,chemistry){
       ht1 <- Heatmap(mat,
                      name = "Pearson correlation",
                      col = col_fun,
-                     cluster_rows = T,
+                     cluster_rows = F,
                      cluster_columns = T,
                      row_names_side = "left",
                      row_names_gp = gpar(fontsize = 11),

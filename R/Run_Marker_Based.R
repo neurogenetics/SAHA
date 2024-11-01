@@ -57,12 +57,14 @@ Run_Marker_Based <- function(ann){
             master_df[master_df$cluster==unique(ann@ann1$query$cluster)[j],][k,"pvalue"]=sum(stats::dhyper(t:B, A, n - A, B))
          }
       })
+   #8b. BH-correct p value
+   master_df$padj = p.adjust(master_df$pvalue, method = p.adjust.methods, n = length(master_df$pvalue))
 
-   #9. Conditional Facet
+      #9. Conditional Facet
    #10. Default everything to F, not significant
    master_df$sig = "F"
    master_df[is.na(master_df$pvalue),"pvalue"]<-1
-   master_df[master_df$pvalue <= 0.05,"sig"]="T" # Label only significant groups
+   master_df[master_df$padj <= 0.05,"sig"]="T" # Label only significant groups
 
    # Convert the 'cluster' variable to a factor with custom levels in ascending order
    master_df$cluster <- factor(master_df$cluster, levels = rev(unique(master_df$cluster)))

@@ -75,7 +75,7 @@ Create_MarkerBased_Viz <- function (ann, meta = NULL, facet = F){
       plot_df<-plot_df
    }
    if("0"%in%levels(plot_df$cluster)){
-      plot_df$cluster=factor(plot_df$cluster,levels=(c(0,1:(length(unique(plot_df$cluster))-1))))
+      plot_df$cluster=factor(plot_df$cluster,levels=(rev(c(0,1:(length(unique(plot_df$cluster))-1)))))
    }else{
       plot_df <- plot_df %>%
          mutate(cluster = fct_relevel(cluster, sort))
