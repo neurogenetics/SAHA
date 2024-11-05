@@ -14,7 +14,7 @@
 #   Test Package:              'Cmd + Shift + T'
 
 .onAttach <- function(...) {
-   packageStartupMessage("Thank you for using SAHA. You have downloaded version prior to release (V1.0), as such it is in beta and may not work as intended. Check back at www.github.com/neurogenetics/SAHA/ periodically for updates. If you choose to use this in any preprints or publication, please cite using the zenodo DOI linked to this repo: 10.5281/zenodo.14040699.")
+   packageStartupMessage("Thank you for using SAHA. You have downloaded version prior to release (V1.0), as such it is in beta and may not work as intended. Check back at www.github.com/neurogenetics/SAHA/ periodically for updates. If you choose to use this in any preprints or publication, please cite using the zenodo DOI linked to this repo: 10.5281/zenodo.14040698.")
 }
 
 .onLoad <- function(...){
