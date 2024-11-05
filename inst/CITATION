@@ -1,11 +1,13 @@
-bibentry(
-  bibtype  = "Article",
-  title    = "SAHA",
-  author   = "A",
-  journal  = "A",
-  year     = "A",
-  volume   = "A",
-  number   = "A",
-  pages    = "A",
-  doi      = "a"
-)
+@software{dom_acri_2024_14040699,
+  author       = {Dom Acri and
+                  Monica Mesecar and
+                  Liam Horan-Portelance and
+                  Richard Mustaklem},
+  title        = {neurogenetics/SAHA: ALL VERSIONS},
+  month        = nov,
+  year         = 2024,
+  publisher    = {Zenodo},
+  version      = {pre-release},
+  doi          = {10.5281/zenodo.14040698},
+  url          = {https://doi.org/10.5281/zenodo.14040698}
+}
