@@ -5,6 +5,8 @@
 
 <!-- badges: start -->
 
+![image](https://github.com/user-attachments/assets/f9f1789a-1cfb-4464-9142-853208d9a2a6)
+
 <!-- badges: end -->
 
 <u>S</u>emi-<u>a</u>utomated <u>H</u>and <u>A</u>nnotation for Single
