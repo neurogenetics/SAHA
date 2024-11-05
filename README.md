@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-![image](https://github.com/user-attachments/assets/f9f1789a-1cfb-4464-9142-853208d9a2a6)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14040699.svg)](https://doi.org/10.5281/zenodo.14040699)
 
 <!-- badges: end -->
 
