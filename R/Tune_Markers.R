@@ -14,7 +14,6 @@
 #' @importFrom dplyr %>% group_by, top_n, filter, ungroup, sym
 #'
 #' @export
-
 Tune_Markers = function(ann, method, method_value, method_var, set) {
    if (is.null(ann@ann1[[set]])) { #and statement here, if method %in% colnames(ann@ann1[[set]])
       warning("Either Initialize_Markers() wasn't run or the specificed method does not exist for the set. Please refer to documentation.")
@@ -56,8 +55,8 @@ Tune_Markers = function(ann, method, method_value, method_var, set) {
    }
 
    # Print summary information
-   input_summary <- aggregate(gene ~ cluster, ann@ann1[[set]], length)
-   output_summary <- aggregate(gene ~ cluster, tune_subset, length)
+   input_summary <- aggregate(gene ~ cluster, slot(ann,set)$Markers, length)
+   output_summary <- aggregate(gene ~ cluster, ann@ann1[[set]], length)
    cat(paste0("By running Tune_Markers() you have lowered the median markers per cluster from ",
               summary(input_summary$gene)[3], " to ", summary(output_summary$gene)[3], "."))
 
