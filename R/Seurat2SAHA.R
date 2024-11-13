@@ -16,17 +16,33 @@
 #' @importFrom Seurat VariableFeatures AverageExpression FindAllMarkers
 Seurat2SAHA <- function(obj, output="Both"){
    if (output=="Both") {
+     cat("Calculating Variable Features:")
      varfeat = VariableFeatures(obj)
+     cat("       done.")
+     cat("Calculating Average Expression:")
      avgexp =  suppressMessages(AverageExpression(neuron,assays = "RNA",slot="data"))
+     avgexp=data.frame(avgexp)
+     cat("       done.")
+     cat("Calculating Cluster Markers:")
      markers = FindAllMarkers(obj, only.pos = TRUE)
+     cat("       done.")
      output = list(varfeat=varfeat, avgexp=avgexp, markers=markers)
    }else if (output == "AvgExp") {
+      cat("Calculating Variable Features:")
       varfeat = VariableFeatures(obj)
+      cat("       done.")
+      cat("Calculating Average Expression:")
       avgexp =  suppressMessages(AverageExpression(neuron,assays = "RNA",slot="data"))
+      avgexp=data.frame(avgexp)
+      cat("       done.")
       output = list(varfeat=varfeat, avgexp=avgexp)
    }else if (output == "Markers") {
+      cat("Calculating Variable Features:")
       varfeat = VariableFeatures(obj)
+      cat("       done.")
+      cat("Calculating Cluster Markers:")
       markers = FindAllMarkers(obj, only.pos = TRUE)
+      cat("       done.")
       output = list(varfeat=varfeat, markers=markers)
    }
 }
