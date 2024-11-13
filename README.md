@@ -21,6 +21,14 @@ Cell and Spatial Datasets
 
 [Getting started with SAHA](https://github.com/neurogenetics/SAHA/wiki/SAHA-Main-Workflow)
 
+[Creating SAHA Inputs]() #Coming Soon
+
+[Troubleshooting]() #Coming Soon
+
+[Working with Custom Databases]() #Coming Soon
+
+[Comparing Multiple SAHA Runs]() #Coming Soon
+
 ## Why Use SAHA to annotate your single cell or spatial data?
 SAHA is a user-friendly package with simple meta-data level input resulting in easy-to-understand exploration of cell annotation in single cell and spatial RNA sequencing datasets. Using either marker gene or average experession dataframes, the user has the option to compare the similarity of their <i>unannotated</i> clusters to <b>any</b> annotations in the literature.
 
