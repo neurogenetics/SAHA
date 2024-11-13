@@ -26,7 +26,8 @@
                ann1 = "list",
                ann2 = "list",
                ann3 = "list",
-               results = "list"
+               results = "list",
+               params = "list
             )
    )
    setMethod("show", "SAHA", function(object) {
