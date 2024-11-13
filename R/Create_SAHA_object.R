@@ -19,7 +19,7 @@ Create_SAHA_object <- function(query, db,data_type,existing=NULL){
    #### IF statement that allows users to either load Marker or AvgExp data
    if (data_type == "Markers") {
       #loading query data
-      cat("You have selected to load Query and DB marker data. ")
+      cat("You have selected to load Query and DB marker data.\n")
       #1. Read in your queried data as a df or csv
       if (inherits(query, "data.frame")) {
          # If query is already a data frame, use it directly
@@ -29,7 +29,7 @@ Create_SAHA_object <- function(query, db,data_type,existing=NULL){
          query_marker_data <- read.csv(query)
       }
 
-      #loading db data ########### THIS NEEDS TO BE A CHOICE TO ALLOW USERS TO LOAD PRE-LOADED PACKAGE DATA!!!!
+
       #2. Read in your db data as a df or csv
       if (inherits(db, "data.frame")) {
          # If query is already a data frame, use it directly
@@ -39,7 +39,7 @@ Create_SAHA_object <- function(query, db,data_type,existing=NULL){
          db_marker_data <- read.csv(db)
       }
    }else{
-      cat("You have selected to load Query and DB AvgExp data. \n")
+      cat("You have selected to load Query and DB AvgExp data.\n")
       #1. Read in your queried data as a df or csv
       if (inherits(query, "data.frame")) {
          # If query is already a data frame, use it directly
@@ -49,7 +49,6 @@ Create_SAHA_object <- function(query, db,data_type,existing=NULL){
          query_AvgExp_data <- read.csv(query)
       }
 
-      #loading db data ########### THIS NEEDS TO BE A CHOICE TO ALLOW USERS TO LOAD PRE-LOADED PACKAGE DATA!!!!
       #2. Read in your db data as a df or csv
       if (inherits(db, "data.frame")) {
          # If query is already a data frame, use it directly
@@ -67,14 +66,22 @@ Create_SAHA_object <- function(query, db,data_type,existing=NULL){
 
    if (data_type == "Markers") {
       #3A. Check to see that all rownames of query are in rownames of db
-      cat(paste("Loaded database contains", length(unique(temp_ann@db$Markers$cluster)),"unique cell types. \n"))
+      cat(paste("Loaded database contains", length(unique(temp_ann@db$Markers$cluster)),"unique cell types.\n"))
       #print the name of the loaded dataset
-      cat(paste("Loaded query dataset contains", length(unique(temp_ann@query$Markers$cluster)),"unique clusters. \n"))
+      cat(paste("Loaded query dataset contains", length(unique(temp_ann@query$Markers$cluster)),"unique clusters.\n"))
+      matched_genes <- intersect(temp_ann@query$Markers$gene, temp_ann@db$Markers$SYMBOL)
+      if (length(matched_genes) == 0) {
+         warning("\nSAHA did not detect any matching genes between your query and your database of interest.\nYour data has still been processed.\nPlease refer to the troubleshooting vignette.\n")
+      }
    }else if (data_type =="AvgExp"){
       #3B. Check to see that all rownames of query are in rownames of db
-      cat(paste("Loaded database contains", length(colnames(temp_ann@db$AvgExp)),"unique cell types. \n"))
+      cat(paste("Loaded database contains", length(colnames(temp_ann@db$AvgExp)),"unique cell types.\n"))
       #print the name of the loaded dataset
-      cat(paste("Loaded query dataset contains", length(colnames(temp_ann@query$AvgExp)),"unique clusters."))
+      cat(paste("Loaded query dataset contains", length(colnames(temp_ann@query$AvgExp)),"unique clusters.\n"))
+      matched_genes <- intersect(temp_ann@query$AvgExp$X, temp_ann@db$AvgExp$SYMBOL)
+      if (length(matched_genes) == 0) {
+         warning("\nSAHA did not detect any matching genes between your query and your database of interest.\nYour data has still been processed.\nPlease refer to the troubleshooting vignette.\n")
+      }
    }
 
    #the else could use an inherit that confirms that existing is a SAHA object....
@@ -82,6 +89,13 @@ Create_SAHA_object <- function(query, db,data_type,existing=NULL){
       ann=temp_ann
       return(ann)
    }else{
+      # Check if 'existing' is a valid SAHA object
+      if (!inherits(existing, "SAHA")) {
+         warning("\n'existing' object is not a valid SAHA object. Proceed with a new SAHA object.\n")
+         ann = temp_ann
+         return(ann)
+      }
+
       if (data_type=="Markers") {
          existing@query$Markers = data.frame(temp_ann@query$Markers)
          existing@db$Markers = data.frame(temp_ann@db$Markers)
@@ -89,10 +103,9 @@ Create_SAHA_object <- function(query, db,data_type,existing=NULL){
       }else if(data_type=="AvgExp"){
          existing@query$AvgExp = data.frame(temp_ann@query$AvgExp)
          existing@db$AvgExp = data.frame(temp_ann@db$AvgExp)
-         existing@data_type = "Markers & AvgExp"
+         existing@data_type = "AvgExp & Markers"
       }
       return(existing)
    }
-
 
 }
