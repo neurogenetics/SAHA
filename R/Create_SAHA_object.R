@@ -59,9 +59,9 @@ Create_SAHA_object <- function(query, db,data_type,existing=NULL){
       }
    }
    if (data_type == "Markers") {
-      temp_ann <- new("SAHA", data_type=data_type, query = list(Markers=data.frame(query_marker_data), AvgExp=data.frame(NULL)),db = list(Markers=data.frame(db_marker_data), AvgExp=data.frame(NULL)))
+      temp_ann <- new("SAHA", data_type=data_type, query = list(Markers=data.frame(query_marker_data), AvgExp=data.frame(NULL)),db = list(Markers=data.frame(db_marker_data), AvgExp=data.frame(NULL)),params=list(NULL))
    }else if (data_type =="AvgExp"){
-      temp_ann <- new("SAHA", data_type=data_type, query = list(Markers=data.frame(NULL), AvgExp=data.frame(query_AvgExp_data)),db = list(Markers=data.frame(NULL), AvgExp=data.frame(db_AvgExp_data)))
+      temp_ann <- new("SAHA", data_type=data_type, query = list(Markers=data.frame(NULL), AvgExp=data.frame(query_AvgExp_data)),db = list(Markers=data.frame(NULL), AvgExp=data.frame(db_AvgExp_data)),params=list(NULL))
    }
 
    if (data_type == "Markers") {
