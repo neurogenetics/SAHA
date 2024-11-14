@@ -15,23 +15,28 @@
 #'
 #' @export
 
-SAHA <- function(query,db,meta,data_type){
-   ann=Create_SAHA_object(query = query,db = db,data_type = data_type)
-   if (data_type=="Markers") {
-      ann=Initialize_Markers(ann)
-      ann=Tune_Markers(ann = ann,method = "absolute",method_value = 100,method_var = "avg_log2FC",set = "db")
-      ann=Tune_Markers(ann = ann,method = "relative",method_value = 0.75,method_var = "avg_log2FC",set = "query")
-      ann=Run_Marker_Based(ann)
-      ann=Create_MarkerBased_Viz(ann,meta = meta,facet = TRUE)
-      return(call_SAHA_plots(ann, plot_type = "Marker-based",data_type = "Markers"))
-   }else if (data_type=="AvgExp") {
-      ann=Initialize_MarkerFree(ann = ann)
-      ann=Downsample(ann)
-      ann=NormalizeDS(ann,assay_query = "RNA")
-      ann=CorrelateDS(ann)
-      ann=Create_MarkerFree_Viz(ann,facet = TRUE,meta = meta, ABC = TRUE, chemistry = "10Xv3")
-      return(call_SAHA_plots(ann, plot_type = "Marker-free",data_type = "AvgExp"))
-   }else{
-      cat("Something went wrong. Please read the documentation or consider running the full SAHA pipeline.")
-   }
+SAHA <- function(query, db, meta, data_type) {
+   capture.output({
+      ann <- suppressMessages(Create_SAHA_object(query = query, db = db, data_type = data_type))
+
+      if (data_type == "Markers") {
+         ann <- suppressMessages(Initialize_Markers(ann))
+         ann <- suppressMessages(Tune_Markers(ann = ann, method = "absolute", method_value = 100, method_var = "avg_log2FC", set = "db"))
+         ann <- suppressMessages(Tune_Markers(ann = ann, method = "relative", method_value = 0.75, method_var = "avg_log2FC", set = "query"))
+         ann <- suppressMessages(Run_Marker_Based(ann))
+         ann <- suppressMessages(Create_MarkerBased_Viz(ann, meta = meta, facet = TRUE))
+         return(call_SAHA_plots(ann, plot_type = "Marker-based", data_type = "Markers"))
+
+      } else if (data_type == "AvgExp") {
+         ann <- suppressMessages(Initialize_MarkerFree(ann = ann))
+         ann <- suppressMessages(Downsample(ann))
+         ann <- suppressMessages(NormalizeDS(ann, assay_query = "RNA"))
+         ann <- suppressMessages(CorrelateDS(ann))
+         ann <- suppressMessages(Create_MarkerFree_Viz(ann, facet = TRUE, meta = meta, ABC = TRUE, chemistry = "10Xv3"))
+         return(call_SAHA_plots(ann, plot_type = "Marker-free", data_type = "AvgExp"))
+
+      } else {
+         cat("Something went wrong. Please read the documentation or consider running the full SAHA pipeline.")
+      }
+   })
 }
