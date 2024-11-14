@@ -27,7 +27,7 @@ Downsample <- function(ann, custom_ds=NULL){
       cat("Something went wrong! It appears there are either no shared genes between query and db. Please check downsampling manually to ensure that symbols (gene names) are in the same format and that query and db share common genes for SAHA flavor 3.")
    }
 
-   ann@params$marker_free <- list(downsample=ifelse(is.null(custom_ds), "query&db",deparse(substitute(custom_ds))),length_ds= ifelse(is.null(custom_ds), length(rownames(ann3$query)), cat(length(rownames(ann3$query)),"/",length(custom_ds))))
+   ann@params$marker_free <- list(downsample=ifelse(is.null(custom_ds), "query&db",deparse(substitute(custom_ds))),length_ds= ifelse(is.null(custom_ds), length(rownames(ann3$query)), paste0(length(rownames(ann3$query)),"/",length(custom_ds))))
 
    #6. Return the dataframe
    ann@ann3=ann3
