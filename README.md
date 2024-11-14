@@ -19,13 +19,13 @@ Cell and Spatial Datasets
 ## Useful links
 [Installation](#installation)
 
-[Getting started with SAHA](https://github.com/neurogenetics/SAHA/wiki/3-SAHA-Main-Workflow)
-
 [Creating SAHA Inputs](https://github.com/neurogenetics/SAHA/wiki/1-Preparing-Seurat-Object-for-SAHA) #Coming Soon
+
+[Getting started with SAHA](https://github.com/neurogenetics/SAHA/wiki/3-SAHA-Main-Workflow)
 
 [Troubleshooting](https://github.com/neurogenetics/SAHA/wiki/4-Troubleshooting) #Coming Soon
 
-[Working with Custom Databases](https://github.com/neurogenetics/SAHA/wiki/5-SAHA-with-Custom-Database) #Coming Soon
+[Working with Custom Databases](https://github.com/neurogenetics/SAHA/wiki/5-SAHA-with-Custom-Database)
 
 [Comparing Multiple SAHA Runs](https://github.com/neurogenetics/SAHA/wiki/6-Multi%E2%80%90SAHA) #Coming Soon
 
