@@ -14,18 +14,23 @@ Summarize_Params <- function(ann) {
    # Initialize an empty data frame for params
    params_data <- data.frame(Analysis = character(), Input = character(), Function = character(), Parameter = character(), Value = character())
 
-   init_selfsim_data <- data.frame(Analysis = character(), Input = character(), Function = character(), Parameter = character(), Value = character())
+   init_params <- NULL
+   init_selfsim_data <- NULL
+   self_similarity_params <- NULL
+   ds_params <- NULL
 
 
-   # Initialize_Markers parameters with Analysis = "Marker-Based"
-   init_params <- data.frame(
-      Analysis = "Marker-Based",
-      Input = "Query",
-      Function = "Initialize_Markers",
-      Parameter = c("p_thresh", "FC_thresh", "sens_thresh", "spec_thresh"),
-      Value = c(ann@params$markers$p_thresh, ann@params$markers$FC_thresh,
-                ann@params$markers$sens_thresh, ann@params$markers$spec_thresh)
-   )
+   if (!is.null(ann@params$markers$p_thresh)) {
+      # Initialize_Markers parameters with Analysis = "Marker-Based"
+      init_params <- data.frame(
+         Analysis = "Marker-Based",
+         Input = "Query",
+         Function = "Initialize_Markers",
+         Parameter = c("p_thresh", "FC_thresh", "sens_thresh", "spec_thresh"),
+         Value = c(ann@params$markers$p_thresh, ann@params$markers$FC_thresh,
+                   ann@params$markers$sens_thresh, ann@params$markers$spec_thresh)
+      )
+   }
 
    # Initialize_SelfSimilarity parameters
    if (!is.null(ann@params$markers$selfsim_analysis)) {
@@ -46,16 +51,16 @@ Summarize_Params <- function(ann) {
       }
    }
 
-
-   # Self_Similarity parameters with Analysis = "Self_Sim"
-   self_similarity_params <- data.frame(
-      Analysis = "Self_Sim",
-      Input = "Query",
-      Function = "Create_SelfSimilarity_Viz",
-      Parameter = "assay_markers",
-      Value = ann@params$markers$assay_markers
-   )
-
+   if (!is.null(ann@params$markers$assay_markers)) {
+      # Self_Similarity parameters with Analysis = "Self_Sim"
+      self_similarity_params <- data.frame(
+         Analysis = "Self_Sim",
+         Input = "Query",
+         Function = "Create_SelfSimilarity_Viz",
+         Parameter = "assay_markers",
+         Value = ann@params$markers$assay_markers
+      )
+   }
 
    # Tune_Markers parameters with conditional naming for DB and Analysis = "Marker-Based"
    if (!is.null(ann@params$markers$tuning_history)) {
@@ -76,18 +81,24 @@ Summarize_Params <- function(ann) {
       }
    }
 
-   # Downsample parameters
-   ds_params <- data.frame(
-      Analysis = "Marker-Free",
-      Input = "Query&DB",
-      Function = "Downsample",
-      Parameter = c("downsample", "length_ds"),
-      Value = c(ann@params$marker_free$downsample,ann@params$marker_free$length_ds)
-   )
 
+   if (!is.null(ann@params$marker_free$downsample) &&
+       !is.null(ann@params$marker_free$length_ds)) {
+      # Downsample parameters
+      ds_params <- data.frame(
+         Analysis = "Marker-Free",
+         Input = "Query&DB",
+         Function = "Downsample",
+         Parameter = c("downsample", "length_ds"),
+         Value = c(ann@params$marker_free$downsample, ann@params$marker_free$length_ds)
+      )
+   }
 
    # Combine all parameters
-   params_data <- rbind(params_data, init_params, init_selfsim_data, self_similarity_params, ds_params)
+
+   # Combine only the non-null data frames
+   params_list <- list(params_data, init_params, init_selfsim_data, self_similarity_params, ds_params)
+   params_data <- do.call(rbind, Filter(Negate(is.null), params_list))
 
    # Clear and add the params to ann@results
    ann@params$summary <- NULL
