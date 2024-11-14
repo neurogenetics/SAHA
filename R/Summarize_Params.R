@@ -76,9 +76,18 @@ Summarize_Params <- function(ann) {
       }
    }
 
+   # Downsample parameters
+   ds_params <- data.frame(
+      Analysis = "Marker-Free",
+      Input = "Query&DB",
+      Function = "Downsample",
+      Parameter = c("downsample", "length_ds"),
+      Value = c(ann@params$marker_free$downsample,ann@params$marker_free$length_ds)
+   )
+
 
    # Combine all parameters
-   params_data <- rbind(params_data, init_params, init_selfsim_data, self_similarity_params)
+   params_data <- rbind(params_data, init_params, init_selfsim_data, self_similarity_params, ds_params)
 
    # Clear and add the params to ann@results
    ann@params$summary <- NULL
