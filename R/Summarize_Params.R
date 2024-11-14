@@ -14,24 +14,48 @@ Summarize_Params <- function(ann) {
    # Initialize an empty data frame for params
    params_data <- data.frame(Analysis = character(), Input = character(), Function = character(), Parameter = character(), Value = character())
 
+   init_selfsim_data <- data.frame(Analysis = character(), Input = character(), Function = character(), Parameter = character(), Value = character())
+
+
    # Initialize_Markers parameters with Analysis = "Marker-Based"
    init_params <- data.frame(
       Analysis = "Marker-Based",
-      Input = NA,  # Not specific to Query/DB
+      Input = "Query",
       Function = "Initialize_Markers",
       Parameter = c("p_thresh", "FC_thresh", "sens_thresh", "spec_thresh"),
       Value = c(ann@params$markers$p_thresh, ann@params$markers$FC_thresh,
                 ann@params$markers$sens_thresh, ann@params$markers$spec_thresh)
    )
 
+   # Initialize_SelfSimilarity parameters
+   if (!is.null(ann@params$markers$selfsim_analysis)) {
+      for (i in seq_along(ann@params$markers$selfsim_analysis)) {
+         sim_params <- ann@params$markers$selfsim_analysis[[i]]
+         # Determine the prefix based on Input type
+         prefix <- "Query_" # for future use: #ifelse(sim_params$set == "db", "db_", "query_")
+
+         method_params <- data.frame(
+            Analysis = "Self_Sim",
+            Input = "Query", # for future use: #ifelse(sim_params$set == "db", "db_", "query_")
+            Function = "Initialize_SelfSimilarity",
+            Parameter = paste0(prefix, c("slot")),
+            Value = c(sim_params$slot)
+         )
+         # Append each set of parameters for Tune_Markers
+         init_selfsim_data <- rbind(init_selfsim_data, method_params)
+      }
+   }
+
+
    # Self_Similarity parameters with Analysis = "Self_Sim"
    self_similarity_params <- data.frame(
       Analysis = "Self_Sim",
-      Input = NA,
+      Input = "Query",
       Function = "Create_SelfSimilarity_Viz",
       Parameter = "assay_markers",
       Value = ann@params$markers$assay_markers
    )
+
 
    # Tune_Markers parameters with conditional naming for DB and Analysis = "Marker-Based"
    if (!is.null(ann@params$markers$tuning_history)) {
@@ -52,8 +76,9 @@ Summarize_Params <- function(ann) {
       }
    }
 
+
    # Combine all parameters
-   params_data <- rbind(params_data, init_params, self_similarity_params)
+   params_data <- rbind(params_data, init_params, init_selfsim_data, self_similarity_params)
 
    # Clear and add the params to ann@results
    ann@params$summary <- NULL
