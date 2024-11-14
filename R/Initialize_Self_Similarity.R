@@ -23,8 +23,6 @@ Initialize_Self_Similiarity <- function(ann,slot,custom_ds=NULL){
       cor_mat <- cor(temp)
       # Print the resulting dataframe
       ann@ann1$AvgExp_selfsim_matrix=cor_mat
-
-      return(ann)
    }else if(slot=="Markers"){
       temp=ann@query$Markers
       df = data.frame(temp[,c("gene","cluster")])
@@ -40,7 +38,19 @@ Initialize_Self_Similiarity <- function(ann,slot,custom_ds=NULL){
 
       # Print the resulting dataframe
       ann@ann1$Marker_selfsim_matrix=wide_data
-      return(ann)
    }
 
+   # Save the method parameters as a tuning entry in the history
+   selfsim_entry <- list(
+      slot = slot
+   )
+
+
+   # Append to tuning history, creating it if it doesn't exist
+   if (is.null(ann@params$markers$selfsim_analysis)) {
+      ann@params$markers$selfsim_analysis <- list(selfsim_entry)
+   } else {
+      ann@params$markers$selfsim_analysis <- append(ann@params$markers$selfsim_analysis, list(selfsim_entry))
+   }
+   return(ann)  # Return the updated object at the end
 }
