@@ -14,8 +14,9 @@
 #' @importFrom dplyr %>% group_by, top_n, filter, ungroup, sym
 #'
 #' @export
+
 Tune_Markers = function(ann, method, method_value, method_var, set) {
-   if (is.null(ann@ann1[[set]])) { #and statement here, if method %in% colnames(ann@ann1[[set]])
+   if (is.null(ann@ann1[[set]]) || !method_var %in% colnames(ann@ann1[[set]])) {
       warning("Either Initialize_Markers() wasn't run or the specificed method does not exist for the set. Please refer to documentation.")
    } else {
       if (method == "absolute") {
