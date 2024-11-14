@@ -4,11 +4,8 @@
 #' annotation object. It generates heatmaps for marker self-similarity or average
 #' expression self-similarity, depending on the specified slot
 #'
-#' @param ann An object containing annotation data. It should have the required
-#'             matrices (`Marker_selfsim_matrix` or `AvgExp_selfsim_matrix`) and
-#'             result storage.
-#' @param slot A character string indicating which slot to use. Should be either
-#'             "Markers" or "AvgExp".
+#' @param ann An object containing annotation data. It should have the required matrices (`Marker_selfsim_matrix` or `AvgExp_selfsim_matrix`) and result storage.
+#' @param slot A character string indicating which slot to use. Should be either "Markers" or "AvgExp".
 #' @param assay_db A character string specifying the assay database prefix. Default is "RNA".
 #' @return The updated annotation object with self-similarity heatmaps stored in `ann@results$self_similarity`.
 #' @importFrom ComplexHeatmap Heatmap rowAnnotation columnAnnotation
@@ -43,6 +40,7 @@ Create_SelfSimilarity_Viz <- function(ann, slot,assay_db="RNA") {
                     cluster_rows = TRUE,
                     cluster_columns = TRUE)
       ann@results$self_similarity$similiarity_heatmap_markers = p1
+      ann@params$markers <- c(ann@params$markers, list(assay_markers = assay_db))
       return(ann)
    }else if(slot == "AvgExp"){
       cor_mat=ann@ann1$AvgExp_selfsim_matrix
@@ -60,6 +58,7 @@ Create_SelfSimilarity_Viz <- function(ann, slot,assay_db="RNA") {
       )  # Display the colorbar
 
       ann@results$self_similarity$similiarity_heatmap_avgexp = p2
+      ann@params$markers <- c(ann@params$markers, list(assay_avgexp = assay_db))
       return(ann)
    }
 
