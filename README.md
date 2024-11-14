@@ -17,7 +17,7 @@ Cell and Spatial Datasets
 <b>Beta Prior to Release:</b> If you chose to use, please check back regularly for updates and improvements. <b>Version 1.0</b> will indicate stable release and contain links to publication or preprint.
 
 ## Useful links
-[Installation](https://github.com/neurogenetics/SAHA/edit/main/README.md#installation)
+[Installation](#installation)
 
 [Getting started with SAHA](https://github.com/neurogenetics/SAHA/wiki/SAHA-Main-Workflow)
 
