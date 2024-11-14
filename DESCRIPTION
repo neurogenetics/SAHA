@@ -24,4 +24,8 @@ Imports:
    vegan,
    testthat,
    dendextend
-   
+Suggests: 
+    SAHAdata,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
