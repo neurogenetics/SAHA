@@ -1,6 +1,6 @@
 \name{Seurat2SAHA}
 \alias{Seurat2SAHA}
-\title{Create SAHA inputs from a Seurat Objet}
+\title{Create SAHA inputs from a Seurat Object}
 \usage{
 SAHA_input = Seurat2SAHA(obj, output="Both")
 }
