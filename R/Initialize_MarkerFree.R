@@ -35,17 +35,17 @@ Initialize_MarkerFree <- function(ann){
       ann@db$AvgExp = ann@db$AvgExp %>%
          select(-X.1)
    }
-   if (all(!duplicated(ann@db$AvgExp$SYMBOL))) {
-      rownames(ann@db$AvgExp)=ann@db$AvgExp$SYMBOL
-      ann@db$AvgExp = ann@db$AvgExp %>%
-         select(-SYMBOL, -gene)
-   }else{
-      ann@db$AvgExp=ann@db$AvgExp[!duplicated(ann@db$AvgExp$SYMBOL),]
-      ann@db$AvgExp=ann@db$AvgExp[!is.na(ann@db$AvgExp$SYMBOL),]
-      rownames(ann@db$AvgExp)=ann@db$AvgExp$SYMBOL
-      ann@db$AvgExp = ann@db$AvgExp %>%
-         select(-SYMBOL, -gene)
-   }
+   # if (all(!duplicated(ann@db$AvgExp$SYMBOL))) {
+   #    rownames(ann@db$AvgExp)=ann@db$AvgExp$SYMBOL
+   #    ann@db$AvgExp = ann@db$AvgExp %>%
+   #       select(-SYMBOL, -gene)
+   # }else{
+   #    ann@db$AvgExp=ann@db$AvgExp[!duplicated(ann@db$AvgExp$SYMBOL),]
+   #    ann@db$AvgExp=ann@db$AvgExp[!is.na(ann@db$AvgExp$SYMBOL),]
+   #    rownames(ann@db$AvgExp)=ann@db$AvgExp$SYMBOL
+   #    ann@db$AvgExp = ann@db$AvgExp %>%
+   #       select(-SYMBOL, -gene)
+   # }
    return(ann)
 }
 

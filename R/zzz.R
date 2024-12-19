@@ -74,7 +74,7 @@
          #db marker
          if (length(unique(object@db$Markers$cluster)) > 0) {
             db_anno <- length(unique(object@db$Markers$cluster)) #database # of cell types
-            db_markers <- length(unique(object@db$Markers$SYMBOL))#database gene entries
+            db_markers <- length(unique(object@db$Markers$gene))#database gene entries
          }
 
          #print results
@@ -109,7 +109,7 @@
          #db marker
          if (length(unique(object@db$Markers$cluster)) > 0) {
             db_anno <- length(unique(object@db$Markers$cluster)) #database # of cell types
-            db_markers <- length(unique(object@db$Markers$SYMBOL))#database gene entries
+            db_markers <- length(unique(object@db$Markers$gene))#database gene entries
          }
          # put the results in two different lines
          cat(sprintf(

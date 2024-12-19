@@ -34,34 +34,34 @@ Create_MarkerBased_Viz <- function (ann, meta = NULL, facet = F){
       }
    } else {
       # Handle case where meta is NULL
-      warning("meta argument is NULL. Function might not work as expected.")
-      meta <- data.frame()  # Create an empty data frame
+      # warning("meta argument is NULL. Function might not work as expected.")
+      # meta <- data.frame()  # Create an empty data frame
    }
    master_df = ann@ann2
    master_df$celltype <- gsub("-", " ", master_df$celltype)
-   temp_met=meta[meta$subclass_spa %in% unique(master_df$celltype),]
+   # temp_met=meta[meta$subclass_spa %in% unique(master_df$celltype),]
 
    ###########ALL marker names need to have all spaces and NOT - !! - then this will work...
 
-   master_df$class <- sapply(master_df$celltype, function(x) {
-      match_idx <- match(x, temp_met$subclass_spa)
-      if (length(match_idx) > 0) temp_met$class[match_idx] else NA
-   })
-
-   master_df$class_color <- sapply(master_df$celltype, function(x) {
-      match_idx <- match(x, temp_met$subclass_spa)
-      if (length(match_idx) > 0) temp_met$class_color[match_idx] else NA
-   })
-
-   master_df$nt <- sapply(master_df$celltype, function(x) {
-      match_idx <- match(x, temp_met$subclass_spa)
-      if (length(match_idx) > 0) temp_met$neurotransmitter[match_idx] else NA
-   })
-
-   master_df$nt_color <- sapply(master_df$celltype, function(x) {
-      match_idx <- match(x, temp_met$subclass_spa)
-      if (length(match_idx) > 0) temp_met$neurotransmitter_color[match_idx] else NA
-   })
+   # master_df$class <- sapply(master_df$celltype, function(x) {
+   #    match_idx <- match(x, temp_met$subclass_spa)
+   #    if (length(match_idx) > 0) temp_met$class[match_idx] else NA
+   # })
+   #
+   # master_df$class_color <- sapply(master_df$celltype, function(x) {
+   #    match_idx <- match(x, temp_met$subclass_spa)
+   #    if (length(match_idx) > 0) temp_met$class_color[match_idx] else NA
+   # })
+   #
+   # master_df$nt <- sapply(master_df$celltype, function(x) {
+   #    match_idx <- match(x, temp_met$subclass_spa)
+   #    if (length(match_idx) > 0) temp_met$neurotransmitter[match_idx] else NA
+   # })
+   #
+   # master_df$nt_color <- sapply(master_df$celltype, function(x) {
+   #    match_idx <- match(x, temp_met$subclass_spa)
+   #    if (length(match_idx) > 0) temp_met$neurotransmitter_color[match_idx] else NA
+   # })
 
 
    # Create the ggplot plot with the ordered 'cluster' variable -- ALL
@@ -92,6 +92,7 @@ Create_MarkerBased_Viz <- function (ann, meta = NULL, facet = F){
       labs(title = "Every Cell Type by Cluster", x = " ", y = "Cluster") +
       scale_color_manual(values = c("black", "red")) +
       theme_bw() +
+      scale_y_discrete(limits = rev(levels(plot_df$cluster)))+
       theme(axis.text.x = element_text(angle = 90, hjust = 1),
             axis.text.y = element_text(size = 8),
             plot.title = element_text(size = 10),
@@ -100,7 +101,9 @@ Create_MarkerBased_Viz <- function (ann, meta = NULL, facet = F){
 
    if (facet == TRUE & length(meta) > 0 ) {
       p1 <- p1+facet_grid(~class, scales="free_x", space = "free")
-   }else{warning("You are attempting to facet the Marker-based plot, however there is a problem with the metadata file loaded. Please refer to the SAHA manual or open an issue on GitHub.")}
+   }else{
+      # warning("You are attempting to facet the Marker-based plot, however there is a problem with the metadata file loaded. Please refer to the SAHA manual or open an issue on GitHub.")
+      }
 
    # Barplot showing total available markers and proportion covered
    p2 <- ggplot(data =plot_df, aes(x = celltype, y = total_marker)) +
@@ -123,6 +126,7 @@ Create_MarkerBased_Viz <- function (ann, meta = NULL, facet = F){
       scale_size_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.25)) +
       labs(title = "Every Cell Type by Cluster", x = " ", y = "Cluster") +
       scale_color_manual(values = c("white", "red")) +
+      scale_y_discrete(limits = rev(levels(plot_df$cluster)))+
       theme_bw() +
       theme(axis.text.x = element_text(angle = 90, hjust = 1),
             axis.text.y = element_text(size = 8),
@@ -143,6 +147,7 @@ Create_MarkerBased_Viz <- function (ann, meta = NULL, facet = F){
       scale_size_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.25)) +
       labs(title = "The Most Significant Cell Type by Cluster", x = " ", y = "Cluster") +
       scale_color_manual(values = c("white","red")) +
+      scale_y_discrete(limits = rev(levels(plot_df$cluster)))+
       theme_bw() +
       theme(axis.text.x = element_text(angle = 90, hjust = 1),
             axis.text.y = element_text(size = 8),

@@ -69,7 +69,7 @@ Create_SAHA_object <- function(query, db,data_type,existing=NULL){
       cat(paste("Loaded database contains", length(unique(temp_ann@db$Markers$cluster)),"unique cell types.\n"))
       #print the name of the loaded dataset
       cat(paste("Loaded query dataset contains", length(unique(temp_ann@query$Markers$cluster)),"unique clusters.\n"))
-      matched_genes <- intersect(temp_ann@query$Markers$gene, temp_ann@db$Markers$SYMBOL)
+      matched_genes <- intersect(temp_ann@query$Markers$gene, temp_ann@db$Markers$gene)
       if (length(matched_genes) == 0) {
          warning("\nSAHA did not detect any matching genes between your query and your database of interest.\nYour data has still been processed.\nPlease refer to the troubleshooting vignette.\n")
       }
@@ -78,7 +78,7 @@ Create_SAHA_object <- function(query, db,data_type,existing=NULL){
       cat(paste("Loaded database contains", length(colnames(temp_ann@db$AvgExp)),"unique cell types.\n"))
       #print the name of the loaded dataset
       cat(paste("Loaded query dataset contains", length(colnames(temp_ann@query$AvgExp)),"unique clusters.\n"))
-      matched_genes <- intersect(temp_ann@query$AvgExp$X, temp_ann@db$AvgExp$SYMBOL)
+      matched_genes <- intersect(rownames(temp_ann@query$AvgExp), rownames(temp_ann@db$AvgExp))
       if (length(matched_genes) == 0) {
          warning("\nSAHA did not detect any matching genes between your query and your database of interest.\nYour data has still been processed.\nPlease refer to the troubleshooting vignette.\n")
       }

@@ -14,5 +14,5 @@
 #' @export
 SAHA_lookup_cluster <- function(cluster,ann) {
    k=ann@ann1$query[ann@ann1$query$cluster==cluster,"gene"]
-   return(summary(factor(ann@ann1$db[ann@ann1$db$SYMBOL %in% k, "cluster"], levels(factor(ann@ann1$db$cluster)))))
+   return(summary(factor(ann@ann1$db[ann@ann1$db$gene %in% k, "cluster"], levels(factor(ann@ann1$db$cluster)))))
 }

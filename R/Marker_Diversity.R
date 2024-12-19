@@ -40,7 +40,9 @@ Marker_Diversity = function(ann){
    shannon_diversity=data.frame(shannon_diversity)
    shannon_diversity$cluster=rownames(shannon_diversity)
 
-   shannon_diversity$cluster=as.numeric(shannon_diversity$cluster)
+   # # 99% sure you don't need this. When swithced to custom with pre-named clusters doesn't work... deal if we need to later.
+   # shannon_diversity$cluster=as.numeric(shannon_diversity$cluster)
+
 
    model = lm(shannon_diversity ~ 1, data = shannon_diversity)
    CI=confint(model, level = 0.95)
@@ -62,6 +64,7 @@ Marker_Diversity = function(ann){
              geom_hline(yintercept = CI[2],linetype = 2)+
              theme_bw()+  # Threshold line 2
              labs(title = "Marker Diversity by Cluster", y = "Shannon Diveristy", x = "Cluster ID",
-                  color = "Marker Diversity"))  # Rename legend title
+                  color = "Marker Diversity") + theme(axis.text.x = element_text(angle = 90)) + theme(axis.text = element_text(hjust = 0.95,
+    vjust = 0.5)))  # Rename legend title
 
    }
