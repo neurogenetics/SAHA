@@ -76,20 +76,24 @@ AutoAnnotate = function(ann, data_type=NULL){
                                       best_match = apply(ann@results$marker_free$corr, 1, function(row) names(ann@results$marker_free$corr)[which.max(row)]),
                                       correlation = apply(ann@results$marker_free$corr, 1, max))
       best_match.AvgExp$cluster<- gsub(paste0("^query\\."), "", rownames(best_match.AvgExp))
-      best_matches=suppressMessages(full_join(best_match.AvgExp,y = best_match.Markers))
-      best_matches <- best_matches %>%
-         #select(best_match) %>%
-         mutate(best_match_avg = str_replace(best_match, "^db\\.", "")) %>%
-         mutate(best_match_avg = str_replace_all(best_match_avg, "\\.", " "))
+      if (!all(best_match.AvgExp$cluster%in%best_match.Markers$cluster)) {
+         warning("No matching cluster names found in marker-based and marker-free analysis. Consider running separately or renaming clusters.")
+      }else{
+         best_matches=suppressMessages(full_join(best_match.AvgExp,y = best_match.Markers))
+         best_matches <- best_matches %>%
+            #select(best_match) %>%
+            mutate(best_match_avg = str_replace(best_match, "^db\\.", "")) %>%
+            mutate(best_match_avg = str_replace_all(best_match_avg, "\\.", " "))
 
-      best_matches <- best_matches %>%
-         mutate(consensus = if_else(str_remove_all(celltype, "\\s+") == str_remove_all(best_match_avg, "\\s+"), "MATCH", "DISAGREEMENT"))
-      best_matches <- best_matches %>%
-         mutate(final_output = if_else(consensus == "MATCH", celltype, "INCONCLUSIVE"))
-      best_matches[is.na(best_matches)]<-"INCONCLUSIVE"
-      best_matches <- best_matches %>%
-         select(cluster, celltype,best_match_avg,consensus,final_output)
-      colnames(best_matches)=c("cluster","marker_based","marker_free","consensus","best_match")
-      return(best_matches)
+         best_matches <- best_matches %>%
+            mutate(consensus = if_else(str_remove_all(celltype, "\\s+") == str_remove_all(best_match_avg, "\\s+"), "MATCH", "DISAGREEMENT"))
+         best_matches <- best_matches %>%
+            mutate(final_output = if_else(consensus == "MATCH", celltype, "INCONCLUSIVE"))
+         best_matches[is.na(best_matches)]<-"INCONCLUSIVE"
+         best_matches <- best_matches %>%
+            select(cluster, celltype,best_match_avg,consensus,final_output)
+         colnames(best_matches)=c("cluster","marker_based","marker_free","consensus","best_match")
+         return(best_matches)
+      }
    }
 }

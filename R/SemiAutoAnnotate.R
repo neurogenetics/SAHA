@@ -48,8 +48,14 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
 
       for (i in todo$old_names) {
          temp2 = temp
-         temp2$data = temp$data[temp$data$cluster == i, ]
-         print(temp2 + theme(legend.position = "none"))
+         temp2 <- ggplot(subset(temp$data, cluster == i),  aes(x = celltype, y = cluster, alpha = as.numeric(-log(pvalue,10)))) +
+            geom_point(aes(size = as.numeric(prop), color = sig)) +
+            scale_size_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.25)) +
+            labs(title = "Every Cell Type by Cluster", x = " ", y = "Cluster") +
+            scale_color_manual(values = c("black", "red")) +
+            theme_bw() +
+            theme(legend.position = "none",axis.text.x = element_text(angle=90,hjust=1))
+         print(temp2)
          x = readline(paste0("What would you like to name cluster ", i, ": "))
 
          if (x == "") {
@@ -136,6 +142,9 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
       hand_names2 = data.frame(rownames(ann3))
       colnames(hand_names2)[1] = "old_names"
       hand_names = merge(hand_names1, hand_names2, by = "old_names")
+      if (nrow(hand_names == 0)) {
+         warning("No matching cluster names found in marker-based and marker-free analysis. Consider running separately or renaming clusters.")
+      }
       hand_names = hand_names %>% arrange(old_names)
       hand_names$new_names = ""
 
@@ -154,8 +163,14 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
 
       for (i in todo$old_names) {
          temp2 = ann2
-         temp2$data = ann2$data[ann2$data$cluster == i, ]
-         p1 = temp2 + theme(legend.position = "none")
+         temp2 <- ggplot(subset(temp$data, cluster == i),  aes(x = celltype, y = cluster, alpha = as.numeric(-log(pvalue,10)))) +
+            geom_point(aes(size = as.numeric(prop), color = sig)) +
+            scale_size_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.25)) +
+            labs(title = "Every Cell Type by Cluster", x = " ", y = "Cluster") +
+            scale_color_manual(values = c("black", "red")) +
+            theme_bw() +
+            theme(legend.position = "none",axis.text.x = element_text(angle=90,hjust=1))
+         p1 = temp2
          temp = ann3[i, ]
          mat = data.matrix(temp)
          p2 = Heatmap(mat,
