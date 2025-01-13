@@ -12,7 +12,7 @@
 #' @importFrom stats cor.test
 #'
 #' @export
-CorrelateDS <- function(ann){
+CorrelateDS <- function(ann, corr_method = "pearson"){
    # compute Pearson coefficients b/w query and ABC celltype expression profiles
    db_columns <- colnames(ann@results$marker_free$norm_merge)[grepl("db", colnames(ann@results$marker_free$norm_merge))]
    query_columns <- colnames(ann@results$marker_free$norm_merge)[grepl("query", colnames(ann@results$marker_free$norm_merge))]
@@ -23,12 +23,13 @@ CorrelateDS <- function(ann){
 
    for (i in seq_along(query_columns)) {
       for (j in seq_along(db_columns)) {
-         cor_test <- cor.test(ann@results$marker_free$norm_merge[[query_columns[i]]], ann@results$marker_free$norm_merge[[db_columns[j]]], method = "pearson")
+         suppressWarnings(cor_test <- cor.test(ann@results$marker_free$norm_merge[[query_columns[i]]], ann@results$marker_free$norm_merge[[db_columns[j]]], method = corr_method))
          correlation.df[i, j] <- cor_test$estimate
       }
    }
 
    correlation.df <- as.data.frame(correlation.df)
    ann@results$marker_free$corr=correlation.df
+   ann@params$marker_free$corr_method <- corr_method
    return(ann)
 }

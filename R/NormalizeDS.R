@@ -118,7 +118,7 @@ NormalizeDS <- function(ann,assay_db = "RNA",assay_query,norm_method = "across_c
    }else {
       warning("Neither normalization across clusters (norm_method = 'across_clust') nor any other valid option detected. Please consult documentation.")
    }
-   #this need to be made into a list
+   ann@params$marker_free$norm_method <- norm_method
    return(ann)
 
 }
