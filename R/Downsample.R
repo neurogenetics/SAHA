@@ -14,10 +14,13 @@ Downsample <- function(ann, custom_ds=NULL){
    if (is.null(custom_ds)) {
      query_genes=rownames(ann@query$AvgExp)
    }else{
-     query_genes=custom_ds
+     intended_query_genes=custom_ds
+     overlap <- intersect(rownames(ann@db$AvgExp), rownames(ann@query$AvgExp))
+     query_genes <- intersect(overlap, intended_query_genes)
    }
    db_ds=ann@db$AvgExp[rownames(ann@db$AvgExp)%in%query_genes,]
    query_ds=ann@query$AvgExp[rownames(ann@query$AvgExp)%in%rownames(db_ds),]
+
    #4. Create list of data.frames
    ann3=list("query"=query_ds, "db"=db_ds)
    #5. Check to see that all rownames of query are in rownames of db
