@@ -103,7 +103,7 @@ NormalizeDS <- function(ann,assay_db = "RNA",assay_query,norm_method = "across_c
       avgexp_db.df <- as.data.frame(apply(ann@ann3$db, 2, function(x) (x - mean(x)) / sd(x)))
 
       colnames(avgexp_query.df) <- paste0("query.",colnames(avgexp_query.df))
-      colnames(avgexp_db.df) <- paste0("db",colnames(avgexp_db.df))
+      colnames(avgexp_db.df) <- paste0("db.",colnames(avgexp_db.df))
 
       avgexp_query.df <- avgexp_query.df %>%
          rownames_to_column(var = "Row")
