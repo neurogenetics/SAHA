@@ -1,13 +1,15 @@
-#' Computes Pearson correlations between query and database expression profiles
+#' Computes correlations between query and database expression profiles
 #'
-#' This function calculates Pearson correlation coefficients between all query and
+#' This function calculates correlation coefficients between all query and
 #' database cell type expression profiles stored in the `ann@results$marker_free$norm_merge` data
 #' frame within the `ann` object. The results are stored in a data frame named
-#' `correlation.df` within `ann@results$marker_free`.
+#' `corr` within `ann@results$marker_free`.
 #'
 #' @param ann An object containing normalized gene expression data (`ann@results$marker_free$norm_merge`).
+#' @param corr_method Character string indicating which correlation coefficient is to be computed.
+#'        Options are "pearson" (default), "kendall", or "spearman".
 #'
-#' @return The modified `ann` object with the `correlation.df` stored within `ann@results$marker_free`.
+#' @return The modified `ann` object with the correlation data frame stored within `ann@results$marker_free$corr`.
 #'
 #' @importFrom stats cor.test
 #'
