@@ -1,25 +1,41 @@
 \name{Create_MarkerBased_Viz}
 \alias{Create_MarkerBased_Viz}
-\title{Create: Marker-based annotation plots}
-\usage{
-Create_Marker_Based(ann,
-	meta,
-	facet)
-}
+\title{Creates marker-based visualizations for cell type annotation}
 \description{
-Create_MarkerBased_Viz requires a SAHA object to create 4 different visualizations that are used to classify the user's clusters using a marker-based database. The results are then stored within the `results` slot of the SAHA object. This function also allows the option to turn on/off faceting for the figures:
-* Plot 1 Description: Ggplots all insignificant and significantly annotated clusters.
-* Plot 2 Description: Barplots the overall distribution of markers in the inputted database.
-* Plot 3 Description: Ggplots only the significantly annotated clusters. 
-* Plot 4 Description: Ggplots only the most significant annotated clusters. 
-
-This function is intended to write directly into a SAHA object (see usage below).
+Generates various visualizations based on marker-based cell type annotation results.
+Creates dot plots and a bar plot, with optional faceting by cell type class.
+}
+\usage{
+Create_MarkerBased_Viz(ann, meta = NULL)
 }
 \arguments{
-\item{ann}{Required argument that takes a SAHA object generated from Run_Marker_Based().}
-\item{meta}{Optional argument to load in dataframe providing additional information about the cell types. This metadata is used to initiate the main data frame (master_df) with class, class color, neurotransmitter, and neurotransmitter color information for each cell type.}
-\item{facet}{Optional argument that can specify to turn on or off the faceting feature when creating the visualiations.}
+  \item{ann}{An SAHA analysis object containing annotation results (likely from \code{Annotate()} or similar).}
+  \item{meta}{Optional data frame containing cell type metadata. If provided, enables faceting of the plots by cell type class.
+    The data frame must include the following columns:
+    \itemize{
+      \item{\code{subclass_spa}:}{ Cell type names matching those in the \code{ann} object.}
+      \item{\code{class}:}{ Broader cell type classification.}
+      \item{\code{neurotransmitter}:}{ Even broader cell type classification.}
+      \item{\code{class_color}:}{ Hex code for the color of the \code{class} classification.}
+      \item{\code{neurotransmitter_color}:}{ Hex code for the color of the \code{neurotransmitter} classification.}
+    }
+  }
+}
+\value{
+Returns the \code{ann} object, with the following plots added to the \code{results$marker_based} slot:
+  \itemize{
+    \item{\code{markers_barplot}:}{ A bar plot showing the total number of markers per cell type.}
+    \item{\code{dotplot_all}:}{ A dot plot showing all markers for each cell type and cluster.}
+    \item{\code{dotplot_sig}:}{ A dot plot showing only significant markers for each cell type and cluster.}
+    \item{\code{dotplot_best}:}{ A dot plot showing the most significant marker for each cell type and cluster.}
+  }
+}
+\details{
+This function generates visualizations to aid in the interpretation of marker-based cell type annotation results. If the \code{meta} data frame is provided, the dot plots will be faceted by cell type class, providing additional context for the marker expression patterns.  The color scheme for the facets is determined by the \code{class_color} column in the \code{meta} data frame.  The barplot shows the total number of markers available for each cell type.  Dot plots show marker enrichment and proportion, both for all markers, significantly enriched markers, and the top significantly enriched marker.
 }
 \examples{
-ann=Create_MarkerBased_Viz(ann,meta = meta,facet = TRUE)
-}
+# Basic usage without metadata
+# ann <- Create_MarkerBased_Viz(ann)
+
+# With metadata for faceting
+# ann <- Create_MarkerBased_Viz(ann, meta
