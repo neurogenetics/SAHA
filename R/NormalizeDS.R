@@ -14,6 +14,7 @@
 #' @importFrom dplyr %>% pivot_longer, pivot_wider, rownames_to_column, split, lapply, mutate,
 #                   unite, column_to_rownames, merge
 #' @importFrom stats scale, pnorm
+#' @importFrom tibble rownames
 #'
 #' @export
 NormalizeDS <- function(ann,assay_db = "RNA",assay_query,norm_method = "across_clust"){
