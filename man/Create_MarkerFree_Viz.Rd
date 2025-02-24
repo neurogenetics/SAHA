@@ -2,25 +2,37 @@
 \alias{Create_MarkerFree_Viz}
 \title{Marker-free annotation: Creating marker-free annotation heatmap}
 \description{Generates a heatmap of correlation of gene expression profiles between query dataset and database.}
-\usage{Create_MarkerFree_Viz(ann,
-facet,
-meta,
-ABC,
-chemistry)
+\usage{
+Create_MarkerFree_Viz(ann, meta = NULL, ABC = NULL)
 }
 \arguments{
   \item{ann}{A SAHA object which has been correlated using CorrelateDS() for marker-free annotation.}
-  \item{facet}{Logical, specifies whether to facet in additional metadata from the database about cell types.}
-  \item{meta}{A dataframe containing metadata about database cell types. Only necessary if facet = TRUE. Dataframe requires several specific columns:
-  "subclass_per": these are the names of the cell types from the database which you are testing against. Words must be separated by periods rather than spaces or underscores.
-  "neurotransmitter": this is the highest-level (broadest) classification for each cell type identified in "subclass_per".
-  "class": this is a more specific level (between subclass and neurotransmitter) of classification for each cell type identified in "subclass_per".
-  "neurotransmitter_color": hex code of color that should be used for the "neurotransmitter" classification.
-  "class_color": hex code of color that should be used for the "class" classification.}
-  \item{ABC}{Logical, specifies if database is the Allen Brain Cell Atlas. Default = NULL}
-  \item{chemistry}{Chemistry for ABC database. Options are "10Xv2", when database is "isocortex", and "10Xv3", for everything else.}
+  \item{meta}{Optional dataframe containing metadata about database cell types. If provided, it enables additional annotations on the heatmap. The dataframe requires several specific columns:
+    \itemize{
+      \item "subclass_per": names of the cell types from the database (words must be separated by periods).
+      \item "neurotransmitter": highest-level (broadest) classification for each cell type.
+      \item "class": more specific level of classification (between subclass and neurotransmitter).
+      \item "neurotransmitter_color": hex code for the color of the "neurotransmitter" classification.
+      \item "class_color": hex code for the color of the "class" classification.
+    }
+  }
+  \item{ABC}{Optional character string indicating the brain region to filter by in the Allen Brain Atlas data. If "ISOCTX", it uses 10Xv3 data; for all other regions, it uses 10Xv2 data.}
 }
+\value{
+Returns the modified \code{ann} object with the heatmap stored in \code{ann@results$marker_free$heatmap}.
+}
+\details{
+This function generates a heatmap representing correlation coefficients between query and database expression profiles. If metadata is provided, the heatmap includes annotations for neurotransmitter and class. If ABC is specified, it filters the data based on the specified brain region in the Allen Brain Atlas.
 
+The heatmap is created using the ComplexHeatmap package. It clusters both rows and columns, and uses a color scale from blue (negative correlation) through white (no correlation) to orange (positive correlation).
+}
 \examples{
-Create_MarkerFree_Viz(ann, facet = TRUE, meta = meta, ABC = TRUE, chemistry = "10Xv2")
+# Basic usage without metadata
+Create_MarkerFree_Viz(ann)
+
+# With metadata
+Create_MarkerFree_Viz(ann, meta = cell_type_metadata)
+
+# With metadata and filtering for a specific brain region in Allen Brain Atlas
+Create_MarkerFree_Viz(ann, meta = cell_type_metadata, ABC = "ISOCTX")
 }
