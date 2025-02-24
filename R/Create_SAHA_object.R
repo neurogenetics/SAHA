@@ -78,10 +78,11 @@ Create_SAHA_object <- function(query, db,data_type,existing=NULL){
       cat(paste("Loaded database contains", length(colnames(temp_ann@db$AvgExp)),"unique cell types.\n"))
       #print the name of the loaded dataset
       cat(paste("Loaded query dataset contains", length(colnames(temp_ann@query$AvgExp)),"unique clusters.\n"))
-      matched_genes <- intersect(rownames(temp_ann@query$AvgExp), rownames(temp_ann@db$AvgExp))
-      if (length(matched_genes) == 0) {
-         warning("\nSAHA did not detect any matching genes between your query and your database of interest.\nYour data has still been processed.\nPlease refer to the troubleshooting vignette.\n")
-      }
+      #Dom-250224-I don't want it to check for matched_genes since some people may put in avgexp df that already have rownames==gene and not the X placeholder. Initailize_MarkerFree() will process for them regardless, so I am commenting it out here.
+      # matched_genes <- intersect(rownames(temp_ann@query$AvgExp), rownames(temp_ann@db$AvgExp))
+      # if (length(matched_genes) == 0) {
+      #    warning("\nSAHA did not detect any matching genes between your query and your database of interest.\nYour data has still been processed.\nPlease refer to the troubleshooting vignette.\n")
+      #}
    }
 
    #the else could use an inherit that confirms that existing is a SAHA object....
