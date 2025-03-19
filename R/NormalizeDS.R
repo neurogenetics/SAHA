@@ -108,9 +108,9 @@ NormalizeDS <- function(ann,assay_db = "RNA",assay_query,norm_method = "across_c
       colnames(avgexp_db.df) <- paste0("db.",colnames(avgexp_db.df))
 
       avgexp_query.df <- avgexp_query.df %>%
-         rownames_to_column(var = "Row")
+         tibble::rownames_to_column(var = "Row")
       avgexp_db.df <- avgexp_db.df %>%
-         rownames_to_column(var = "Row")
+         tibble::rownames_to_column(var = "Row")
 
       merged.df <- merge(avgexp_db.df, avgexp_query.df, by = "Row", all.x = T, all.y = T)
 
