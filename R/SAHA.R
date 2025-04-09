@@ -24,7 +24,7 @@ SAHA <- function(query, db, meta, data_type) {
          ann <- suppressMessages(Tune_Markers(ann = ann, method = "absolute", method_value = 100, method_var = "avg_log2FC", set = "db"))
          ann <- suppressMessages(Tune_Markers(ann = ann, method = "relative", method_value = 0.75, method_var = "avg_log2FC", set = "query"))
          ann <- suppressMessages(Run_Marker_Based(ann))
-         ann <- suppressMessages(Create_MarkerBased_Viz(ann, meta = meta, facet = TRUE))
+         ann <- suppressMessages(Create_MarkerBased_Viz(ann, meta = meta))
          return(call_SAHA_plots(ann, plot_type = "Marker-based", data_type = "Markers"))
 
       } else if (data_type == "AvgExp") {
@@ -32,7 +32,7 @@ SAHA <- function(query, db, meta, data_type) {
          ann <- suppressMessages(Downsample(ann))
          ann <- suppressMessages(NormalizeDS(ann, assay_query = "RNA"))
          ann <- suppressMessages(CorrelateDS(ann))
-         ann <- suppressMessages(Create_MarkerFree_Viz(ann, facet = TRUE, meta = meta, ABC = TRUE, chemistry = "10Xv3"))
+         ann <- suppressMessages(Create_MarkerFree_Viz(ann, meta = meta, ABC = TRUE))
          return(call_SAHA_plots(ann, plot_type = "Marker-free", data_type = "AvgExp"))
 
       } else {
