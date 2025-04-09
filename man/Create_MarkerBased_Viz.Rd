@@ -38,4 +38,5 @@ This function generates visualizations to aid in the interpretation of marker-ba
 # ann <- Create_MarkerBased_Viz(ann)
 
 # With metadata for faceting
-# ann <- Create_MarkerBased_Viz(ann, meta
+# ann <- Create_MarkerBased_Viz(ann, meta)
+}
