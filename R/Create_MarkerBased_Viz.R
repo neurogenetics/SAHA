@@ -24,7 +24,7 @@
 #' @importFrom data.table full_join
 #' @importFrom ggplot2 ggplot, geom_point, scale_size_continuous, labs, scale_color_manual, theme_bw, theme, element_text, facet_grid, geom_bar, geom_text, coord_cartesian
 #' @importFrom ggplot2 strip_themed, elem_list_rect, guide_legend, guides # Added for facet colors
-#' @importFrom ggh4x facet_grid2
+#' @importFrom ggh4x facet_grid2, strip_themed
 #' @importFrom forcats fct_drop, fct_relevel
 #'
 #' @export
