@@ -16,7 +16,6 @@ Create_MarkerFree_Viz(ann, meta = NULL, ABC = NULL)
       \item "class_color": hex code for the color of the "class" classification.
     }
   }
-  \item{ABC}{Optional character string indicating the brain region to filter by in the Allen Brain Atlas data. If "ISOCTX", it uses 10Xv3 data; for all other regions, it uses 10Xv2 data.}
 }
 \value{
 Returns the modified \code{ann} object with the heatmap stored in \code{ann@results$marker_free$heatmap}.
@@ -33,6 +32,4 @@ Create_MarkerFree_Viz(ann)
 # With metadata
 Create_MarkerFree_Viz(ann, meta = cell_type_metadata)
 
-# With metadata and filtering for a specific brain region in Allen Brain Atlas
-Create_MarkerFree_Viz(ann, meta = cell_type_metadata, ABC = "ISOCTX")
 }

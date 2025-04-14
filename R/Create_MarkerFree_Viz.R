@@ -76,7 +76,7 @@ Create_MarkerFree_Viz <- function(ann,
 
 
       ht1 <- Heatmap(mat,
-                     name = "Pearson R",
+                     name = "R",
                      col = col_fun,
                      cluster_rows = T,
                      cluster_columns = T,
@@ -96,7 +96,7 @@ Create_MarkerFree_Viz <- function(ann,
                      )
    }else{
       ht1 <- Heatmap(mat,
-                     name = "Pearson correlation",
+                     name = "correlation",
                      col = col_fun,
                      cluster_rows = F,
                      cluster_columns = T,
