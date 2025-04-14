@@ -10,31 +10,29 @@
 #'
 #' @export
 Downsample <- function(ann, custom_ds=NULL){
-  #3. Downsample database and query to mutually expressed genes
-  if (is.null(custom_ds)) {
-    query_genes=rownames(ann@query$AvgExp)
-  }else{
-    intended_query_genes=custom_ds
-    # change here
-    overlap <- intersect(ann@db$AvgExp$gene, rownames(ann@query$AvgExp))
-    query_genes <- intersect(overlap, intended_query_genes)
-  }
-  db_ds=ann@db$AvgExp[ann@db$AvgExp$gene%in%query_genes,]
-  # need to check this
-  query_ds=ann@query$AvgExp[rownames(ann@query$AvgExp)%in% db_ds$gene,]
-  
-  #4. Create list of data.frames
-  ann3=list("query"=query_ds, "db"=db_ds)
-  #5. Check to see that all rownames of query are in rownames of db
-  if (all(rownames(ann3$query) %in% ann3$db$gene )) {
-    cat(paste("Downsampled query and database contain",length(rownames(ann3$query)),"genes."))
-  }else{
-    cat("Something went wrong! It appears there are either no shared genes between query and db. Please check downsampling manually to ensure that symbols (gene names) are in the same format and that query and db share common genes for SAHA flavor 3.")
-  }
-  
-  ann@params$marker_free <- list(downsample=ifelse(is.null(custom_ds), "query&db",deparse(substitute(custom_ds))),length_ds= ifelse(is.null(custom_ds), length(rownames(ann3$query)), paste0(length(rownames(ann3$query)),"/",length(custom_ds))))
-  
-  #6. Return the dataframe
-  ann@ann3=ann3
-  return(ann)
+   #3. Downsample database and query to mutually expressed genes
+   if (is.null(custom_ds)) {
+     query_genes=rownames(ann@query$AvgExp)
+   }else{
+     intended_query_genes=custom_ds
+     overlap <- intersect(rownames(ann@db$AvgExp), rownames(ann@query$AvgExp))
+     query_genes <- intersect(overlap, intended_query_genes)
+   }
+   db_ds=ann@db$AvgExp[rownames(ann@db$AvgExp)%in%query_genes,]
+   query_ds=ann@query$AvgExp[rownames(ann@query$AvgExp)%in%rownames(db_ds),]
+
+   #4. Create list of data.frames
+   ann3=list("query"=query_ds, "db"=db_ds)
+   #5. Check to see that all rownames of query are in rownames of db
+   if (all(rownames(ann3$query)%in%rownames(ann3$db))) {
+      cat(paste("Downsampled query and database contain",length(rownames(ann3$query)),"genes."))
+   }else{
+      cat("Something went wrong! It appears there are either no shared genes between query and db. Please check downsampling manually to ensure that symbols (gene names) are in the same format and that query and db share common genes for SAHA flavor 3.")
+   }
+
+   ann@params$marker_free <- list(downsample=ifelse(is.null(custom_ds), "query&db",deparse(substitute(custom_ds))),length_ds= ifelse(is.null(custom_ds), length(rownames(ann3$query)), paste0(length(rownames(ann3$query)),"/",length(custom_ds))))
+
+   #6. Return the dataframe
+   ann@ann3=ann3
+   return(ann)
 }
