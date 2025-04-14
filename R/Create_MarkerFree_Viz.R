@@ -16,8 +16,8 @@
 #' @export
 
 Create_MarkerFree_Viz <- function(ann,
-                                  meta=NULL,
-                                  ABC=NULL
+                                  meta=NULL#,
+   #                               ABC=NULL #deprecated option for specifying ABC region
                                   ){
 
    # set global heatmap options
@@ -41,13 +41,13 @@ Create_MarkerFree_Viz <- function(ann,
       # heatmap annotation for levels
 
       annotation_data <- meta[meta$subclass_per %in% colnames(mat), ]
-      if (!is.null(ABC)) {
-         if (ABC=="ISOCTX") {#pre-prepared ABC data uses 10Xv3 data for ISOCTX
-            annotation_data <- annotation_data[annotation_data$library_method %in% "10Xv3", ]
-         }else{#pre-prepared ABC data uses 10Xv2 data for all other regions
-            annotation_data <- annotation_data[annotation_data$library_method %in% "10Xv2", ]
-         }
-      }
+      # if (!is.null(ABC)) { #deprecated option for specifying region of ABC metadata
+      #    if (ABC=="ISOCTX") {#pre-prepared ABC data uses 10Xv3 data for ISOCTX
+      #       annotation_data <- annotation_data[annotation_data$library_method %in% "10Xv3", ]
+      #    }else{#pre-prepared ABC data uses 10Xv2 data for all other regions
+      #       annotation_data <- annotation_data[annotation_data$library_method %in% "10Xv2", ]
+      #    }
+      # }
 
       annotation_data <- na.omit(annotation_data[match(colnames(mat), annotation_data$subclass_per), ])
 
