@@ -76,7 +76,12 @@ AutoAnnotate = function(ann, data_type=NULL){
                                       best_match = apply(ann@results$marker_free$corr, 1, function(row) names(ann@results$marker_free$corr)[which.max(row)]),
                                       correlation = apply(ann@results$marker_free$corr, 1, max))
       best_match.AvgExp$cluster<- gsub(paste0("^query\\."), "", rownames(best_match.AvgExp))
-      if (!all(best_match.AvgExp$cluster%in%best_match.Markers$cluster)) {
+      
+      # added this 4/17
+      best_match.Markers$cluster <- as.character(best_match.Markers$cluster)
+      best_match.AvgExp$cluster <- as.character(best_match.AvgExp$cluster)
+      
+      if (length(intersect(best_match.AvgExp$cluster, best_match.Markers$cluster)) == 0) {
          warning("No matching cluster names found in marker-based and marker-free analysis. Consider running separately or renaming clusters.")
       }else{
          best_matches=suppressMessages(full_join(best_match.AvgExp,y = best_match.Markers))
