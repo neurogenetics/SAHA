@@ -94,10 +94,28 @@ Summarize_Params <- function(ann) {
       )
    }
 
-   # Combine all parameters
-
+   if (!is.null(ann@params$marker_free$norm_method)) {
+     norm_params <- data.frame(
+       Analysis = "Marker-Free",
+       Input = "Query&DB",
+       Function = "NormalizeDS",
+       Parameter = "norm_method",
+       Value = ann@params$marker_free$norm_method
+     )
+   }
+   
+   if (!is.null(ann@params$marker_free$corr_method)) {
+     corr_params <- data.frame(
+       Analysis = "Marker-Free",
+       Input = "Query&DB",
+       Function = "Correlation",
+       Parameter = "corr_method",
+       Value = ann@params$marker_free$corr_method
+     )
+   }
+   
    # Combine only the non-null data frames
-   params_list <- list(params_data, init_params, init_selfsim_data, self_similarity_params, ds_params)
+   params_list <- list(params_data, init_params, init_selfsim_data, self_similarity_params, ds_params, norm_params, corr_params)
    params_data <- do.call(rbind, Filter(Negate(is.null), params_list))
 
    # Clear and add the params to ann@results
