@@ -103,7 +103,7 @@ Investigate_Marker_Based <- function(ann, query_cluster, db_cell_type = NULL, pl
         paste(unique(marker_data$cluster), collapse = "\n"), "\n", sep = "")
   }
   
-  if (!is.null(db_cell_type) && db_cell_type != "all") {
+  if (!is.null(plot) && (db_cell_type %in% unique(marker_data$cluster))) {
     query_data_names_type <- marker_data[(marker_data$cluster == db_cell_type), "gene"]
     query_data_names_type <- query_data_names_type[query_data_names_type %in% i]
     cat("Markers for", db_cell_type, "within Cluster", query_cluster, ":", paste(sort(query_data_names_type), collapse = ", "), "\n")

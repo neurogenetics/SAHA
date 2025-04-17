@@ -32,7 +32,7 @@ SAHA <- function(query, db, meta, data_type) {
          ann <- suppressMessages(Downsample(ann))
          ann <- suppressMessages(NormalizeDS(ann, assay_query = "RNA"))
          ann <- suppressMessages(CorrelateDS(ann))
-         ann <- suppressMessages(Create_MarkerFree_Viz(ann, meta = meta, ABC = TRUE))
+         ann <- suppressMessages(Create_MarkerFree_Viz(ann, meta = meta))
          return(call_SAHA_plots(ann, plot_type = "Marker-free", data_type = "AvgExp"))
 
       } else {
