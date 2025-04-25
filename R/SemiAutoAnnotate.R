@@ -26,7 +26,6 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
     cat("Thank you for choosing the semi-automated approach. To progress through each annotation, use the enter key. If you want to save your annotations, use the Enter key on a blank entry. If you want to quit the function, use your ESC key.")
   }
   
-  # Prepare hand_names dataframe based on data_type
   if (data_type == "Markers") {
     temp = ann@results$marker_based$dotplot_all
     hand_names = data.frame(unique(temp$data$cluster))
@@ -37,10 +36,8 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
       hand_names$new_names = existing$new_names
       todo = hand_names[hand_names$new_names == "", ]
     } else if (!is.null(refine)) {
-      todo <- hand_names %>%
-        filter(old_names %in% unique(refine$cluster[refine$best_match == "INCONCLUSIVE"]))
-      tokeep <- hand_names %>%
-        filter(old_names %in% unique(refine$cluster[refine$best_match != "INCONCLUSIVE"]))
+      todo <- hand_names %>% filter(old_names %in% unique(refine$cluster[refine$best_match == "INCONCLUSIVE"]))
+      tokeep <- hand_names %>% filter(old_names %in% unique(refine$cluster[refine$best_match != "INCONCLUSIVE"]))
       tokeep$new_names = refine[refine$best_match != "INCONCLUSIVE", "best_match"]
     } else {
       todo = hand_names
@@ -48,19 +45,19 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
     
     for (i in todo$old_names) {
       temp2 = temp
-      temp2 <- ggplot(subset(temp$data, cluster == i),  aes(x = celltype, y = cluster, alpha = as.numeric(-log(pvalue,10)))) +
+      temp2 <- ggplot(subset(temp$data, cluster == i), aes(x = celltype, y = cluster, alpha = as.numeric(-log(pvalue,10)))) +
         geom_point(aes(size = as.numeric(prop), color = sig)) +
         scale_size_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.25)) +
         labs(title = "Every Cell Type by Cluster", x = " ", y = "Cluster") +
         scale_color_manual(values = c("black", "red")) +
         theme_bw() +
-        theme(legend.position = "none",axis.text.x = element_text(angle=90,hjust=1))
+        theme(legend.position = "none", axis.text.x = element_text(angle=90, hjust=1))
       print(temp2)
       x = readline(paste0("What would you like to name cluster ", i, ": "))
       
       if (x == "") {
         message("Annotation paused. Progress saved.")
-        hand_names$new_names[hand_names$old_names %in% todo$old_names] = todo$new_names
+        hand_names$new_names[hand_names$old_names %in% todo$old_names] <- todo$new_names
         return(hand_names)
       }
       
@@ -70,11 +67,16 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
     if (!is.null(refine)) {
       hand_names = rbind(todo, tokeep)
       hand_names = hand_names %>% arrange(old_names)
+    } else if (!is.null(existing)) {
+      hand_names = existing
+      hand_names$new_names[hand_names$old_names %in% todo$old_names] <- todo$new_names
     } else {
       hand_names = todo
     }
-    
-  } else if (data_type == "AvgExp") {
+    return(hand_names)
+  }
+  
+  if (data_type == "AvgExp") {
     ann3 = ann@results$marker_free$corr
     rownames(ann3) = gsub("^query\\.", "", rownames(ann3))
     colnames(ann3) = gsub("^db\\.", "", colnames(ann3))
@@ -86,18 +88,15 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
       hand_names$new_names = existing$new_names
       todo = hand_names[hand_names$new_names == "", ]
     } else if (!is.null(refine)) {
-      todo <- hand_names %>%
-        filter(old_names %in% unique(refine$cluster[refine$best_match == "INCONCLUSIVE"]))
-      tokeep <- hand_names %>%
-        filter(old_names %in% unique(refine$cluster[refine$best_match != "INCONCLUSIVE"]))
+      todo <- hand_names %>% filter(old_names %in% unique(refine$cluster[refine$best_match == "INCONCLUSIVE"]))
+      tokeep <- hand_names %>% filter(old_names %in% unique(refine$cluster[refine$best_match != "INCONCLUSIVE"]))
       tokeep$new_names = refine[refine$best_match != "INCONCLUSIVE", "best_match"]
     } else {
       todo = hand_names
     }
     
     for (i in todo$old_names) {
-      # change here
-      temp = ann3[rownames(ann3)==i, ]
+      temp = ann3[rownames(ann3) == i, ]
       mat = data.matrix(temp)
       print(Heatmap(mat,
                     name = "Pearson correlation",
@@ -119,7 +118,7 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
       
       if (x == "") {
         message("Annotation paused. Progress saved.")
-        hand_names$new_names[hand_names$old_names %in% todo$old_names] = todo$new_names
+        hand_names$new_names[hand_names$old_names %in% todo$old_names] <- todo$new_names
         return(hand_names)
       }
       
@@ -129,11 +128,16 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
     if (!is.null(refine)) {
       hand_names = rbind(todo, tokeep)
       hand_names = hand_names %>% arrange(old_names)
+    } else if (!is.null(existing)) {
+      hand_names = existing
+      hand_names$new_names[hand_names$old_names %in% todo$old_names] <- todo$new_names
     } else {
       hand_names = todo
     }
-    
-  } else if (data_type == "Both") {
+    return(hand_names)
+  }
+  
+  if (data_type == "Both") {
     ann2 = ann@results$marker_based$dotplot_all
     hand_names1 = data.frame(unique(ann2$data$cluster))
     colnames(hand_names1)[1] = "old_names"
@@ -143,10 +147,11 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
     hand_names2 = data.frame(rownames(ann3))
     colnames(hand_names2)[1] = "old_names"
     hand_names = merge(hand_names1, hand_names2, by = "old_names")
-    # changed nrow(hand_names) == 0 from nrow(hand_names == 0)
+    
     if (nrow(hand_names) == 0) {
       warning("No matching cluster names found in marker-based and marker-free analysis. Consider running separately or renaming clusters.")
     }
+    
     hand_names = hand_names %>% arrange(old_names)
     hand_names$new_names = ""
     
@@ -154,28 +159,25 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
       hand_names$new_names = existing$new_names
       todo = hand_names[hand_names$new_names == "", ]
     } else if (!is.null(refine)) {
-      todo <- hand_names %>%
-        filter(old_names %in% unique(refine$cluster[refine$best_match == "INCONCLUSIVE"]))
-      tokeep <- hand_names %>%
-        filter(old_names %in% unique(refine$cluster[refine$best_match != "INCONCLUSIVE"]))
+      todo <- hand_names %>% filter(old_names %in% unique(refine$cluster[refine$best_match == "INCONCLUSIVE"]))
+      tokeep <- hand_names %>% filter(old_names %in% unique(refine$cluster[refine$best_match != "INCONCLUSIVE"]))
       tokeep$new_names = refine[refine$best_match != "INCONCLUSIVE", "best_match"]
     } else {
       todo = hand_names
     }
     
     for (i in todo$old_names) {
-      # changed this to temp from temp 2
       temp = ann2
-      temp2 <- ggplot(subset(temp$data, cluster == i),  aes(x = celltype, y = cluster, alpha = as.numeric(-log(pvalue,10)))) +
+      temp2 <- ggplot(subset(temp$data, cluster == i), aes(x = celltype, y = cluster, alpha = as.numeric(-log(pvalue,10)))) +
         geom_point(aes(size = as.numeric(prop), color = sig)) +
         scale_size_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.25)) +
         labs(title = "Every Cell Type by Cluster", x = " ", y = "Cluster") +
         scale_color_manual(values = c("black", "red")) +
         theme_bw() +
-        theme(legend.position = "none",axis.text.x = element_text(angle=90,hjust=1))
+        theme(legend.position = "none", axis.text.x = element_text(angle=90, hjust=1))
       p1 = temp2
-      # change here
-      temp = ann3[rownames(ann3)==i, ]
+      
+      temp = ann3[rownames(ann3) == i, ]
       mat = data.matrix(temp)
       p2 = Heatmap(mat,
                    name = "Pearson correlation",
@@ -191,15 +193,15 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
                    column_title = "db",
                    column_title_rot = 0,
                    column_title_side = "bottom",
-                   column_title_gp = gpar(fontface = "bold")
-      )
+                   column_title_gp = gpar(fontface = "bold"))
       p2_grob <- grid.grabExpr(draw(p2))
       print(ggarrange(p1, p2_grob, nrow = 2))
+      
       x = readline(paste0("What would you like to name cluster ", i, ": "))
       
       if (x == "") {
         message("Annotation paused. Progress saved.")
-        hand_names$new_names[hand_names$old_names %in% todo$old_names] = todo$new_names
+        hand_names$new_names[hand_names$old_names %in% todo$old_names] <- todo$new_names
         return(hand_names)
       }
       
@@ -209,10 +211,12 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
     if (!is.null(refine)) {
       hand_names = rbind(todo, tokeep)
       hand_names = hand_names %>% arrange(old_names)
+    } else if (!is.null(existing)) {
+      hand_names = existing
+      hand_names$new_names[hand_names$old_names %in% todo$old_names] <- todo$new_names
     } else {
       hand_names = todo
     }
+    return(hand_names)
   }
-  
-  return(hand_names)
 }
