@@ -45,9 +45,11 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
             }
           }
         }
+        todo <- hand_names[hand_names$new_names == "", ]
+        tokeep <- hand_names[hand_names$new_names != "", ]
+      } else {
+        todo = hand_names[hand_names$new_names == "", ]
       }
-      
-      todo = hand_names[hand_names$new_names == "", ]
     } else if (!is.null(refine)) {
       todo <- hand_names %>% filter(old_names %in% unique(refine$cluster[refine$best_match == "INCONCLUSIVE"]))
       tokeep <- hand_names %>% filter(old_names %in% unique(refine$cluster[refine$best_match != "INCONCLUSIVE"]))
@@ -57,7 +59,6 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
     }
     
     for (i in todo$old_names) {
-      temp2 = temp
       temp2 <- ggplot(subset(temp$data, cluster == i), aes(x = celltype, y = cluster, alpha = as.numeric(-log(pvalue,10)))) +
         geom_point(aes(size = as.numeric(prop), color = sig)) +
         scale_size_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.25)) +
@@ -110,9 +111,11 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
             }
           }
         }
+        todo <- hand_names[hand_names$new_names == "", ]
+        tokeep <- hand_names[hand_names$new_names != "", ]
+      } else {
+        todo = hand_names[hand_names$new_names == "", ]
       }
-      
-      todo = hand_names[hand_names$new_names == "", ]
     } else if (!is.null(refine)) {
       todo <- hand_names %>% filter(old_names %in% unique(refine$cluster[refine$best_match == "INCONCLUSIVE"]))
       tokeep <- hand_names %>% filter(old_names %in% unique(refine$cluster[refine$best_match != "INCONCLUSIVE"]))
@@ -185,7 +188,6 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
       hand_names$new_names = existing$new_names
       
       if (!is.null(refine)) {
-        # Only update clusters that are still blank *and* exist in refine
         for (row in 1:nrow(hand_names)) {
           clust = hand_names$old_names[row]
           if (hand_names$new_names[row] == "") {
@@ -195,25 +197,27 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
             }
           }
         }
+        todo <- hand_names[hand_names$new_names == "", ]
+        tokeep <- hand_names[hand_names$new_names != "", ]
+      } else {
+        todo = hand_names[hand_names$new_names == "", ]
       }
-      
-      todo = hand_names[hand_names$new_names == "", ]
     } else if (!is.null(refine)) {
       todo <- hand_names %>% filter(old_names %in% unique(refine$cluster[refine$best_match == "INCONCLUSIVE"]))
       tokeep <- hand_names %>% filter(old_names %in% unique(refine$cluster[refine$best_match != "INCONCLUSIVE"]))
       tokeep$new_names = refine[refine$best_match != "INCONCLUSIVE", "best_match"]
+    } else {
+      todo = hand_names
     }
     
     for (i in todo$old_names) {
-      temp = ann2
-      temp2 <- ggplot(subset(temp$data, cluster == i), aes(x = celltype, y = cluster, alpha = as.numeric(-log(pvalue,10)))) +
+      temp2 <- ggplot(subset(ann2$data, cluster == i), aes(x = celltype, y = cluster, alpha = as.numeric(-log(pvalue,10)))) +
         geom_point(aes(size = as.numeric(prop), color = sig)) +
         scale_size_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.25)) +
         labs(title = "Every Cell Type by Cluster", x = " ", y = "Cluster") +
         scale_color_manual(values = c("black", "red")) +
         theme_bw() +
         theme(legend.position = "none", axis.text.x = element_text(angle=90, hjust=1))
-      p1 = temp2
       
       temp = ann3[rownames(ann3) == i, ]
       mat = data.matrix(temp)
@@ -233,7 +237,7 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
                    column_title_side = "bottom",
                    column_title_gp = gpar(fontface = "bold"))
       p2_grob <- grid.grabExpr(draw(p2))
-      print(ggarrange(p1, p2_grob, nrow = 2))
+      print(ggarrange(temp2, p2_grob, nrow = 2))
       
       x = readline(paste0("What would you like to name cluster ", i, ": "))
       
