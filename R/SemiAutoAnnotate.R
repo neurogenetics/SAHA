@@ -34,6 +34,19 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
     
     if (!is.null(existing)) {
       hand_names$new_names = existing$new_names
+      
+      if (!is.null(refine)) {
+        for (row in 1:nrow(hand_names)) {
+          clust = hand_names$old_names[row]
+          if (hand_names$new_names[row] == "") {
+            match = refine$best_match[refine$cluster == clust]
+            if (length(match) == 1 && match != "INCONCLUSIVE") {
+              hand_names$new_names[row] = match
+            }
+          }
+        }
+      }
+      
       todo = hand_names[hand_names$new_names == "", ]
     } else if (!is.null(refine)) {
       todo <- hand_names %>% filter(old_names %in% unique(refine$cluster[refine$best_match == "INCONCLUSIVE"]))
@@ -86,6 +99,19 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
     
     if (!is.null(existing)) {
       hand_names$new_names = existing$new_names
+      
+      if (!is.null(refine)) {
+        for (row in 1:nrow(hand_names)) {
+          clust = hand_names$old_names[row]
+          if (hand_names$new_names[row] == "") {
+            match = refine$best_match[refine$cluster == clust]
+            if (length(match) == 1 && match != "INCONCLUSIVE") {
+              hand_names$new_names[row] = match
+            }
+          }
+        }
+      }
+      
       todo = hand_names[hand_names$new_names == "", ]
     } else if (!is.null(refine)) {
       todo <- hand_names %>% filter(old_names %in% unique(refine$cluster[refine$best_match == "INCONCLUSIVE"]))
@@ -157,13 +183,25 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
     
     if (!is.null(existing)) {
       hand_names$new_names = existing$new_names
+      
+      if (!is.null(refine)) {
+        # Only update clusters that are still blank *and* exist in refine
+        for (row in 1:nrow(hand_names)) {
+          clust = hand_names$old_names[row]
+          if (hand_names$new_names[row] == "") {
+            match = refine$best_match[refine$cluster == clust]
+            if (length(match) == 1 && match != "INCONCLUSIVE") {
+              hand_names$new_names[row] = match
+            }
+          }
+        }
+      }
+      
       todo = hand_names[hand_names$new_names == "", ]
     } else if (!is.null(refine)) {
       todo <- hand_names %>% filter(old_names %in% unique(refine$cluster[refine$best_match == "INCONCLUSIVE"]))
       tokeep <- hand_names %>% filter(old_names %in% unique(refine$cluster[refine$best_match != "INCONCLUSIVE"]))
       tokeep$new_names = refine[refine$best_match != "INCONCLUSIVE", "best_match"]
-    } else {
-      todo = hand_names
     }
     
     for (i in todo$old_names) {
