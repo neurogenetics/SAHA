@@ -1,24 +1,40 @@
-#' Auto-annotates query clusters with best matching database cell types
+#' Automatically annotate query clusters with best matching cell types
 #'
-#' This function offers three auto-annotation options based on the `data_type` argument:
-#'   - "Markers": Uses the minimum p-value from the annotation data (`ann@ann2`)
-#'     to identify the best matching cell type for each query cluster.
-#'   - "AvgExp": Uses the maximum correlation coefficient from the average expression
-#'     correlation matrix (`ann@results$marker_free$corr`) for auto-annotation.
-#'   - "Both": Combines both marker-based and average expression approaches,
-#'     providing marker-based and marker-free best matches and a consensus annotation.
+#' This function assigns cell type annotations to clusters in a query dataset using one of three methods:
+#' 
+#' - `"Markers"`: Uses marker-based annotation from the `ann@ann2` data frame. It selects the cell type
+#'   with the minimum p-value for each query cluster, filtering for p < 0.05. Clusters without significant
+#'   matches are labeled as `"INCONCLUSIVE"`.
 #'
-#' @param ann An object containing marker data (`ann@ann2`) and expression data (`ann@results$marker_free$corr`).
-#' @param data_type The type of data to use for auto-annotation (optional):
-#'   - "Markers" (default): Uses marker-based p-values.
-#'   - "AvgExp": Uses average expression correlation.
-#'   - "Both": Combines both marker and expression data.
+#' - `"AvgExp"`: Uses a marker-free method by computing the highest Pearson correlation between average
+#'   expression profiles (`ann@results$marker_free$corr`). This method assigns the reference cell type
+#'   with the highest correlation for each cluster.
 #'
-#' @return A data frame containing information about the auto-annotated cell types.
-#'   The specific columns depend on the `data_type` argument.
+#' - `"Both"`: Combines both methods above. It generates a consensus annotation by comparing the marker-based
+#'   and correlation-based matches. If both methods agree (after whitespace removal), the consensus is labeled
+#'   as `"MATCH"`; otherwise, it is labeled `"DISAGREEMENT"`. Final assignments are set to the matched cell type
+#'   if consensus is reached, and `"INCONCLUSIVE"` otherwise.
 #'
-#' @importFrom dplyr %>% group_by, filter, slice_min, ungroup, mutate, select, as.data.frame
-#' @importFrom stringr str_remove_all, str_replace, str_replace_all, if_else
+#' @param ann An annotation object containing both:
+#'   - `ann@ann2`: A data frame with cluster-level marker enrichment results including columns `cluster`, `celltype`, `pvalue`, and `prop`.
+#'   - `ann@results$marker_free$corr`: A matrix of average expression correlations between query and reference cell types.
+#'
+#' @param data_type Character string specifying the annotation mode. Options:
+#'   - `"Markers"` (default): Perform annotation using marker enrichment data.
+#'   - `"AvgExp"`: Use correlation of average expression.
+#'   - `"Both"`: Use both methods and generate a consensus.
+#'   If `NULL`, the function will print a warning and return nothing.
+#'
+#' @return A `data.frame` with auto-annotated results:
+#' - If `data_type == "Markers"`: columns include `cluster`, `best_match`, `prop`, `pvalue`.
+#' - If `data_type == "AvgExp"`: columns include `cluster`, `best_match`, `correlation`.
+#' - If `data_type == "Both"`: columns include `cluster`, `marker_based`, `marker_free`, `consensus`, `best_match`.
+#'
+#' @details Clusters labeled `"REF"` are excluded from marker-based analysis. If no significant p-values are found for a cluster,
+#' it is labeled `"INCONCLUSIVE"`. In consensus mode, whitespace is stripped for string comparison.
+#'
+#' @importFrom dplyr %>% group_by filter slice_min ungroup mutate select arrange as.data.frame
+#' @importFrom stringr str_remove_all str_replace str_replace_all if_else
 #' @importFrom data.table full_join
 #'
 #' @export
