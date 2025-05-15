@@ -83,17 +83,14 @@ Summarize_Params <- function(ann) {
 
 
    if (!is.null(ann@params$marker_free$downsample) &&
-       !is.null(ann@params$marker_free$length_ds) &&
-       !is.null(ann@params$marker_free$norm_method) &&
-       !is.null(ann@params$marker_free$corr_method)
-						) {
+       !is.null(ann@params$marker_free$length_ds)) {
       # Downsample parameters
       ds_params <- data.frame(
          Analysis = "Marker-Free",
          Input = "Query&DB",
          Function = "Downsample",
-         Parameter = c("downsample", "length_ds","norm_method","corr_method"),
-         Value = c(ann@params$marker_free$downsample, ann@params$marker_free$length_ds,ann@params$marker_free$norm_method,ann@params$marker_free$corr_method)
+         Parameter = c("downsample", "length_ds"),
+         Value = c(ann@params$marker_free$downsample, ann@params$marker_free$length_ds)
       )
    }
 
