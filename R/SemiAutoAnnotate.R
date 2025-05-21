@@ -1,12 +1,13 @@
 #' Semi-automated annotation of query clusters
 #'
-#' This function provides a semi-automated approach for annotating query clusters.
-#' Users are prompted to manually assign names to clusters based on visualizations
-#' of marker-based or marker-free data.
+#' This function provides a semi-automated approach for annotating query clusters. Users are prompted to manually assign names to clusters based on visualizations of marker-based or marker-free data.
 #'
 #' @param ann An object containing SAHA analysis results.
+#' 
 #' @param data_type The type of data to use for annotation ("Markers", "AvgExp", or "Both").
+#' 
 #' @param refine A data frame containing previously refined annotations (optional).
+#' 
 #' @param existing A data frame containing a saved, but incomplete semi_auto result.
 #'
 #' @return A data frame containing the original and new cluster names.

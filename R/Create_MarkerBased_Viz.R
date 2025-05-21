@@ -1,14 +1,10 @@
 #' Creates marker-based visualizations for cell type annotation
 #'
-#' Generates various visualizations based on marker-based cell type annotation results
-#' stored in the `ann` object. Requires cell type metadata in the `meta`
-#' data frame for adding cell type class information as facets.
+#' Generates various visualizations based on marker-based cell type annotation results stored in the `ann` object. Requires cell type metadata in the `meta` data frame for adding cell type class information as facets.
 #'
 #' @param ann An SAHA analysis object containing annotation results (likely from `Annotate()` or similar).
-#' @param meta A data frame containing cell type metadata.  Must include columns:
-#'   `subclass_spa` (cell type names matching those in `ann`), `class` (broader cell type classification),
-#'   `neurotransmitter` (even broader classification), `class_color` (hex code for class color),
-#'   and `neurotransmitter_color` (hex code for neurotransmitter color). If NULL, faceting is disabled.
+#' 
+#' @param meta A data frame containing cell type metadata.  Must include columns: `subclass_spa` (cell type names matching those in `ann`), `class` (broader cell type classification),`neurotransmitter` (even broader classification), `class_color` (hex code for class color), and `neurotransmitter_color` (hex code for neurotransmitter color). If NULL, faceting is disabled.
 #'
 #' @return The `ann` object, with the following plots added to the `results$marker_based` slot:
 #'   \itemize{

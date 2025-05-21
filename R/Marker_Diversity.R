@@ -1,9 +1,9 @@
 #' Marker Diversity Function
 #'
-#' This function calculates the Shannon diversity index for markers within clusters
-#' and categorizes the diversity into "High", "Within 95% CI", and "Low" categories.
+#' This function calculates the Shannon diversity index for markers within clusters and categorizes the diversity into "High", "Within 95% CI", and "Low" categories.
 #'
 #' @param ann An object containing annotation data.
+#' 
 #' @return A ggplot object showing the Shannon diversity by cluster.
 #' @importFrom dplyr case_when
 #' @importFrom tidyr spread

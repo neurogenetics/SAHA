@@ -1,7 +1,6 @@
 #' Initializes data for marker-free analysis
 #'
-#' This function performs pre-processing steps on the query and database components
-#' within an `ann` object to prepare them for marker-free analysis in the SAHA workflow.
+#' This function performs pre-processing steps on the query and database components within an `ann` object to prepare them for marker-free analysis in the SAHA workflow.
 #' These steps include:
 #'
 #' * Removing potential column names that might interfere with analysis (`"X"`, `"X.1"`)
@@ -10,8 +9,7 @@
 #'
 #' @param ann An object containing `query$AvgExp` and `db$AvgExp` data frames.
 #'
-#' @return The input `ann` object with pre-processed data frames for marker-free analysis.
-#'   The function modifies the `query$AvgExp` and `db$AvgExp` slots within `ann`.
+#' @return The input `ann` object with pre-processed data frames for marker-free analysis. The function modifies the `query$AvgExp` and `db$AvgExp` slots within `ann`.
 #'
 #' @importFrom dplyr %>% select
 #'

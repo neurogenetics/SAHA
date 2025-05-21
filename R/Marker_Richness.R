@@ -3,7 +3,9 @@
 #' This function calculates the richness of markers within clusters, either using all genes or a specified set of variable features.
 #'
 #' @param ann An object containing annotation data.
+#' 
 #' @param varfeat A vector of variable features (genes) to consider. If NULL, all genes are used.
+#' 
 #' @return A data frame with gene counts by cluster.
 #' @importFrom dplyr group_by count mutate summarize
 #' @export

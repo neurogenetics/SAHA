@@ -1,17 +1,20 @@
 #' Creation of SAHA object for analysis
 #'
-#' The `SAHA` class is used to store and manage data throughout the SAHA analysis workflow.
-#' It holds information about query and database data, matched markers for different analyses,
-#' and final analysis results.
+#' The `SAHA` class is used to store and manage data throughout the SAHA analysis workflow. It holds information about query and database data, matched markers for different analyses, and final analysis results.
 #'
 #' @slot query A list containing data frames for both marker (Markers) and average expression (AvgExp) data of the query.
+#' 
 #' @slot db A list containing data frames for both marker (Markers) and average expression (AvgExp) data of the database.
+#' 
 #' @slot ann1 A list to store data frames containing matched query and database markers for self-similarity analyses (populated later).
+#' 
 #' @slot ann2 A list to store data frames containing matched query and database markers for marker-based analyses (populated later).
+#' 
 #' @slot ann3 A list to store data frames containing matched query and database markers for marker-free analyses (populated later).
+#' 
 #' @slot results A list to store objects containing final analysis results required for visualizations (populated later).
+#' 
 #' @slot data_type A character string indicating the currently loaded data type ("Markers", "AvgExp", or "Markers & AvgExp").
-#'
 #'
 #' @export
 

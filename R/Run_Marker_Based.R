@@ -1,16 +1,10 @@
 #' Analyzes marker-based enrichment for each query cluster
 #'
-#' This function analyzes marker enrichment for each cluster identified in the query data
-#' against the database clusters. It calculates the total number of markers per cluster,
-#' proportion of markers shared with each database cell type, and hypergeometric test
-#' p-values for enrichment significance.
+#' This function analyzes marker enrichment for each cluster identified in the query data against the database clusters. It calculates the total number of markers per cluster, proportion of markers shared with each database cell type, and hypergeometric test p-values for enrichment significance.
 #'
 #' @param ann An object containing marker data in `ann1$query` and `ann1$db`.
 #'
-#' @return The input `ann` object with a new component `ann2` containing a data frame
-#'   summarizing marker enrichment analysis results. The function also returns a named list
-#'   containing the enrichment results (`master_df`), query marker data (`query_data`),
-#'   and database marker data (`marker_data`).
+#' @return The input `ann` object with a new component `ann2` containing a data frame summarizing marker enrichment analysis results. The function also returns a named list containing the enrichment results (`master_df`), query marker data (`query_data`), and database marker data (`marker_data`).
 #'
 #' @importFrom dplyr %>% group_by, mutate, ungroup, data.frame
 #' @importFrom stats dhyper, factor

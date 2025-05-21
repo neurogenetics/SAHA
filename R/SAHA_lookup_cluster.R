@@ -1,13 +1,12 @@
 #' Looks up marker overlap between query cluster and database cell types
 #'
-#' This function calculates the number of markers from a specified query cluster
-#' that overlap with each cell type in the database.
+#' This function calculates the number of markers from a specified query cluster that overlap with each cell type in the database.
 #'
 #' @param cluster The name of the query cluster.
+#' 
 #' @param ann An object containing marker data in `ann1$query` and `ann1$db`.
 #'
-#' @return A numeric vector representing the number of markers from the query cluster
-#'   that overlap with each database cell type.
+#' @return A numeric vector representing the number of markers from the query cluster that overlap with each database cell type.
 #'
 #' @importFrom dplyr filter
 #'

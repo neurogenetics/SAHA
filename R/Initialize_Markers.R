@@ -1,11 +1,18 @@
 #' Initializes marker sets for SAHA analysis
 #'
-#' Filters markers from query and database datasets based on specified thresholds.
+#' This function filters marker genes from both the query and database datasets
+#' in a SAHA object based on user-defined thresholds. It prepares the data for
+#' downstream marker-based annotation by applying cutoffs for adjusted p-value,
+#' fold change, sensitivity, and specificity.
 #'
 #' @param ann An object containing `query$Markers` and `db$Markers` data frames.
+#' 
 #' @param p_thresh Adjusted p-value threshold for marker selection.
+#' 
 #' @param FC_thresh Fold change threshold for marker selection.
+#' 
 #' @param sens_thresh Sensitivity threshold for marker selection.
+#' 
 #' @param spec_thresh Specificity threshold for marker selection.
 #'
 #' @return The input `ann` object with updated `ann1$query` and `ann1$db` components

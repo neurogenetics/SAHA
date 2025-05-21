@@ -1,15 +1,16 @@
 #' SAHA2Seurat
 #'
-#' Adds annotations from a specified annotation database to a Seurat object.
-#' The function renames identities in the Seurat object based on cluster annotations
-#' and can add the annotations to the object's metadata if specified.
+#' Adds annotations from a specified annotation database to a Seurat object. The function renames identities in the Seurat object based on cluster annotations and can add the annotations to the object's metadata if specified.
 #'
 #' @param obj A Seurat object in which identities will be renamed according to the annotation database.
+#' 
 #' @param anno_db A data frame containing annotation information with at least two columns:
-#'        'cluster' for cluster IDs and 'best_match' for annotation labels.
+#'        'cluster' for cluster IDs 
+#'        'best_match' for annotation labels.
+#'        
 #' @param anno A string specifying the column in `anno_db` to use for renaming identities; defaults to "best_match".
-#' @param anno2meta A string specifying the name of the metadata field in which to store the annotations;
-#'        defaults to "SAHA_anno". If NULL, annotations are only set as Idents(obj).
+#' 
+#' @param anno2meta A string specifying the name of the metadata field in which to store the annotations; defaults to "SAHA_anno". If NULL, annotations are only set as Idents(obj).
 #'
 #' @return A Seurat object with updated identities and optional metadata field with annotations.
 #' @importFrom Seurat RenameIdents Idents

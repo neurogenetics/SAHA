@@ -1,10 +1,11 @@
-#' Creates a heatmap visualizing gene expression correlations
-#'
-#' Generates a heatmap representing correlation coefficients between
-#' query and database expression profiles. Includes optional metadata annotation.
+#' Create Marker-free Visualization
+#' 
+#' Generates a heatmap representing correlation coefficients between query and database expression profiles. Includes optional metadata annotation.
 #'
 #' @param ann An object containing correlation data (`ann@results$marker_free$corr`).
+#' 
 #' @param meta A data frame containing cell type metadata (optional).
+#' 
 #' @param ABC Character string indicating the brain region to filter by in the Allen Brain Atlas data (optional).
 #'
 #' @return The `ann` object with the heatmap stored in `ann@results$marker_free$heatmap`.

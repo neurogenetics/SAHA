@@ -1,13 +1,15 @@
 #' Create Self-Similarity Visualization
 #'
-#' This function creates a self-similarity visualization based on the provided
-#' annotation object. It generates heatmaps for marker self-similarity or average
-#' expression self-similarity, depending on the specified slot
+#' This function creates a self-similarity visualization based on the provided annotation object. It generates heatmaps for marker self-similarity or average expression self-similarity, depending on the specified slot
 #'
 #' @param ann An object containing annotation data. It should have the required matrices (`Marker_selfsim_matrix` or `AvgExp_selfsim_matrix`) and result storage.
+#' 
 #' @param slot A character string indicating which slot to use. Should be either "Markers" or "AvgExp".
+#' 
 #' @param assay_db A character string specifying the assay database prefix. Default is "RNA".
+#' 
 #' @return The updated annotation object with self-similarity heatmaps stored in `ann@results$self_similarity`.
+#' 
 #' @importFrom ComplexHeatmap Heatmap rowAnnotation columnAnnotation
 #' @importFrom stats cor
 #' @importFrom grDevices colorRampPalette

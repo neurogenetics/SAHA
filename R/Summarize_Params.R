@@ -1,7 +1,6 @@
 #' Collects parameter settings for SAHA analysis
 #'
-#' This function gathers parameter settings for various analyses (e.g., marker-based, self-similarity)
-#' and stores them in a structured data frame within the `ann` object.
+#' This function gathers parameter settings for various analyses (e.g., marker-based, self-similarity) and stores them in a structured data frame within the `ann` object.
 #'
 #' @param ann An object containing analysis parameters within `ann@params`.
 #'

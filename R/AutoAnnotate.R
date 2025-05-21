@@ -2,18 +2,11 @@
 #'
 #' This function assigns cell type annotations to clusters in a query dataset using one of three methods:
 #' 
-#' - `"Markers"`: Uses marker-based annotation from the `ann@ann2` data frame. It selects the cell type
-#'   with the minimum p-value for each query cluster, filtering for p < 0.05. Clusters without significant
-#'   matches are labeled as `"INCONCLUSIVE"`.
+#' - `"Markers"`: Uses marker-based annotation from the `ann@ann2` data frame. It selects the cell type with the minimum p-value for each query cluster, filtering for p < 0.05. Clusters without significant matches are labeled as `"INCONCLUSIVE"`.
 #'
-#' - `"AvgExp"`: Uses a marker-free method by computing the highest Pearson correlation between average
-#'   expression profiles (`ann@results$marker_free$corr`). This method assigns the reference cell type
-#'   with the highest correlation for each cluster.
+#' - `"AvgExp"`: Uses a marker-free method by computing the highest Pearson correlation between average expression profiles (`ann@results$marker_free$corr`). This method assigns the reference cell type with the highest correlation for each cluster.
 #'
-#' - `"Both"`: Combines both methods above. It generates a consensus annotation by comparing the marker-based
-#'   and correlation-based matches. If both methods agree (after whitespace removal), the consensus is labeled
-#'   as `"MATCH"`; otherwise, it is labeled `"DISAGREEMENT"`. Final assignments are set to the matched cell type
-#'   if consensus is reached, and `"INCONCLUSIVE"` otherwise.
+#' - `"Both"`: Combines both methods above. It generates a consensus annotation by comparing the marker-based and correlation-based matches. If both methods agree (after whitespace removal), the consensus is labeled as `"MATCH"`; otherwise, it is labeled `"DISAGREEMENT"`. Final assignments are set to the matched cell type if consensus is reached, and `"INCONCLUSIVE"` otherwise.
 #'
 #' @param ann An annotation object containing both:
 #'   - `ann@ann2`: A data frame with cluster-level marker enrichment results including columns `cluster`, `celltype`, `pvalue`, and `prop`.
@@ -25,13 +18,7 @@
 #'   - `"Both"`: Use both methods and generate a consensus.
 #'   If `NULL`, the function will print a warning and return nothing.
 #'
-#' @return A `data.frame` with auto-annotated results:
-#' - If `data_type == "Markers"`: columns include `cluster`, `best_match`, `prop`, `pvalue`.
-#' - If `data_type == "AvgExp"`: columns include `cluster`, `best_match`, `correlation`.
-#' - If `data_type == "Both"`: columns include `cluster`, `marker_based`, `marker_free`, `consensus`, `best_match`.
-#'
-#' @details Clusters labeled `"REF"` are excluded from marker-based analysis. If no significant p-values are found for a cluster,
-#' it is labeled `"INCONCLUSIVE"`. In consensus mode, whitespace is stripped for string comparison.
+#' @details Clusters labeled `"REF"` are excluded from marker-based analysis. If no significant p-values are found for a cluster,it is labeled `"INCONCLUSIVE"`. In consensus mode, whitespace is stripped for string comparison.
 #'
 #' @importFrom dplyr %>% group_by filter slice_min ungroup mutate select arrange as.data.frame
 #' @importFrom stringr str_remove_all str_replace str_replace_all if_else

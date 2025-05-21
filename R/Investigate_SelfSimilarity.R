@@ -1,16 +1,16 @@
 #' Analyzes self-similarity between clusters in marker space
 #'
-#' Compares marker overlap between two specified clusters in the marker similarity matrix.
-#' Offers the option to return a data frame of shared features (optional).
+#' Compares marker overlap between two specified clusters in the marker similarity matrix. Offers the option to return a data frame of shared features (optional).
 #'
 #' @param ann An object containing the `ann1$Marker_selfsim_matrix` data frame.
+#' 
 #' @param cluster1 The name of the first cluster to compare.
+#' 
 #' @param cluster2 The name of the second cluster to compare.
-#' @param shared_df Logical indicating whether to return a data frame of shared features (TRUE).
-#'   If FALSE (default), the function generates a Venn diagram.
+#' 
+#' @param shared_df Logical indicating whether to return a data frame of shared features (TRUE). If FALSE (default), the function generates a Venn diagram.
 #'
-#' @return A Venn diagram or a data frame of shared features between clusters
-#'   (depending on the `shared_df` argument).
+#' @return A Venn diagram or a data frame of shared features between cluste (depending on the `shared_df` argument).
 #'
 #' @export
 

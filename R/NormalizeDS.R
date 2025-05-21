@@ -1,19 +1,18 @@
 #' Normalizes and merges downsampled query and database expression data
 #'
-#' This function performs normalization and merging on the downsampled query and database
-#' expression data stored within an `ann` object. It assumes the data is gene expression
-#' for RNA-seq (assay_db = "RNA").
+#' This function performs normalization and merging on the downsampled query and database expression data stored within an `ann` object. It assumes the data is gene expression for RNA-seq (assay_db = "RNA").
 #'
 #' @param ann An object containing downsampled expression data in `ann3$query` and `ann3$db`.
+#' 
 #' @param assay_db Character string specifying the assay type for the database data (defaults to "RNA").
+#' 
 #' @param assay_query Character string specifying the assay type for the query data (defaults to the value of `assay_db`).
+#' 
 #' @param norm_method Character string specifying the normalization method. Options are "across_clust" (default) or "within_clust".
 #'
-#' @return The input `ann` object with a new component `results$marker_free$norm_merge`
-#'   containing the normalized and merged expression data frame.
+#' @return The input `ann` object with a new component `results$marker_free$norm_merge` containing the normalized and merged expression data frame.
 #'
-#' @importFrom dplyr %>% pivot_longer pivot_wider rownames_to_column split lapply mutate
-#'                   unite column_to_rownames merge
+#' @importFrom dplyr %>% pivot_longer pivot_wider rownames_to_column split lapply mutate unite column_to_rownames merge
 #' @importFrom stats scale pnorm
 #' @importFrom tibble rownames_to_column
 #'

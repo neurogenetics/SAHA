@@ -1,11 +1,11 @@
 #' Creates a dendrogram for self-similarity analysis
 #'
-#' This function generates a dendrogram based on the self-similarity matrix for either
-#' marker-based or average expression data. It also attempts to rename the dendrogram
-#' labels based on a provided annotation data frame.
+#' This function generates a dendrogram based on the self-similarity matrix for either marker-based or average expression data. It also attempts to rename the dendrogram labels based on a provided annotation data frame.
 #'
 #' @param ann An object containing SAHA analysis results.
+#' 
 #' @param sim_type The type of similarity matrix to use ("Markers" or "AvgExp").
+#' 
 #' @param annotation A data frame containing cluster annotations (optional).
 #'
 #' @return A plot of the self-similarity dendrogram.
