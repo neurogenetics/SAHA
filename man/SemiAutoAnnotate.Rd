@@ -1,8 +1,8 @@
-\name{SemiAutoAnnotation}
-\alias{SemiAutoAnnotation}
+\name{SemiAutoAnnote}
+\alias{SemiAutoAnnote}
 \title{Annotate: Semi-Automated Annotation By User Input}
 \usage{
-SemiAutoAnnotation(ann,
+SemiAutoAnnotate(ann,
 	data_type = NULL,
 	refine = NULL)
 }
