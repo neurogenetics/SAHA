@@ -91,6 +91,21 @@ AutoAnnotate = function(ann, data_type=NULL){
       if (length(intersect(best_match.AvgExp$cluster, best_match.Markers$cluster)) == 0) {
         warning("No matching cluster names found in marker-based and marker-free analysis. Consider running separately or renaming clusters.") 
       }
+      best_matches=suppressMessages(full_join(best_match.AvgExp,y = best_match.Markers))
+      best_matches <- best_matches %>%
+        #select(best_match) %>%
+        mutate(best_match_avg = str_replace(best_match, "^db\\.", "")) %>%
+        mutate(best_match_avg = str_replace_all(best_match_avg, "\\.", " "))
+      
+      best_matches <- best_matches %>%
+        mutate(consensus = if_else(str_remove_all(celltype, "\\s+") == str_remove_all(best_match_avg, "\\s+"), "MATCH", "DISAGREEMENT"))
+      best_matches <- best_matches %>%
+        mutate(final_output = if_else(consensus == "MATCH", celltype, "INCONCLUSIVE"))
+      best_matches[is.na(best_matches)]<-"INCONCLUSIVE"
+      best_matches <- best_matches %>%
+        select(cluster, celltype,best_match_avg,consensus,final_output)
+      colnames(best_matches)=c("cluster","marker_based","marker_free","consensus","best_match")
+      return(best_matches)
     }else{
       best_matches=suppressMessages(full_join(best_match.AvgExp,y = best_match.Markers))
       best_matches <- best_matches %>%
