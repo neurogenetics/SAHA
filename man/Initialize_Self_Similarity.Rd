@@ -36,9 +36,3 @@
   genes_of_interest <- c("GeneA", "GeneB", "GeneC")
   ann <- Initialize_Self_Similarity(ann, slot = "AvgExp", custom_ds = genes_of_interest)
 }
-\seealso{
-  \code{\link{SimilarityDend}}, \code{\link{Investigate_Self_Similarity}}
-}
-\author{
-  Your Name
-}
