@@ -1,6 +1,6 @@
 \name{Create_MarkerFree_Viz}
 \alias{Create_MarkerFree_Viz}
-\title{Marker-free annotation: Creating marker-free annotation heatmap}
+\title{Marker-free Annotation Visualization}
 \description{Generates a heatmap of correlation of gene expression profiles between query dataset and database.}
 \usage{
 Create_MarkerFree_Viz(ann, meta = NULL, ABC = NULL)

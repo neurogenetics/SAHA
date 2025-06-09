@@ -1,6 +1,6 @@
 \name{Create_SAHA_Object}
 \alias{Create_SAHA_Object}
-\title{Create: SAHA (S4) Object}
+\title{Create Semi Automated Hand Annotated Object}
 \usage{
 Create_SAHA_Object(query,
    db,

@@ -1,6 +1,6 @@
 \name{SemiAutoAnnote}
 \alias{SemiAutoAnnote}
-\title{Annotate: Semi-Automated Annotation By User Input}
+\title{Semi-Automatic Annotation of Query Clusters}
 \usage{
 SemiAutoAnnotate(ann,
 	data_type = NULL,

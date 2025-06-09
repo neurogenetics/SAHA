@@ -1,6 +1,6 @@
 \name{Create_MarkerBased_Viz}
 \alias{Create_MarkerBased_Viz}
-\title{Creates marker-based visualizations for cell type annotation}
+\title{Marker-based Annotation Visualization}
 \description{
 Generates various visualizations based on marker-based cell type annotation results.
 Creates dot plots and a bar plot, with optional faceting by cell type class.
