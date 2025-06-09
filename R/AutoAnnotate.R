@@ -80,7 +80,6 @@ AutoAnnotate = function(ann, data_type=NULL){
                                     correlation = apply(ann@results$marker_free$corr, 1, max))
     best_match.AvgExp$cluster<- gsub(paste0("^query\\."), "", rownames(best_match.AvgExp))
     
-    # added this 4/17
     best_match.Markers$cluster <- as.character(best_match.Markers$cluster)
     best_match.AvgExp$cluster <- as.character(best_match.AvgExp$cluster)
     
@@ -93,7 +92,6 @@ AutoAnnotate = function(ann, data_type=NULL){
       }
       best_matches=suppressMessages(full_join(best_match.AvgExp,y = best_match.Markers))
       best_matches <- best_matches %>%
-        #select(best_match) %>%
         mutate(best_match_avg = str_replace(best_match, "^db\\.", "")) %>%
         mutate(best_match_avg = str_replace_all(best_match_avg, "\\.", " "))
       
@@ -109,7 +107,6 @@ AutoAnnotate = function(ann, data_type=NULL){
     }else{
       best_matches=suppressMessages(full_join(best_match.AvgExp,y = best_match.Markers))
       best_matches <- best_matches %>%
-        #select(best_match) %>%
         mutate(best_match_avg = str_replace(best_match, "^db\\.", "")) %>%
         mutate(best_match_avg = str_replace_all(best_match_avg, "\\.", " "))
       

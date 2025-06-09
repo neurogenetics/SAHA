@@ -1,12 +1,27 @@
+#' Generate an HTML Report from SAHA Analysis
+#'
+#' This function renders an HTML report using the SAHA analysis results.
+#' It determines whether the provided output file path is absolute or relative,
+#' resolves the final path accordingly, and uses `rmarkdown::render()` to
+#' generate the report.
+#'
+#' @param SAHA An object containing SAHA analysis results.
+#' @param auto Optional. A placeholder for future automation options (currently unused).
+#' @param output_file A string specifying the output file name or full path for the report.
+#'
+#' @return The function creates an HTML report at the specified location. It does not return an R object.
+#'
+#' @details
+#' - If `output_file` is an absolute path (e.g., "/home/user/report.html" or "C:/report.html"),
+#'   it is used directly.
+#' - If it is a relative path (e.g., "results/report.html"), it is resolved
+#'   against the current working directory using `file.path(getwd(), output_file)`.
+#' - The report template is an internal R Markdown file located within the `SAHAdata` package.
+#'
+#' @examples
+#'
+#' @export
 Generate_SAHA_Report <- function(SAHA, auto = NULL, output_file) {
-   
-   # Determine the full output path
-   # Check if output_file is an absolute path (starts with / or C:/, D:/ etc.)
-   # Note: The 'file.path()' function itself handles absolute paths correctly
-   # when combined with a relative path. If 'output_file' is absolute,
-   # 'file.path(getwd(), output_file)' will effectively return 'output_file'.
-   # However, for clarity and explicit control, the check below is more robust
-   # and prevents potential double slashes if getwd() was used naively.
    
    # This regex checks for paths starting with '/' (Unix-like) or 'X:/' (Windows)
    is_absolute_path <- grepl("^(/|[A-Za-z]:/)", output_file)

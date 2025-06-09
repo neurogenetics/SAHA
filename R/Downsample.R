@@ -8,7 +8,7 @@
 #'
 #' @export
 Downsample <- function(ann, custom_ds=NULL){
-   #3. Downsample database and query to mutually expressed genes
+   #1. Downsample database and query to mutually expressed genes
    if (is.null(custom_ds)) {
      query_genes=rownames(ann@query$AvgExp)
    }else{
@@ -19,9 +19,9 @@ Downsample <- function(ann, custom_ds=NULL){
    db_ds=ann@db$AvgExp[rownames(ann@db$AvgExp)%in%query_genes,]
    query_ds=ann@query$AvgExp[rownames(ann@query$AvgExp)%in%rownames(db_ds),]
 
-   #4. Create list of data.frames
+   #2. Create list of data.frames
    ann3=list("query"=query_ds, "db"=db_ds)
-   #5. Check to see that all rownames of query are in rownames of db
+   #3. Check to see that all rownames of query are in rownames of db
    if (all(rownames(ann3$query)%in%rownames(ann3$db))) {
       cat(paste("Downsampled query and database contain",length(rownames(ann3$query)),"genes."))
    }else{
@@ -30,7 +30,7 @@ Downsample <- function(ann, custom_ds=NULL){
 
    ann@params$marker_free <- list(downsample=ifelse(is.null(custom_ds), "query&db",deparse(substitute(custom_ds))),length_ds= ifelse(is.null(custom_ds), length(rownames(ann3$query)), paste0(length(rownames(ann3$query)),"/",length(custom_ds))))
 
-   #6. Return the dataframe
+   #4. Return the dataframe
    ann@ann3=ann3
    return(ann)
 }

@@ -27,13 +27,10 @@
 
 
 Create_MarkerBased_Viz <- function (ann, meta = NULL){
-   # Check if meta is a data frame or NULL
    if (!is.null(meta)) {
       if (inherits(meta, "data.frame")) {
-         # Meta is already a data frame, use it directly
          meta <- meta
       } else {
-         # Meta is a path to a CSV file, read it into a data frame
          meta <- read.csv(meta)
       }
    } else {
@@ -88,39 +85,38 @@ Create_MarkerBased_Viz <- function (ann, meta = NULL){
    plot_df <- plot_df %>%
       filter(!is.na(cluster))
 
-   #Adding in ability to report out classes as colored facets
-   unique_classes <- unique(plot_df$class) # Get unique class values
-   unique_colors <- plot_df$class_color[match(unique_classes, plot_df$class)] # Match the colors to unique classes
+   # Adding in ability to report out classes as colored facets
+   unique_classes <- unique(plot_df$class) 
+   unique_colors <- plot_df$class_color[match(unique_classes, plot_df$class)] 
    facet_colors <- setNames(unique_colors, unique_classes)
    unique_spaces <- sapply(seq_along(unique_classes), function(x) paste(rep(" ", x), collapse = ""))
    plot_df$class_space <- factor(plot_df$class, levels = unique_classes, labels = unique_spaces)
 
-   ###########
-   #PLOTS
+   # Create Plots
    if (!is.null(meta)) {
       p1 <- ggplot(data = plot_df,
                    aes(x = celltype, y = cluster, alpha = as.numeric(-log(pvalue, 10)))) +
-         geom_point(aes(size = as.numeric(prop), color = sig, fill = class)) + # Use 'fill' for class in legend
+         geom_point(aes(size = as.numeric(prop), color = sig, fill = class)) + 
          scale_size_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.25)) +
          labs(title = "Every Cell Type by Cluster", x = " ", y = "Cluster") +
-         scale_color_manual(values = c("black", "red")) + # Keep original color scale for 'sig'
-         scale_fill_manual(values = facet_colors) + # Map class to fill color for the legend
+         scale_color_manual(values = c("black", "red")) + 
+         scale_fill_manual(values = facet_colors) +
          theme_bw() +
          theme(
             axis.text.x = element_text(angle = 90, hjust = 1),
             axis.text.y = element_text(size = 8),
             plot.title = element_text(size = 10),
-            strip.text.x = element_text(size = 8) # Keep space-based facet labels
+            strip.text.x = element_text(size = 8) 
          ) +
          labs(color = "Enrichment \n(cutoff p < 0.05)",
               size = "Proportion of Markers",
               alpha = "Enrichment \n(-log10(p))",
-              fill = "Class") + # Add 'Class' to the fill legend
+              fill = "Class") + 
          facet_grid2(~class_space, scales = "free_x", space = "free",
                      strip = strip_themed(
-                        background_x = elem_list_rect(fill = facet_colors) # Keep facet colors
+                        background_x = elem_list_rect(fill = facet_colors) 
                      )) +
-         guides(fill = guide_legend(override.aes = list(color = facet_colors))) # Override fill legend colors
+         guides(fill = guide_legend(override.aes = list(color = facet_colors))) 
 
    }else{
       p1 <- ggplot(data = plot_df,
@@ -148,42 +144,31 @@ Create_MarkerBased_Viz <- function (ann, meta = NULL){
             plot.title = element_text(size = 10),
             strip.text = element_text(size = 8))
 
-
-###############################################
-# NEED TO ADD COLOR CODE TO P3 and P4 but turn around the if loops to match above....
-
-
-
-
-
-
-
-
    # Create the ggplot plot with the ordered 'cluster' variable -- ONLY SIGNFICANT without facet grid
    if (!is.null(meta) ) {
       p3 <- ggplot(data = plot_df,
                    aes(x = celltype, y = cluster, alpha = as.numeric(-log(pvalue, 10)))) +
-         geom_point(aes(size = as.numeric(prop), color = sig, fill = class)) + # Use 'fill' for class in legend
+         geom_point(aes(size = as.numeric(prop), color = sig, fill = class)) + 
          scale_size_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.25)) +
          labs(title = "Every Cell Type by Cluster", x = " ", y = "Cluster") +
-         scale_color_manual(values = c("white", "red")) + # Keep original color scale for 'sig'
-         scale_fill_manual(values = facet_colors) + # Map class to fill color for the legend
+         scale_color_manual(values = c("white", "red")) + 
+         scale_fill_manual(values = facet_colors) +
          theme_bw() +
          theme(
             axis.text.x = element_text(angle = 90, hjust = 1),
             axis.text.y = element_text(size = 8),
             plot.title = element_text(size = 10),
-            strip.text.x = element_text(size = 8) # Keep space-based facet labels
+            strip.text.x = element_text(size = 8) 
          ) +
          labs(color = "Enrichment \n(cutoff p < 0.05)",
               size = "Proportion of Markers",
               alpha = "Enrichment \n(-log10(p))",
-              fill = "Class") + # Add 'Class' to the fill legend
+              fill = "Class") +
          facet_grid2(~class_space, scales = "free_x", space = "free",
                      strip = strip_themed(
-                        background_x = elem_list_rect(fill = facet_colors) # Keep facet colors
+                        background_x = elem_list_rect(fill = facet_colors)
                      )) +
-         guides(fill = guide_legend(override.aes = list(color = facet_colors))) # Override fill legend colors
+         guides(fill = guide_legend(override.aes = list(color = facet_colors))) 
 
    }else{
       p3 <- ggplot(data = plot_df,
@@ -202,33 +187,31 @@ Create_MarkerBased_Viz <- function (ann, meta = NULL){
 
    }
 
-
-
    # Create the ggplot plot with the ordered 'cluster' variable -- ONLY TOP SIGNFICANT without facet grid
    if (!is.null(meta) ) {
       p4 <- ggplot(data = plot_df,
                    aes(x = celltype, y = cluster, alpha = as.numeric(-log(pvalue, 10)))) +
-         geom_point(aes(size = as.numeric(prop), color = top_sig, fill = class)) + # Use 'fill' for class in legend
+         geom_point(aes(size = as.numeric(prop), color = top_sig, fill = class)) + 
          scale_size_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.25)) +
          labs(title = "Every Cell Type by Cluster", x = " ", y = "Cluster") +
-         scale_color_manual(values = c("white", "red")) + # Keep original color scale for 'sig'
-         scale_fill_manual(values = facet_colors) + # Map class to fill color for the legend
+         scale_color_manual(values = c("white", "red")) + 
+         scale_fill_manual(values = facet_colors) + 
          theme_bw() +
          theme(
             axis.text.x = element_text(angle = 90, hjust = 1),
             axis.text.y = element_text(size = 8),
             plot.title = element_text(size = 10),
-            strip.text.x = element_text(size = 8) # Keep space-based facet labels
+            strip.text.x = element_text(size = 8) 
          ) +
          labs(color = "Enrichment \n(cutoff p < 0.05)",
               size = "Proportion of Markers",
               alpha = "Enrichment \n(-log10(p))",
-              fill = "Class") + # Add 'Class' to the fill legend
+              fill = "Class") + 
          facet_grid2(~class_space, scales = "free_x", space = "free",
                      strip = strip_themed(
-                        background_x = elem_list_rect(fill = facet_colors) # Keep facet colors
+                        background_x = elem_list_rect(fill = facet_colors) 
                      )) +
-         guides(fill = guide_legend(override.aes = list(color = facet_colors))) # Override fill legend colors
+         guides(fill = guide_legend(override.aes = list(color = facet_colors))) 
    }else{
       p4 <- ggplot(data = plot_df,
                    aes(x = celltype, y = cluster, alpha = as.numeric(-log(pvalue,10)))) +
@@ -245,9 +228,6 @@ Create_MarkerBased_Viz <- function (ann, meta = NULL){
          labs(color = "Significant \n(p < 0.05)", size = "Proportion of Markers",alpha = "Enrichment \n(-log10(p))")
 
    }
-
-
-
    ann@results$marker_based$markers_barplot=p2
    ann@results$marker_based$dotplot_all=p1
    ann@results$marker_based$dotplot_sig=p3
