@@ -82,7 +82,7 @@ Create_SAHA_object <- function(query, db,data_type,existing=NULL){
       #print the name of the loaded dataset
       cat(paste("Loaded query dataset contains", length(colnames(temp_ann@query$AvgExp)),"unique clusters.\n"))
       }
-}
+
 
    if (is.null(existing)) {
       ann=temp_ann
