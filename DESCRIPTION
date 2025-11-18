@@ -11,29 +11,23 @@ LazyData: true
 Depends:
    R (>= 4.3)
 Imports:
-    ComplexHeatmap,
-    circlize,
-    dplyr,
-    methods,
-    ggrepel,
-    eulerr,
-    reshape2,
-    corrplot,
-    ggh4x,
-    ggpubr,
-    ggplot2,
-    ape,
-    vegan,
-    dendextend,
-    forcats,
-    stringr,
-    tidyr,
-    tibble,
-    rmarkdown,
-    Seurat
+   ComplexHeatmap,
+   circlize,
+   dplyr,
+   methods,
+   ggrepel,
+   eulerr,
+   reshape2,
+   corrplot,
+   ggh4x,
+   ggpubr,
+   ape,
+   vegan,
+   testthat,
+   dendextend
+
 Suggests: 
     SAHAdata,
     knitr,
-    rmarkdown,
-  
-testthatVignetteBuilder: knitr
+    rmarkdown
+VignetteBuilder: knitr
