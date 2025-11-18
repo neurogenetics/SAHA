@@ -35,5 +35,7 @@ Suggests:
     SAHAdata,
     knitr,
     rmarkdown,
-  
-testthatVignetteBuilder: knitr
+    testthat
+
+VignetteBuilder: knitr
+
