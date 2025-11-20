@@ -20,11 +20,11 @@
 #' @export
 SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NULL) {
   if (is.null(data_type)) {
-    cat("Thank you for choosing the semi-automated approach. If you wish to proceed, please select which data_type to auto-annotate using: Markers, AvgExp, or Both.")
+    cat("Thank you for choosing the semi-automated approach. If you wish to proceed, please select which data_type to auto-annotate using: Markers, AvgExp, or Both.\n")
     return(NULL)
   }
   if (is.null(existing)) {
-    cat("Thank you for choosing the semi-automated approach. To progress through each annotation, use the enter key. If you want to save your annotations, use the Enter key on a blank entry. If you want to quit the function, use your ESC key.")
+    cat("Thank you for choosing the semi-automated approach.\nTo progress through each annotation, use the enter key.\nIf you want to save your annotations, use the Enter key on a blank entry.\nIf you want to quit the function, use your ESC key.\n")
   }
   
   if (data_type == "Markers") {
@@ -88,6 +88,23 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
     } else {
       hand_names = todo
     }
+    if(any(duplicated(hand_names$old_names))) {
+      dup_ids <- unique(hand_names$old_names[duplicated(hand_names$old_names)])
+      for(d in dup_ids) {
+        cat("Duplicate entries detected for cluster:", d, "\n")
+        dup_rows <- which(hand_names$old_names == d)
+        print(hand_names[dup_rows, ])
+        keep <- readline(paste0("Which row to keep for cluster ", d, "? Enter row number (press Enter to keep the first row): "))
+        keep_num <- suppressWarnings(as.integer(keep))
+        if(is.na(keep_num) || !(keep_num %in% dup_rows)) {
+          keep_num <- dup_rows[1]
+          cat("Keeping first row by default:", keep_num, "\n")
+        }
+        
+        hand_names <- hand_names[-setdiff(dup_rows, keep_num), ]
+      }
+    }
+    cat("You have completed Markers annotation!\n")
     return(hand_names)
   }
   
@@ -100,7 +117,25 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
     hand_names$new_names = ""
     
     if (!is.null(existing)) {
-      hand_names$new_names = existing$new_names
+      
+      # Merge existing annotations by old_names WITHOUT removing duplicates
+      hand_names <- merge(
+        hand_names,
+        existing[, c("old_names", "new_names")],
+        by = "old_names",
+        all.x = TRUE,
+        suffixes = c("", ".existing")
+      )
+      
+      # Use existing label only where one exists
+      hand_names$new_names <- ifelse(
+        hand_names$new_names.existing != "" & !is.na(hand_names$new_names.existing),
+        hand_names$new_names.existing,
+        hand_names$new_names
+      )
+      
+      # Drop helper column
+      hand_names$new_names.existing <- NULL
       
       if (!is.null(refine)) {
         for (row in 1:nrow(hand_names)) {
@@ -164,6 +199,23 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
     } else {
       hand_names = todo
     }
+    if(any(duplicated(hand_names$old_names))) {
+      dup_ids <- unique(hand_names$old_names[duplicated(hand_names$old_names)])
+      for(d in dup_ids) {
+        cat("Duplicate entries detected for cluster:", d, "\n")
+        dup_rows <- which(hand_names$old_names == d)
+        print(hand_names[dup_rows, ])
+        keep <- readline(paste0("Which row to keep for cluster ", d, "? Enter row number (press Enter to keep the first row): "))
+        keep_num <- suppressWarnings(as.integer(keep))
+        if(is.na(keep_num) || !(keep_num %in% dup_rows)) {
+          keep_num <- dup_rows[1]
+          cat("Keeping first row by default:", keep_num, "\n")
+        }
+        
+        hand_names <- hand_names[-setdiff(dup_rows, keep_num), ]
+      }
+    }
+    cat("You have completed AvgExp annotation!\n")
     return(hand_names)
   }
   
@@ -244,7 +296,12 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
       
       if (x == "") {
         message("Annotation paused. Progress saved.")
-        hand_names$new_names[hand_names$old_names %in% todo$old_names] <- todo$new_names
+        
+        # Save only the non-empty names
+        hand_names$new_names[hand_names$old_names %in% todo$old_names] <-
+          todo$new_names[match(hand_names$old_names, todo$old_names, nomatch = 0)]
+        
+        # Return ONLY hand_names (one row per old_name)
         return(hand_names)
       }
       
@@ -260,6 +317,23 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
     } else {
       hand_names = todo
     }
+    if(any(duplicated(hand_names$old_names))) {
+      dup_ids <- unique(hand_names$old_names[duplicated(hand_names$old_names)])
+      for(d in dup_ids) {
+        cat("Duplicate entries detected for cluster:", d, "\n")
+        dup_rows <- which(hand_names$old_names == d)
+        print(hand_names[dup_rows, ])
+        keep <- readline(paste0("Which row to keep for cluster ", d, "? Enter row number (press Enter to keep the first row): "))
+        keep_num <- suppressWarnings(as.integer(keep))
+        if(is.na(keep_num) || !(keep_num %in% dup_rows)) {
+          keep_num <- dup_rows[1]
+          cat("Keeping first row by default:", keep_num, "\n")
+        }
+        
+        hand_names <- hand_names[-setdiff(dup_rows, keep_num), ]
+      }
+    }
+    cat("You have completed the annotation for Both datasets\n")
     return(hand_names)
   }
 }

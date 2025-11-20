@@ -6,7 +6,7 @@
 #' generate the report.
 #'
 #' @param SAHA An object containing SAHA analysis results.
-#' @param auto Optional. A placeholder for future automation options (currently unused).
+#' @param auto Optional. A dataframe output from AutoAnnotate().
 #' @param output_file A string specifying the output file name or full path for the report.
 #'
 #' @return The function creates an HTML report at the specified location. It does not return an R object.
