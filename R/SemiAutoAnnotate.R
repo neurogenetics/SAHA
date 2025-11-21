@@ -28,20 +28,34 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
   }
   
   if (data_type == "Markers") {
+    
     temp = ann@results$marker_based$dotplot_all
-    hand_names = data.frame(unique(temp$data$cluster))
-    colnames(hand_names)[1] = "old_names"
-    hand_names$new_names = ""
+    
+    ## -------------------------------
+    ## FIXED: build hand_names dynamically
+    ## -------------------------------
+    if (!is.null(refine)) {
+      hand_names <- refine[, c("cluster", "best_match")]
+      colnames(hand_names) <- c("old_names", "new_names")
+      hand_names$new_names[hand_names$new_names == "INCONCLUSIVE"] <- ""
+    } else {
+      hand_names = data.frame(old_names = unique(temp$data$cluster))
+      hand_names$new_names = ""
+    }
+    ## -------------------------------
     
     if (!is.null(existing)) {
-      hand_names$new_names = existing$new_names
+      # apply existing values
+      idx <- match(hand_names$old_names, existing$old_names)
+      hand_names$new_names[!is.na(idx)] <- existing$new_names[idx[!is.na(idx)]]
       
       if (!is.null(refine)) {
         for (row in 1:nrow(hand_names)) {
           clust = hand_names$old_names[row]
           if (hand_names$new_names[row] == "") {
             match = refine$best_match[refine$cluster == clust]
-            if (length(match) == 1 && match != "INCONCLUSIVE") {
+            match = match[match != "INCONCLUSIVE"]
+            if (length(match) == 1) {
               hand_names$new_names[row] = match
             }
           }
@@ -51,52 +65,71 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
       } else {
         todo = hand_names[hand_names$new_names == "", ]
       }
+      
     } else if (!is.null(refine)) {
-      todo <- hand_names %>% filter(old_names %in% unique(refine$cluster[refine$best_match == "INCONCLUSIVE"]))
-      tokeep <- hand_names %>% filter(old_names %in% unique(refine$cluster[refine$best_match != "INCONCLUSIVE"]))
-      tokeep$new_names = refine[refine$best_match != "INCONCLUSIVE", "best_match"]
+      
+      todo <- hand_names[hand_names$new_names == "", ]
+      tokeep <- hand_names[hand_names$new_names != "", ]
+      
     } else {
       todo = hand_names
     }
     
-    for (i in todo$old_names) {
-      temp2 <- ggplot(subset(temp$data, cluster == i), aes(x = celltype, y = cluster, alpha = as.numeric(-log(pvalue,10)))) +
+    ## Loop through ALL rows in todo (duplicates included)
+    for (i in unique(todo$old_names)) {
+      
+      temp2 <- ggplot(subset(temp$data, cluster == i),
+                      aes(x = celltype, y = cluster, alpha = as.numeric(-log(pvalue,10)))) +
         geom_point(aes(size = as.numeric(prop), color = sig)) +
         scale_size_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.25)) +
         labs(title = "Every Cell Type by Cluster", x = " ", y = "Cluster") +
         scale_color_manual(values = c("black", "red")) +
         theme_bw() +
-        theme(legend.position = "none", axis.text.x = element_text(angle=90, hjust=1))
+        theme(legend.position = "none",
+              axis.text.x = element_text(angle=90, hjust=1))
+      
       print(temp2)
+      
       x = readline(paste0("What would you like to name cluster ", i, ": "))
       
       if (x == "") {
         message("Annotation paused. Progress saved.")
-        hand_names$new_names[hand_names$old_names %in% todo$old_names] <- todo$new_names
+        hand_names$new_names[hand_names$old_names %in% todo$old_names] <- 
+          todo$new_names
         return(hand_names)
       }
       
-      todo[todo$old_names == i, "new_names"] = x
+      todo$new_names[todo$old_names == i] = x
     }
     
     if (!is.null(refine)) {
       hand_names = rbind(todo, tokeep)
       hand_names = hand_names %>% arrange(old_names)
     } else if (!is.null(existing)) {
-      hand_names = existing
-      hand_names$new_names[hand_names$old_names %in% todo$old_names] <- todo$new_names
+      hand_names$new_names[hand_names$old_names %in% todo$old_names] <-
+        todo$new_names
     } else {
       hand_names = todo
     }
-    if(any(duplicated(hand_names$old_names))) {
+    
+    ## Duplicate resolution
+    if (any(duplicated(hand_names$old_names))) {
+      
       dup_ids <- unique(hand_names$old_names[duplicated(hand_names$old_names)])
-      for(d in dup_ids) {
+      
+      for (d in dup_ids) {
         cat("Duplicate entries detected for cluster:", d, "\n")
         dup_rows <- which(hand_names$old_names == d)
         print(hand_names[dup_rows, ])
-        keep <- readline(paste0("Which row to keep for cluster ", d, "? Enter row number (press Enter to keep the first row): "))
+        
+        keep <- readline(
+          paste0("Which row to keep for cluster ", d,
+                 "? Enter row number (press Enter to keep the first row): ")
+        )
+        
         keep_num <- suppressWarnings(as.integer(keep))
-        if(is.na(keep_num) || !(keep_num %in% dup_rows)) {
+        
+        if (is.na(keep_num) || !(keep_num %in% dup_rows)) {
           keep_num <- dup_rows[1]
           cat("Keeping first row by default:", keep_num, "\n")
         }
@@ -104,6 +137,7 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
         hand_names <- hand_names[-setdiff(dup_rows, keep_num), ]
       }
     }
+    
     cat("You have completed Markers annotation!\n")
     return(hand_names)
   }
