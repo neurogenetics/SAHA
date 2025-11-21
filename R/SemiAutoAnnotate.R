@@ -171,6 +171,10 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
       # Drop helper column
       hand_names$new_names.existing <- NULL
       
+      #### 🔧 FIX CLUSTER ORDER MISMATCH (THIS IS THE IMPORTANT ADDITION) ####
+      hand_names <- hand_names[match(rownames(ann3), hand_names$old_names), ]
+      ########################################################################
+      
       if (!is.null(refine)) {
         for (row in 1:nrow(hand_names)) {
           clust = hand_names$old_names[row]
