@@ -31,9 +31,6 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
     
     temp = ann@results$marker_based$dotplot_all
     
-    ## -------------------------------
-    ## FIXED: build hand_names dynamically
-    ## -------------------------------
     if (!is.null(refine)) {
       hand_names <- refine[, c("cluster", "best_match")]
       colnames(hand_names) <- c("old_names", "new_names")
