@@ -19,18 +19,32 @@
 #' # Assuming `seurat_obj` is a Seurat object and `annotations_db` is a data frame
 #' # containing cluster annotations:
 #' seurat_obj <- SAHA2Seurat(seurat_obj, annotations_db)
-SAHA2Seurat <- function(obj,anno_db,anno="best_match",anno2meta="SAHA_anno") {
-   annotations <- anno_db%>%
-      select(cluster,best_match)
-   new.names=annotations$best_match
-   names(new.names)=annotations$cluster
-   obj=RenameIdents(obj,new.names)
-
-   if (is.null(anno2meta)) {
-      cat("SAHA annotations written to Idents(obj).")
-   }else{
-      obj[[anno2meta]]=Idents(obj)
-      cat(paste0("SAHA annotations written to Idents(obj)and to obj@meta.data$", anno2meta,"."))
-   }
-   return(obj)
+SAHA2Seurat <- function(obj, anno_db, anno = "best_match", anno2meta = "SAHA_anno") {
+  
+  # Figure out which column names are present
+  if (all(c("cluster", "best_match") %in% colnames(anno_db))) {
+    cluster_col <- "cluster"
+    label_col   <- "best_match"
+  } else if (all(c("old_names", "new_names") %in% colnames(anno_db))) {
+    cluster_col <- "old_names"
+    label_col   <- "new_names"
+  } else {
+    stop("anno_db must contain either columns 'cluster' and 'best_match' or 'old_names' and 'new_names'.")
+  }
+  
+  # Build named vector for RenameIdents
+  annotations <- anno_db[, c(cluster_col, label_col)]
+  new.names   <- annotations[[label_col]]
+  names(new.names) <- annotations[[cluster_col]]
+  
+  obj <- RenameIdents(obj, new.names)
+  
+  if (is.null(anno2meta)) {
+    cat("SAHA annotations written to Idents(obj).")
+  } else {
+    obj[[anno2meta]] <- Idents(obj)
+    cat(paste0("SAHA annotations written to Idents(obj) and to obj@meta.data$", anno2meta, "."))
+  }
+  
+  return(obj)
 }
