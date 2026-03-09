@@ -23,13 +23,16 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
     cat("Thank you for choosing the semi-automated approach. If you wish to proceed, please select which data_type to auto-annotate using: Markers, AvgExp, or Both.\n")
     return(NULL)
   }
-  if (is.null(existing)) {
-    cat("Thank you for choosing the semi-automated approach.\nTo progress through each annotation, use the enter key.\nIf you want to save your annotations, use the Enter key on a blank entry.\nIf you want to quit the function, use your ESC key.\n")
-  }
+  
+  ann_sym <- deparse(substitute(ann))
   
   if (data_type == "Markers") {
     
     temp = ann@results$marker_based$dotplot_all
+    
+    if (is.null(existing)) {
+      cat("Thank you for choosing the semi-automated approach.\nTo progress through each annotation, use the enter key.\nIf you want to save your annotations, use the Enter key on a blank entry.\nIf you want to quit the function, use your ESC key.\n")
+    }
     
     if (!is.null(refine)) {
       hand_names <- refine[, c("cluster", "best_match")]
@@ -147,6 +150,10 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
     colnames(hand_names)[1] = "old_names"
     hand_names$new_names = ""
     
+    if (is.null(existing)) {
+      cat("Thank you for choosing the semi-automated approach.\nTo progress through each annotation, use the enter key.\nIf you want to save your annotations, use the Enter key on a blank entry.\nIf you want to quit the function, use your ESC key.\n")
+    }
+    
     if (!is.null(existing)) {
       
       # Merge existing annotations by old_names WITHOUT removing duplicates
@@ -167,10 +174,7 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
       
       # Drop helper column
       hand_names$new_names.existing <- NULL
-      
-      #### 🔧 FIX CLUSTER ORDER MISMATCH (THIS IS THE IMPORTANT ADDITION) ####
       hand_names <- hand_names[match(rownames(ann3), hand_names$old_names), ]
-      ########################################################################
       
       if (!is.null(refine)) {
         for (row in 1:nrow(hand_names)) {
@@ -266,8 +270,16 @@ SemiAutoAnnotate = function(ann, data_type = NULL, refine = NULL, existing = NUL
     hand_names = merge(hand_names1, hand_names2, by = "old_names")
     
     if (nrow(hand_names) == 0) {
-      warning("No matching cluster names found in marker-based and marker-free analysis. Consider running separately or renaming clusters.")
+      warning(
+        "No matching cluster names found in marker-based and marker-free analysis. Consider running separately or renaming your clusters.\n To fix this warning, please match your marker cluster names in\n unique(",ann_sym, "@results$marker_based$dotplot_all$data$cluster)\n and avgexp cluster names in\n rownames(",ann_sym,"@results$marker_free$corr)."
+      )
+      return(invisible(NULL))
     }
+    
+    if (is.null(existing)) {
+      cat("Thank you for choosing the semi-automated approach.\nTo progress through each annotation, use the enter key.\nIf you want to save your annotations, use the Enter key on a blank entry.\nIf you want to quit the function, use your ESC key.\n")
+    }
+    
     
     hand_names = hand_names %>% arrange(old_names)
     hand_names$new_names = ""
