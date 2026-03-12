@@ -13,12 +13,20 @@
 #' @export
 #' @importFrom Seurat VariableFeatures AverageExpression FindAllMarkers
 Seurat2SAHA <- function(obj, output="Both"){
+  
+  # pick an assay: prefer "RNA" if present, otherwise use DefaultAssay(obj)
+  assay_use <- if ("RNA" %in% Assays(obj)) "RNA" else DefaultAssay(obj)
+  
+  if (!(assay_use %in% Assays(obj))) {
+    stop("No valid assay found in object. Tried 'RNA' and DefaultAssay(obj).")
+  }
+  
   if (output=="Both") {
     cat("Calculating Variable Features: \n")
     varfeat = VariableFeatures(obj)
     cat(paste0("Storing ",length(varfeat)," variable features. \n"))
     cat("Calculating Average Expression: \n")
-    avgexp =  suppressWarnings(suppressMessages(AverageExpression(obj,assays = "RNA",slot="data")))
+    avgexp =  suppressWarnings(suppressMessages(AverageExpression(obj,assays = assay_use,slot="data")))
     avgexp=data.frame(avgexp)
     cat(paste0("Storing expression of ",length(rownames(avgexp))," unique features across ",length(colnames(avgexp))," clusters. \n"))
     cat("Calculating Cluster Markers: \n")
@@ -30,7 +38,7 @@ Seurat2SAHA <- function(obj, output="Both"){
     varfeat = VariableFeatures(obj)
     cat(paste0("Storing ",length(varfeat)," variable features. \n"))
     cat("Calculating Average Expression: \n")
-    avgexp =  suppressWarnings(suppressMessages(AverageExpression(obj,assays = "RNA",slot="data")))
+    avgexp =  suppressWarnings(suppressMessages(AverageExpression(obj,assays = assay_use,slot="data")))
     avgexp=data.frame(avgexp)
     cat(paste0("Storing expression of ",length(rownames(avgexp))," unique features across ",length(colnames(avgexp))," clusters. \n"))
     output = list(varfeat=varfeat, avgexp=avgexp)
