@@ -16,6 +16,8 @@ Cell and Spatial Datasets
 
 <b>Beta Prior to Release:</b> If you chose to use, please check back regularly for updates and improvements. <b>Version 1.0</b> will indicate stable release and contain links to publication or preprint.
 
+This repository hosts only the code to run SAHA. For information regarding the manuscript please see [SAHA manuscript repo](https://github.com/jungsukimlab/SAHA_manuscript). For information regarding Allen Brain Atlas SAHA inputs see [SAHAdata repo](https://github.com/neurogenetics/SAHAdata).
+
 ## Useful links
 [Installation](#installation)
 
