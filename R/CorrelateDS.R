@@ -1,36 +1,51 @@
 #' Computes correlations between query and database expression profiles
 #'
-#' This function calculates correlation coefficients between all query and
-#' database cell type expression profiles stored in the `ann@results$marker_free$norm_merge` data frame within the `ann` object. The results are stored in a data frame named `corr` within `ann@results$marker_free`.
+#' This function calculates correlation coefficients and p-values between all query and
+#' database cell type expression profiles. Results are stored in `corr` and `pvalue` slots.
 #'
 #' @param ann An object containing normalized gene expression data (`ann@results$marker_free$norm_merge`).
 #' 
 #' @param corr_method Character string indicating which correlation coefficient is to be computed.
 #'        Options are "pearson" (default), "kendall", or "spearman".
 #'
-#' @return The modified `ann` object with the correlation data frame stored within `ann@results$marker_free$corr`.
+#' @return The modified `ann` object with correlation and p-value data frames.
 #'
 #' @importFrom stats cor.test
 #'
 #' @export
 CorrelateDS <- function(ann, corr_method = "pearson"){
-   # compute Pearson coefficients b/w query and ABC celltype expression profiles
+   # Identify columns for database and query
    db_columns <- colnames(ann@results$marker_free$norm_merge)[grepl("db", colnames(ann@results$marker_free$norm_merge))]
    query_columns <- colnames(ann@results$marker_free$norm_merge)[grepl("query", colnames(ann@results$marker_free$norm_merge))]
-
-   correlation.df <- matrix(NA, nrow = length(query_columns), ncol = length(db_columns))
-   rownames(correlation.df) <- query_columns
-   colnames(correlation.df) <- db_columns
-
+   
+   # Initialize matrices for estimates and p-values
+   correlation.mat <- matrix(NA, nrow = length(query_columns), ncol = length(db_columns))
+   pvalue.mat <- matrix(NA, nrow = length(query_columns), ncol = length(db_columns))
+   
+   rownames(correlation.mat) <- rownames(pvalue.mat) <- query_columns
+   colnames(correlation.mat) <- colnames(pvalue.mat) <- db_columns
+   
+   # Loop through each pair to run cor.test
    for (i in seq_along(query_columns)) {
       for (j in seq_along(db_columns)) {
-         suppressWarnings(cor_test <- cor.test(ann@results$marker_free$norm_merge[[query_columns[i]]], ann@results$marker_free$norm_merge[[db_columns[j]]], method = corr_method))
-         correlation.df[i, j] <- cor_test$estimate
+         # Run test and suppress warnings (e.g., for constant vectors)
+         suppressWarnings(cor_test <- stats::cor.test(
+            ann@results$marker_free$norm_merge[[query_columns[i]]], 
+            ann@results$marker_free$norm_merge[[db_columns[j]]], 
+            method = corr_method
+         ))
+         
+         # Save estimate and p-value
+         correlation.mat[i, j] <- cor_test$estimate
+         pvalue.mat[i, j] <- cor_test$p.value
       }
    }
-
-   correlation.df <- as.data.frame(correlation.df)
-   ann@results$marker_free$corr=correlation.df
+   
+   # Store results in the ann object
+   ann@results$marker_free$corr <- as.data.frame(correlation.mat)
+   ann@results$marker_free$pvalue <- as.data.frame(pvalue.mat) # New Slot!
+   
    ann@params$marker_free$corr_method <- corr_method
+   
    return(ann)
 }
